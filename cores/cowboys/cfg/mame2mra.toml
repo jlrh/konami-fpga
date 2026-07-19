@@ -1,0 +1,46 @@
+[global]
+author=["jotego"]
+
+[parse]
+# Moo Mesa vive en konami/moo.cpp (placa GX151, hardware Xexex pre-GX)
+sourcefile=[ "moo.cpp" ]
+# el bootleg (moomesabl) tiene estructura de ROM distinta y sin proteccion -> fuera por ahora
+skip = { bootlegs=true }
+
+[buttons]
+names = [
+    { machine="moomesa", names="Shoot,Jump,Special" },
+]
+
+[header]
+info="Offsets for each ROM region."
+offset = { bits=12, reverse=true, regions=["maincpu","soundcpu","k056832","obj"] }
+frames = [ { width=8 }, ]
+
+[ROM]
+regions = [
+    { name="maincpu",  width=16, reverse=true },   # 68000, ROM_LOAD16_BYTE (b/eab even/odd)
+
+    { name="soundcpu" },                            # Z80
+    { name="k054539",  rename="pcm" },              # PCM samples
+
+    { name="k056832",  width=32 },                  # tiles (fix + 3 scroll), ROM_LOAD32_WORD
+    { name="k053246",  width=64, rename="obj" },    # sprites, ROM_LOAD64_WORD
+
+    { name="eeprom",   skip=true }                  # nvram default via [nvram] Defaults
+]
+
+order=["maincpu","soundcpu","pcm","k056832","obj"]
+
+# ER5911 EEPROM: sin default moomesa arranca boca abajo con error (moomesa.nv de MAME)
+nvram={ Defaults=[
+    { setname="moomesa", data="""\
+    00 00 03 00 03 01 00 00 00 1e 01 01 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 27"""},
+]}

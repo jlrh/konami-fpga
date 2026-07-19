@@ -1,0 +1,47 @@
+# === konami-fpga — solo el código fuente del core va al repo ===
+
+# ROMs / firmware / material con copyright (cada uno aporta las suyas)
+*.bin
+*.rom
+*.zip
+*.hex
+*.mem
+*.pdf
+
+# Artefactos de compilación (Quartus / build)
+*.rbf
+*.sof
+*.pof
+*.qpf
+*.qsf
+output_files/
+db/
+incremental_db/
+*.rpt
+*.summary
+*.qws
+*.jdi
+*.pin
+*.smsg
+
+# Simulación
+obj_dir/
+*.vcd
+*.fst
+*.vvp
+*.exe
+
+# SO / editores
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+.vscode/
+
+# Excepción: las tablas Q16 generadas del k054539 (voltab/pantab/rram_zero) NO son copyright y las
+# necesita la síntesis ($readmemh) → SÍ van al repo. (Solo las de hdl/, nunca ROMs sueltas.)
+!cores/**/hdl/*.hex
+
+# Excepción: el .rbf distribuible precompilado SÍ va al repo
+!releases/*.rbf

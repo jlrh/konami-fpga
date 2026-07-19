@@ -1,0 +1,38 @@
+CORENAME=COWBOYS
+GAMETOP=jtcowboys_game_sdram
+
+JTFRAME_HEADER=16
+JTFRAME_BUTTONS=3
+JTFRAME_JOY_DURL
+# Video configuration
+# JTFRAME_PXLCLK: genera pxl_cen/pxl2_cen (jtframe_pxlcen). SIN esto pxl_cen queda UNDRIVEN ->
+# el vtimer del K056832 nunca avanza -> ni LVBL/VS ni frames -> el full-core sim gira infinito.
+# (Se perdio al adaptar el core desde xmen, que usa 6 porque su dot clock es 6MHz.)
+# moomesa = 8MHz: moo.cpp K053252(config, m_k053252, 32_MHz_XTAL/4) // 8MHz. -> pxl_cen 8M, pxl2_cen 16M.
+# NOTA: con el HTOTAL=456 provisional del vtimer da ~66Hz (real 60Hz); el timing fino es el TODO
+# de HW (HJUMP/CRTC K053252), no afecta a la validacion de valores.
+JTFRAME_PXLCLK=8
+JTFRAME_COLORW=8
+JTFRAME_WIDTH=384
+JTFRAME_HEIGHT=224
+JTFRAME_OSD_TEST
+JTFRAME_STEREO
+
+JTFRAME_CREDITS_HSTART=24
+JTFRAME_DEBUG_VPOS=5
+
+JTFRAME_MR_DDRLOAD
+
+# More RAM needed
+SND_RAMW=13
+
+# default EEPROM needed to prevent game from booting upside down with error
+JTFRAME_IOCTL_RD=128
+
+[mister]
+JTFRAME_ARX=4
+JTFRAME_ARY=3
+JTFRAME_OSD_NOLOGO
+
+[mist|sidi]
+JTFRAME_SKIP

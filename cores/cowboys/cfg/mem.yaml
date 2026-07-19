@@ -1,0 +1,75 @@
+params:
+  - { name: RAM_OFFSET,   value: "22'h100000" }
+  - { name: PCM_OFFSET,   value: "22'h040000>>1" }   # pcm va TRAS el snd ROM de 256KB (0x40000 bytes),
+                                                     # no 128KB: con 0x020000 el k054539 leia CODIGO del
+                                                     # Z80 como audio -> "otro sonido" en placa (FM OK, el
+                                                     # tb/harness no lo veian por usar el .bin sin SDRAM).
+clocks:
+  clk48:
+    - freq: 16M
+      outputs:
+        - cen_16
+        - cen_8
+        - cen_4   # cen_fm
+        - cen_2   # cen_fm2
+    - freq: 18432k
+      gate: [pcm]
+      outputs:
+        - cen_pcm
+audio:
+  # CANALES SEPARADOS (fidelidad): antes un solo canal `k539` con FM+PCM ya sumados DENTRO del
+  # k054539 -> el clip16 railaba (sesion 21: "todo saturado"). Ahora FM y PCM van por canales
+  # PROPIOS y el rcmix de jtframe mezcla en precision ancha -> sin comprometer headroom.
+  # module: solo aporta metadata (stereo/data_width/vpp); el RTL lo instancia jtcowboys_sound.v a mano.
+  # `jt054539` (no `k054539`) porque el modulo de audio del comun define ese: stereo/dw16/vpp 1.0.
+  gain: 1.99
+  rsum: 1k
+  rsum_feedback_res: true       # gain = rsum/rsum_canal (transparente); rsum iguales -> mismo peso base,
+  channels:                     # y el vpp de cada modulo (jt51 0.5, jt054539 1.0) da el balance fisico.
+    - { name: fm,   module: jt51,     rsum: 1k, rc: [ { r: 4.7k, c: 2.2n } ] }
+    - { name: pcm,  module: jt054539, rsum: 1k, rc: [ { r: 4.7k, c: 2.2n } ] }
+sdram:
+  banks:
+    - buses:
+        - name: ram
+          addr_width: 16      # work RAM moomesa = 0x180000-0x18ffff = 64KB = 32K words -> AW 16 (puerto [15:1]).
+          data_width: 16       # Antes 14 (16KB): el stack/vars colisionaban por aliasing. moo.cpp:575.
+          offset: RAM_OFFSET
+          rw: true
+        - name: main
+          addr_width: 21      # region maincpu de moomesa = 0x180000 BYTES (moo.cpp:878), no 0x100000:
+          data_width: 16       # prog 0x000000-0x07ffff + HUECO + datos 0x100000-0x17ffff, y la region
+                               # se direcciona PLANA (verificado: en el .rom el soundcpu empieza justo
+                               # en 0x180000). Con AW 20 -> puerto [19:1] -> el BIT 20 SE PIERDE y los
+                               # datos (0x100000+) ALIASEAN sobre el programa (0x000000+): el 68k leia
+                               # codigo donde esperaba la tabla de mensajes de 0x141a38 ("N4 DEVICE
+                               # ERROR") y caminaba sobre punteros basura -> address error -> cuelgue.
+                               # AW 21 -> [20:1] = 1M words; ram empieza en RAM_OFFSET=0x100000 words -> no solapa.
+    - buses:
+        - name: snd
+          addr_width: 17
+          data_width: 8
+        - name: pcm
+          addr_width: 21
+          data_width: 8
+          offset: PCM_OFFSET
+    # K056832 (Moo Mesa): 1 bus de tile SERIAL (fix + 3 scroll multiplexadas por la FSM del modulo),
+    # region k056832 = 0x200000 bytes = 0x80000 words DW32 -> addr_width 19. Estilo rungun (bus scr unico),
+    # NO 3 buses paralelos estilo xmen. Ver HANDOFF 5b / research/K056832-RTL-DESIGN.
+    - buses:
+        - name: scr
+          addr_width: 21      # region k056832 = 0x200000 bytes = 2MB. addr_width N -> puerto [N-1:2];
+          data_width: 32       # video usa scr_addr[20:2] (19b word) -> AW 21. Antes 19 (->[18:2]) truncaba a 512KB.
+    - buses:
+        - name: lyro
+          addr_width: 23      # 8MB ROM sprites (2M words DW32 = 21b word addr -> puerto [22:2]). Antes 22 (->[21:2]) truncaba el MSB.
+          data_width: 32
+bram:
+  # EEROM
+  - name: nvram
+    addr_width: 7
+    data_width: 8
+    simfile: {}
+
+    rw: true
+    ioctl: { save: true, restore: true, order: 0 }
