@@ -16,7 +16,7 @@
     Version: 1.0
     Date: 7-7-2024 */
 
-module jtcowboys_sound(
+module cowboys_sound(
     input           rst,
     input           clk,
     input           cen_8,

@@ -218,7 +218,7 @@ wire signed [15:0] ds = dpcm_step(dnib);
 // --- Trim de PCM AJUSTABLE EN VIVO por debug_bus (calibrar el balance sin recompilar) ---
 //   debug_bus[7:4] = trim PCM (/8; 0 -> default 8 = UNIDAD). El balance base FM/PCM lo fija el
 //   rcmix de jtframe (mem.yaml: canales fm + pcm); este trim es solo para el ajuste fino en vivo.
-//   (La FM se trimea en su propio canal, en jtcowboys_sound.v con debug_bus[3:0].)
+//   (La FM se trimea en su propio canal, en cowboys_sound.v con debug_bus[3:0].)
 wire [4:0] pcm_g = (debug_bus[7:4]==4'd0) ? 5'd8 : {1'b0, debug_bus[7:4]};
 // avance de posicion (unidades de w_pos)
 wire [24:0] npos1 = w_pos + 25'd1;

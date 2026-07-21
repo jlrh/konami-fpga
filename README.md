@@ -24,26 +24,26 @@ against a MAME-derived C++ model.
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
 **runtime** from the `.mra`; the bitstream bakes only the K054539's **generated** Q16 volume/pan tables
 (`voltab.hex` / `pantab.hex`, math, not game data) and a zero-init table — **no copyrighted data**.
-Or build from source (`cores/cowboys/`). See [`BUILD.md`](BUILD.md).
+Or build from source (`cores/moomesa/`). See [`BUILD.md`](BUILD.md).
 
 > ℹ️ Naming: the PCM chip keeps its real silicon name (`k054539`, no `jt`); the GAMETOP is
-> `jtcowboys_game` (memgen imposes the `jt`).
+> `jtmoomesa_game` (memgen imposes the `jt`).
 
 ## Build
 
-This repo contains **only the core code** (`cores/cowboys/`). The framework and third-party cores
+This repo contains **only the core code** (`cores/moomesa/`). The framework and third-party cores
 (jtframe, jt51) are **not included** — jtframe provides them. Quick version:
 
 1. Clone [jtcores](https://github.com/jotego/jtcores) (brings jtframe + modules).
-2. Copy this repo's `cores/cowboys/` into your jtcores checkout.
-3. Build: `jtcore cowboys -mister -c`.
+2. Copy this repo's `cores/moomesa/` into your jtcores checkout.
+3. Build: `jtcore moomesa -mister -c`.
 
 📋 **Step-by-step in [`BUILD.md`](BUILD.md).**
 
 Core layout:
 ```
-cores/cowboys/
-├── hdl/   Core Verilog (jtcowboys_* modules + k054539 PCM chip + jtcowboys_game GAMETOP + *.hex tables)
+cores/moomesa/
+├── hdl/   Core Verilog (cowboys_* video/CPU + k053246/k053247 sprite engine + k054539 PCM chip + jtmoomesa_game GAMETOP + *.hex tables)
 ├── cfg/   macros.def, mem.yaml, files.yaml, mame2mra.toml
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
@@ -102,26 +102,26 @@ C++ derivado de MAME.
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
 cargan en **runtime** desde el `.mra`; el bitstream solo hornea las tablas Q16 de volumen/pan del
 K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una tabla de ceros — **ningún
-dato con copyright**. O compila desde fuente (`cores/cowboys/`). Ver [`BUILD.md`](BUILD.md).
+dato con copyright**. O compila desde fuente (`cores/moomesa/`). Ver [`BUILD.md`](BUILD.md).
 
 > ℹ️ Nomenclatura: el chip PCM conserva su nombre real de silicio (`k054539`, sin `jt`); el GAMETOP es
-> `jtcowboys_game` (memgen impone el `jt`).
+> `jtmoomesa_game` (memgen impone el `jt`).
 
 ## Construir
 
-Este repo contiene **solo el código del core** (`cores/cowboys/`). El framework y los cores de terceros
+Este repo contiene **solo el código del core** (`cores/moomesa/`). El framework y los cores de terceros
 (jtframe, jt51) **no se incluyen** — los aporta jtframe. Versión rápida:
 
 1. Clona [jtcores](https://github.com/jotego/jtcores) (trae jtframe + módulos).
-2. Copia `cores/cowboys/` de este repo dentro de tu checkout de jtcores.
-3. Compila: `jtcore cowboys -mister -c`.
+2. Copia `cores/moomesa/` de este repo dentro de tu checkout de jtcores.
+3. Compila: `jtcore moomesa -mister -c`.
 
 📋 **Pasos detallados en [`BUILD.md`](BUILD.md).**
 
 Estructura del core:
 ```
-cores/cowboys/
-├── hdl/   Verilog del core (módulos jtcowboys_* + chip PCM k054539 + GAMETOP jtcowboys_game + tablas *.hex)
+cores/moomesa/
+├── hdl/   Verilog del core (módulos cowboys_* de vídeo/CPU + motor de sprites k053246/k053247 + chip PCM k054539 + GAMETOP jtmoomesa_game + tablas *.hex)
 ├── cfg/   macros.def, mem.yaml, files.yaml, mame2mra.toml
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```

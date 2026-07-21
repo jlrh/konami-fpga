@@ -15,16 +15,16 @@ Steps to rebuild the `.rbf` from scratch. **No patch is required**: every game R
 
 1. **Place the core** inside jtcores:
    ```
-   cp -r cores/cowboys  <jtcores>/cores/cowboys
+   cp -r cores/moomesa  <jtcores>/cores/moomesa
    ```
 
 2. **Build** (generate + compile):
    ```
    cd <jtcores> && source setprj.sh
-   jtcore cowboys -mister -c
+   jtcore moomesa -mister -c
    ```
-   This generates `<jtcores>/cores/cowboys/mister/` (Quartus project + the memgen GAMETOP
-   `jtcowboys_game_sdram.v`) and compiles it. The result is the `.rbf` under `mister/output_files/`.
+   This generates `<jtcores>/cores/moomesa/mister/` (Quartus project + the memgen GAMETOP
+   `jtmoomesa_game_sdram.v`) and compiles it. The result is the `.rbf` under `mister/output_files/`.
 
 ## The K054539 (PCM sound)
 
@@ -62,16 +62,16 @@ en **runtime** desde el `.mra`, así que el bitstream es distribuible tal cual. 
 
 1. **Coloca el core** dentro de jtcores:
    ```
-   cp -r cores/cowboys  <jtcores>/cores/cowboys
+   cp -r cores/moomesa  <jtcores>/cores/moomesa
    ```
 
 2. **Compila** (genera + compila):
    ```
    cd <jtcores> && source setprj.sh
-   jtcore cowboys -mister -c
+   jtcore moomesa -mister -c
    ```
-   Esto genera `<jtcores>/cores/cowboys/mister/` (proyecto Quartus + el GAMETOP de memgen
-   `jtcowboys_game_sdram.v`) y lo compila. El resultado es el `.rbf` en `mister/output_files/`.
+   Esto genera `<jtcores>/cores/moomesa/mister/` (proyecto Quartus + el GAMETOP de memgen
+   `jtmoomesa_game_sdram.v`) y lo compila. El resultado es el `.rbf` en `mister/output_files/`.
 
 ## El K054539 (sonido PCM)
 

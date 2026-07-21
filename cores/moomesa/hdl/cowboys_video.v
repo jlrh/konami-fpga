@@ -1,7 +1,7 @@
 /*  This file is part of JTCORES (fork COWBOYS / Moo Mesa). GPLv3.
 
-    jtcowboys_video — integra el tilemap K056832 (jtcowboys_k056832, validado 0.00% vs golden) con
-    los sprites (jtsimson_obj, reuso xmen/simson) y el colmix (K053251 + K054338 alpha).
+    cowboys_video — integra el tilemap K056832 (cowboys_k056832, validado 0.00% vs golden) con
+    los sprites (cowboys_obj: FORK PROPIO desde simson, ses.24 - ver cabecera del fichero) y el colmix (K053251 + K054338 alpha).
 
     Arquitectura del tilemap = estilo rungun (Camino A): el modulo K056832 lleva su PROPIO vtimer
     (fuente de timing del core) + VRAM interna paginada + 1 bus ROM SERIAL (scr) que multiplexa las 4
@@ -15,7 +15,7 @@
       - Timing HW: el vtimer usa HTOTAL=456 (limite 9 bits); para MiSTer real revisar HJUMP/CRTC K053252.
       - Lectura CPU 16-bit (tilesys_dout) y separacion vram_cs(0x1a0000)/reg_cs(0x0c0000) en main (Fase 1).
 */
-module jtcowboys_video(
+module cowboys_video(
     input             rst,
     input             clk,
     input             pxl_cen,
@@ -27,7 +27,7 @@ module jtcowboys_video(
     output            hs,
     output            vs,
 
-    // Observabilidad para el harness de validacion (jtcowboys_vfull lo INSTANCIA: sesion 16). En
+    // Observabilidad para el harness de validacion (cowboys_vfull lo INSTANCIA: sesion 16). En
     // produccion se dejan ABIERTOS -> no cambian el comportamiento (son taps del framebuffer y del
     // pixel de sprite). Eliminan la COPIA que derivaba en silencio (orama, EDGE_TRIGGER): las 2 caras
     // del C-06 de las sesiones 12-14.
@@ -103,6 +103,7 @@ module jtcowboys_video(
 wire [ 8:0] vrender, vrender1, lyro_pxl;   // hdump/vdump/lyro_pxl_o ya son PUERTOS (observabilidad)
 assign lyro_pxl_o = lyro_pxl;
 wire [ 7:0] lyrf_pxl, lyra_pxl, lyrb_pxl, lyrc_pxl, dump_obj, obj_mmr;
+wire        lyra_mix, lyrb_mix, lyrc_mix;   // flag de mezcla por tile (attr[2]) - ses.24
 wire [ 4:0] lyro_pri;
 wire [ 1:0] shadow;
 wire [ 3:0] obj_amsb = 4'd0;   // TODO: dump ioctl de sprites (venia de jtriders_dump, eliminado)
@@ -128,7 +129,7 @@ always @(posedge clk) vdtac <= 1'b1;   // TODO Fase 1: dtack real de la ventana 
 
 /* verilator tracing_on */
 // ---------------- TILEMAP K056832 (validado) ----------------
-jtcowboys_k056832 u_scroll(
+cowboys_k056832 u_scroll(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
@@ -162,6 +163,9 @@ jtcowboys_k056832 u_scroll(
     .lyra_pxl   ( lyra_pxl  ),
     .lyrb_pxl   ( lyrb_pxl  ),
     .lyrc_pxl   ( lyrc_pxl  ),
+    .lyra_mix   ( lyra_mix  ),
+    .lyrb_mix   ( lyrb_mix  ),
+    .lyrc_mix   ( lyrc_mix  ),
 
     .gfx_en     ( gfx_en    ),
     .debug_bus  ( debug_bus )
@@ -174,7 +178,7 @@ assign ommra = {cpu_addr[3:1],cpu_dsn[1]};
 
 // MODELO DE OBJRAM (sesion 13). moomesa reparte 256 slots de sprite con paso 0x100 sobre los 64 kB de
 // 0x190000 (moo.cpp:416 `object_dma`: `src += 0x80` words, y solo las 8 primeras words de cada slot
-// importan). El K053246 escanea su RAM externa con paso 8 words (`jt053246_dma.v:126-137`: lee [3:1]=0..6
+// importan). El K053246 escanea su RAM externa con paso 8 words (`k053246_dma.v:126-137`: lee [3:1]=0..6
 // y salta al siguiente bloque de 16 B). Son DOS espacios de direcciones distintos, y la conversion entre
 // ambos es exactamente `slot N word w:  juego = N*0x80+w   <->  chip = N*8+w`.
 // ⭐ ESTO NO ES UNA HIPOTESIS: es lo que `ver/cowboys/tb_vfull.cpp:90-92` lleva 8 sesiones haciendo en C++
@@ -187,17 +191,17 @@ assign ommra = {cpu_addr[3:1],cpu_dsn[1]};
 // patrones UNIFORMES (0 / 0xffffff), asi que la word aliaseada ya contiene ese mismo patron. (Es la misma
 // razon por la que pasaba con el aliasing 4:1 de antes — ese test no prueba NADA sobre el layout: §sesion 12.)
 // Destino: NO hace falta la compactacion de `object_dma`. MAME no ordena en el DMA, ordena AL DIBUJAR
-// (`k053246_k053247_k055673.cpp:324-374`, `sortedlist` por el byte de prioridad); `jt053246_dma` hace esa
+// (`k053246_k053247_k055673.cpp:324-374`, `sortedlist` por el byte de prioridad); `k053246_dma` hace esa
 // misma ordenacion en el DMA via LUT (`dma_bufa <= {sort_24x,3'd0}`) = como el chip real. Neto: identico.
 // RAMW=13 -> el DMA barre words 0..4095 (entradas 0..511); las 256..511 nunca se escriben => 0 => bit15=0
 // => descartadas. Por eso RAMW se queda en 13 y no hace falta RAM extra.
 assign orama    = { 2'd0, cpu_addr[15:8], cpu_addr[3:1] };
 assign orama_we = oram_we & {2{cpu_addr[7:4]==4'd0}};
 
-// SONDA (sesion 12): saca el `cfg` REAL de dentro de `jt053246_mmr` sin tocar nada compartido.
-// `jtsimson_obj` -> `st_addr = ioctl_ram ? ioctl_addr : debug_bus` y `jt053246_mmr: 5: st_dout <= cfg`,
+// SONDA (sesion 12): saca el `cfg` REAL de dentro de `k053246_mmr` sin tocar nada compartido.
+// `cowboys_obj` -> `st_addr = ioctl_ram ? ioctl_addr : debug_bus` y `k053246_mmr: 5: st_dout <= cfg`,
 // que sale por `dump_reg` (= `obj_mmr`). Forzando debug_bus=5 en sim, `obj_mmr` ES el cfg del registro.
-// VERIFICADO que es inerte para el render: el UNICO uso de debug_bus aguas abajo (`jt053246_scan.sv:215`)
+// VERIFICADO que es inerte para el render: el UNICO uso de debug_bus aguas abajo (`k053246_scan.sv:215`)
 // esta COMENTADO. Aun asi hay que re-correr vfull/vmix: la sonda es de sim, pero el mux no.
 wire [7:0] obj_dbg;
 `ifdef SIMULATION
@@ -207,8 +211,8 @@ assign obj_dbg = debug_bus;
 `endif
 
 `ifdef SIMULATION
-// SONDA (sesion 12): que ve EXACTAMENTE el jt053246_mmr en una escritura de registro.
-// Ojo: el tb de video NUNCA ejercita este camino — `jt053246_mmr.v:51` hace `mmr_init[5][4]=1`,
+// SONDA (sesion 12): que ve EXACTAMENTE el k053246_mmr en una escritura de registro.
+// Ojo: el tb de video NUNCA ejercita este camino — `k053246_mmr.v:51` hace `mmr_init[5][4]=1`,
 // o sea que en sim el mmr CARGA cfg de un dump y fuerza dma_en=1. Por eso `vfull` da sprites
 // pixel-exactos con el DMA "funcionando" y el boot real puede tener este camino ROTO sin que
 // ninguna regresion de video lo cace. (Mismo patron que el pxl_cen UNDRIVEN de la sesion 5.)
@@ -260,13 +264,13 @@ localparam [8:0] OBJ_HOFF=9'd149;
 // porque `moo_interrupt` muestrea `k053246_is_irq_enabled()` en el INSTANTE del vblank, antes de la ISR.
 // `trigger_at_dmaen = ~dma_en & dmaen_l` (flanco de BAJADA) modela el protocolo tal cual.
 // PRECEDENTE: `rungun` (Konami, cerrado) hace EXACTAMENTE esto en `jtrungun_video.v:94`.
-// Ojo al `ifndef`: con NOMAIN (los tb de video vmix/vfull) NO hay CPU que desarme y `jt053246_mmr.v:51`
+// Ojo al `ifndef`: con NOMAIN (los tb de video vmix/vfull) NO hay CPU que desarme y `k053246_mmr.v:51`
 // fuerza `mmr_init[5][4]=1` fijo => con EDGE_TRIGGER=1 el flanco no llegaria NUNCA y los sprites
 // DESAPARECERIAN del tb. Por eso el trigger viejo se queda para NOMAIN. (Y por eso `vfull`=0.0000%
 // convivia con el DMA real muerto: el tb NO puede ver este bug — el C-06 de la sesion 12.)
 localparam EDGE_TRIGGER = `ifndef NOMAIN 1 `else 0 `endif;
 
-jtsimson_obj #(.RAMW(13),.SHADOW(1),.EDGE_TRIGGER(EDGE_TRIGGER)) u_obj(
+cowboys_obj #(.RAMW(13),.SHADOW(1),.EDGE_TRIGGER(EDGE_TRIGGER)) u_obj(   // FORK PROPIO (ses.24)
     .rst        ( rst       ),
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
@@ -313,7 +317,7 @@ jtsimson_obj #(.RAMW(13),.SHADOW(1),.EDGE_TRIGGER(EDGE_TRIGGER)) u_obj(
 );
 
 /* verilator tracing_on */
-jtcowboys_colmix u_colmix(
+cowboys_colmix u_colmix(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
@@ -337,6 +341,9 @@ jtcowboys_colmix u_colmix(
     .lyra_pxl   ( lyra_pxl  ),
     .lyrb_pxl   ( lyrb_pxl  ),
     .lyrc_pxl   ( lyrc_pxl  ),
+    .lyra_mix   ( lyra_mix  ),
+    .lyrb_mix   ( lyrb_mix  ),
+    .lyrc_mix   ( lyrc_mix  ),
     .lyro_pxl   ( lyro_pxl  ),   // 9b sprites -> ci1
     .lyro_pri   ( lyro_pri  ),
 

@@ -24,7 +24,7 @@
     <year>1992</year>
     <manufacturer>Konami</manufacturer>
     <players>4</players>
-    <rbf>cowboys</rbf>
+    <rbf>moomesa</rbf>
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="moomesa.zip" md5="None" address="0x30000000" asm_md5="71d6da8bfadb1de473ceff1c12b17321">

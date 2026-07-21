@@ -1,7 +1,8 @@
 [global]
 # author = quien firma el core en el <about> del .mra. NO "jotego": este core (Moo Mesa)
 # no es suyo; el <about author="jotego"> del .mra publicado era boilerplate heredado y se
-# corrigio. El credito honesto al framework JTFRAME de jotego (GPL) va en README, no aqui.
+# corrigio (peticion del usuario, ses.27). El credito honesto al framework JTFRAME de jotego
+# (GPL) va en README/cabeceras .v, no como autor del core.
 author=["konami-fpga"]
 
 [parse]

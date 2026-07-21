@@ -20,7 +20,7 @@ audio:
   # CANALES SEPARADOS (fidelidad): antes un solo canal `k539` con FM+PCM ya sumados DENTRO del
   # k054539 -> el clip16 railaba (sesion 21: "todo saturado"). Ahora FM y PCM van por canales
   # PROPIOS y el rcmix de jtframe mezcla en precision ancha -> sin comprometer headroom.
-  # module: solo aporta metadata (stereo/data_width/vpp); el RTL lo instancia jtcowboys_sound.v a mano.
+  # module: solo aporta metadata (stereo/data_width/vpp); el RTL lo instancia cowboys_sound.v a mano.
   # `jt054539` (no `k054539`) porque el modulo de audio del comun define ese: stereo/dw16/vpp 1.0.
   gain: 1.99
   rsum: 1k

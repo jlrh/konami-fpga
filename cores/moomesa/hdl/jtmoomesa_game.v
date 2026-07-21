@@ -16,7 +16,7 @@
     Version: 1.0
     Date: 23-8-2024 */
 
-module jtcowboys_game(
+module jtmoomesa_game(
     `include "jtframe_game_ports.inc" // see $JTFRAME/hdl/inc/jtframe_game_ports.inc
 );
 
@@ -93,7 +93,7 @@ end
 end
 */
 /* verilator tracing_off */
-jtcowboys_main u_main(
+cowboys_main u_main(
     .rst            ( rst           ),
     .clk            ( clk           ),
     .LVBL           ( LVBL          ),
@@ -160,7 +160,7 @@ assign oram_we   = ~ram_dsn & {2{cpu_we}};
 assign oram_addr = {main_addr[6:5], main_addr[1], main_addr[13:7], main_addr[4:2]};
 
 /* verilator tracing_off */
-jtcowboys_video u_video (
+cowboys_video u_video (
     .rst            ( rst           ),
     .rst8           ( rst8          ),
     .clk            ( clk           ),
@@ -229,7 +229,7 @@ jtcowboys_video u_video (
 );
 
 /* verilator tracing_on */
-jtcowboys_sound u_sound(
+cowboys_sound u_sound(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .cen_8      ( cen_8         ),

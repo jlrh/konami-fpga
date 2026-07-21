@@ -22,7 +22,7 @@
     663-701 (puertos). IRQ = patron simson/vendetta (jtframe_edge) mapeado a IRQ5/IRQ4.
 */
 
-module jtcowboys_main(
+module cowboys_main(
     input                rst,
     input                clk, // 48 MHz
     input                LVBL,

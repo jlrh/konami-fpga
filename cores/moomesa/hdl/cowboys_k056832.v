@@ -1,6 +1,6 @@
 /*  This file is part of JTCORES (fork COWBOYS). GPLv3. Crédito Jose Tejada / JTFRAME.
 
-    jtcowboys_k056832 — tilemap Konami K056832 (Moo Mesa). Reemplaza jt052109/jt051962 de X-Men.
+    cowboys_k056832 — tilemap Konami K056832 (Moo Mesa). Reemplaza jt052109/jt051962 de X-Men.
     Traduce el algoritmo VALIDADO 0.00% del golden (tools/cowboys_golden_prio.py) a RTL.
     Arquitectura: line-buffer con doble-buffer (ping-pong). 4 capas (FIX + 3 scroll).
     Blueprint: research/K056832-RTL-DESIGN.md. Validar con tb_k056832 (sim==golden).
@@ -18,7 +18,7 @@
     NOTA sim: la ROM de tiles la sirve el testbench (lyrX_data combinacional). En HW será SDRAM
     con line-fetch (mismo modelo, el margen de línea lo permite).
 */
-module jtcowboys_k056832(
+module cowboys_k056832(
     input             rst,
     input             clk,
     input             pxl_cen,
@@ -43,6 +43,8 @@ module jtcowboys_k056832(
 
     // pixel out
     output     [ 7:0] lyrf_pxl, lyra_pxl, lyrb_pxl, lyrc_pxl,
+    // flag de MEZCLA por pixel (attr[2] del tile) de cada capa de scroll — ver seccion line buffers
+    output            lyra_mix, lyrb_mix, lyrc_mix,
 
     input      [ 3:0] gfx_en,
     input      [ 7:0] debug_bus
@@ -216,7 +218,11 @@ wire signed [11:0] outpx_s = $signed({3'b0,wtile,3'b0}) - $signed({9'b0,subc}) +
 wire [8:0] outpx  = outpx_s[8:0];
 wire       outpx_ok = (outpx_s>=0) && (outpx_s<384);
 
-assign rom_cs = (pf_st==P_ROM2);
+// ⭐ SIM FIEL (ses.33): rom_cs debe MANTENERSE hasta rom_ok, no pulsar 1 ciclo. El pulso de 1 ciclo
+// (pf_st==P_ROM2) funcionaba con el stub de scr_ok=1 INSTANTANEO, pero con la latencia SDRAM real el
+// slot no completa y P_ROM3 espera rom_ok para SIEMPRE -> el fetch de tile se DEADLOCKEA (banco2 READ=1).
+// Sospecha: es la causa (o parte) del tilemap baja-res de placa (ses.20). Mantener cs durante P_ROM2+P_ROM3.
+assign rom_cs = (pf_st==P_ROM2) || (pf_st==P_ROM3);
 always @(posedge clk, posedge rst) begin
     if(rst) begin
         pf_st<=P_IDLE; cs_st<=C_IDLE; flyr<=0; ftile<=0; fpx<=0; dispbank<=0; fbank<=1;
@@ -276,25 +282,41 @@ end
 // ---------------- line buffers en BRAM (4x jtframe_rpwp_ram, lectura registrada) ----------------
 // Escritura: en C_WRITE, a la capa `wlyr`, dir {fbank,outpx}, dato {colnib_c,pen}.
 wire [9:0] lb_wa = {fbank, outpx};
-wire [7:0] lb_wd = {colnib_c, pen};
+// ⭐ BIT DE MEZCLA POR TILE (sesion 24) — el hallazgo que resuelve el bug del CRATER.
+// El campo de color del tile son 6 bits: colpre = attr[7:2]. MAME (moo.cpp:290 tile_callback) usa
+// SOLO colpre[5:2] como color y **DESCARTA colpre[1:0]**. Medido: colpre[0] (= attr[2]) es el flag
+// "este tile se mezcla" del K054338:
+//    attr[2]=0 -> tile OPACO, el blender NO le aplica
+//    attr[2]=1 -> tile MEZCLADO al nivel alpha_lv
+// Con alpha_lv=0 eso da las dos conductas que parecian contradictorias, con UNA regla:
+//    * crater del attract (1200/1350): 94% de sus px con attr[2]=0 -> OPACO -> SE VE (MAME lo perdia)
+//    * cortina de transicion (1030/1100): 100% con attr[2]=1, un unico tile 0xF4 -> INVISIBLE (correcto)
+// Por eso los registros del K054338/K053251 son BIT-IDENTICOS entre ambas escenas: la informacion
+// nunca estuvo en los registros, esta POR TILE. MAME no podia hallarlo mirando registros.
+// Coste: line buffers 8->9 bits. El M10K de Cyclone V tiene modo x9 nativo -> mismo nº de BRAMs.
+wire [8:0] lb_wd = {attr_c[2], colnib_c, pen};
 wire       lb_we = (cs_st==C_WRITE) && outpx_ok;
 // Lectura: banco de display + columna. dpx=hdump cambia solo en pxl_cen -> dout registrado estable.
 wire [8:0] dpx = hdump;            // HCNT_START=0 -> activo empieza en 0
 wire [9:0] rdaddr = {dispbank, dpx};
-wire [7:0] lb0_q, lb1_q, lb2_q, lb3_q;
+wire [8:0] lb0_q, lb1_q, lb2_q, lb3_q;
 
-jtframe_rpwp_ram #(.DW(8),.AW(10)) u_lbuf0(
+jtframe_rpwp_ram #(.DW(9),.AW(10)) u_lbuf0(
     .clk(clk), .rd_addr(rdaddr), .dout(lb0_q), .wr_addr(lb_wa), .din(lb_wd), .we(lb_we && wlyr==2'd0) );
-jtframe_rpwp_ram #(.DW(8),.AW(10)) u_lbuf1(
+jtframe_rpwp_ram #(.DW(9),.AW(10)) u_lbuf1(
     .clk(clk), .rd_addr(rdaddr), .dout(lb1_q), .wr_addr(lb_wa), .din(lb_wd), .we(lb_we && wlyr==2'd1) );
-jtframe_rpwp_ram #(.DW(8),.AW(10)) u_lbuf2(
+jtframe_rpwp_ram #(.DW(9),.AW(10)) u_lbuf2(
     .clk(clk), .rd_addr(rdaddr), .dout(lb2_q), .wr_addr(lb_wa), .din(lb_wd), .we(lb_we && wlyr==2'd2) );
-jtframe_rpwp_ram #(.DW(8),.AW(10)) u_lbuf3(
+jtframe_rpwp_ram #(.DW(9),.AW(10)) u_lbuf3(
     .clk(clk), .rd_addr(rdaddr), .dout(lb3_q), .wr_addr(lb_wa), .din(lb_wd), .we(lb_we && wlyr==2'd3) );
 
-assign lyrf_pxl = gfx_en[0] ? lb0_q : 8'd0;
-assign lyra_pxl = gfx_en[1] ? lb1_q : 8'd0;
-assign lyrb_pxl = gfx_en[2] ? lb2_q : 8'd0;
-assign lyrc_pxl = gfx_en[3] ? lb3_q : 8'd0;
+assign lyrf_pxl = gfx_en[0] ? lb0_q[7:0] : 8'd0;
+assign lyra_pxl = gfx_en[1] ? lb1_q[7:0] : 8'd0;
+assign lyrb_pxl = gfx_en[2] ? lb2_q[7:0] : 8'd0;
+assign lyrc_pxl = gfx_en[3] ? lb3_q[7:0] : 8'd0;
+// flag de mezcla por pixel de cada capa de scroll (el FIX no se mezcla: va siempre opaco encima)
+assign lyra_mix = gfx_en[1] & lb1_q[8];
+assign lyrb_mix = gfx_en[2] & lb2_q[8];
+assign lyrc_mix = gfx_en[3] & lb3_q[8];
 
 endmodule

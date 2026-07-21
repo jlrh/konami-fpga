@@ -1,5 +1,5 @@
-CORENAME=COWBOYS
-GAMETOP=jtcowboys_game_sdram
+CORENAME=MOOMESA
+GAMETOP=jtmoomesa_game_sdram
 
 JTFRAME_HEADER=16
 JTFRAME_BUTTONS=3
@@ -25,6 +25,12 @@ JTFRAME_MR_DDRLOAD
 
 # More RAM needed
 SND_RAMW=13
+
+# ses.34: lyro (banco 3, sprites) a burst-4 (64 bits) -> BURSTLEN=64 global. Lo consume el slot custom
+# cowboys_lyro64 (block-cache de linea 64-bit): 1 lectura de bus por tile en vez de 2 -> corte del vagon
+# 16.62%->7.23% en el oraculo fiel. Patron probado (cps1/outrun/twin16; simson lo trae comentado).
+# ⚠ Regenera el qsf: si NO regeneras, anade tambien VERILOG_MACRO JTFRAME_BA3_LEN=64 al moomesa.qsf a mano.
+JTFRAME_BA3_LEN=64
 
 # default EEPROM needed to prevent game from booting upside down with error
 JTFRAME_IOCTL_RD=128

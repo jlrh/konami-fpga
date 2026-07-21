@@ -16,7 +16,7 @@
     Version: 1.0
     Date: 30-9-2024 */
 
-module jtcowboys_colmix(
+module cowboys_colmix(
     input             rst,
     input             clk,
     input             pxl_cen,
@@ -41,6 +41,8 @@ module jtcowboys_colmix(
     input      [ 7:0] lyra_pxl,
     input      [ 7:0] lyrb_pxl,
     input      [ 7:0] lyrc_pxl,
+    // flag de MEZCLA por pixel (attr[2] del tile) de cada capa de scroll — ver ⚠️ EXCEPCIÓN del K054338
+    input             lyra_mix, lyrb_mix, lyrc_mix,
     input      [ 8:0] lyro_pxl,
     input      [ 4:0] lyro_pri,
 
@@ -101,8 +103,10 @@ assign pcu_we    = pcu_cs & ~cpu_dsn[0] & cpu_we;
 assign cpu_din   = cpu_addr[1] ? {cg, cb} : {cx, cr};
 assign ioctl_din = 8'd0;   // TODO(full-core): volcado de paleta para restore de escena
 // Orden de precedencia en el pixel final: FIX (opaco) > blend alpha K054338 > backdrop > tile ganador.
-// do_blend degenera correctamente a "mostrar el fondo" cuando alpha_lv=0 (escena 1200 suprime la capa
-// frontal). Cuando alpha_en=0 -> do_blend=0 -> salida IDÉNTICA a la ruta validada (notspr 180/300/900).
+// Cuando alpha_en=0 -> do_blend=0 -> salida IDÉNTICA a la ruta validada (notspr 180/300/900).
+// (sesión 24) do_blend exige además `mix_front` (attr[2] del tile): solo se mezclan los tiles MARCADOS.
+// Un tile sin marcar sale OPACO aunque alpha_lv sea 0 — antes se suprimía la capa frontal entera y eso
+// borraba el cráter del attract (1200/1350), que es el bug de MAME. Ver el bloque ⭐⭐ del K054338.
 assign {blue,green,red} = (lvbl & lhbl ) ? (do_blend ? blended_bgr : (use_bg ? bg_bgr : bgr)) : 24'd0;
 
 // 053251 wiring — mapeo REAL de moomesa (moo.cpp screen_update + k051_palette_index del golden):
@@ -120,7 +124,7 @@ assign ci1       =  9'd0;               // CI1 = fondo/referencia (transparente)
 assign ci2       = {1'b0, lyra_pxl};    // capa a (CI2)
 assign ci3       =  lyrb_pxl;           // capa b (CI3)
 assign ci4       =  lyrc_pxl;           // capa c (CI4)
-assign shad      = |shd_out;
+assign shad      = |shd_out;    // hay sombra si shd_out != 0 (el CUAL de los 3 se usa abajo)
 assign shd_in    =  shadow;
 
 // FIX superpuesto encima del K053251 (colorbase 0x70): pal = fix_opaco ? {3'b111,fix} : cout_k251.
@@ -146,12 +150,39 @@ end
 // la salida es {blue,green,red} -> ordenar {B,G,R}. Validado contra el golden (bgrgb).
 wire [23:0] bg_bgr   = { k38[1][7:0], k38[1][15:8], k38[0][7:0] };
 // alpha (K338): MIXPRI=k38[15][1] (enable), mixlv=k38[13][4:0], alpha_lv={mixlv,mixlv[4:2]}.
-// TODO(no validado; ninguna escena tiene blending 0<lv<255): con alpha_lv==0 la capa alpha
-// (=top scroll, layer[2] ordenada) NO se dibuja; con 0<lv<255 se mezcla con la de detras (K054338).
-// Requiere identificar la capa alpha en el K053251 y, para blending, el 2o color -> diseño pendiente.
+//
+// ⭐⭐ AQUI SE ARREGLA UN BUG QUE MAME NUNCA RESOLVIO (sesion 24). Lee esto antes de tocar el blend.
+//
+// MAME (moo.cpp:377-385) decide la mezcla POR CAPA y se inventa el enable:
+//     m_alpha_enabled = ... & K338_CTL_MIXPRI;              // DUMMY  <- lo admite el propio MAME
+//     if (alpha > 0) tilemap_draw(layer[2], ...);           // con alpha==0 NO DIBUJA la capa entera
+// Con k38[13]=0 (alpha_lv=0) eso BORRA la capa frontal completa. En 1200/1350 esa capa lleva 6841 px:
+// EL CRATER del que sale la mesa -> en MAME la montaña sale flotando. Bug conocido y no resuelto
+// (moo.cpp:88-113 "needs a correct enable/disable bit in Moo (INTRO GFX MISSING and fog blocking
+// view)"; moomesa lleva MACHINE_IMPERFECT_GRAPHICS). MAME buscaba "un bit de control" y no lo hallaba.
+//
+// ✅ EL BIT NO ESTA EN NINGUN REGISTRO: ESTA EN EL ATRIBUTO DEL TILE, y MAME lo TIRA.
+//    moo.cpp:290  tile_callback:  color = m_layer_colorbase[layer] | (color >> 2 & 0x0f);
+//    El campo de color son 6 bits (colpre = attr[7:2]); MAME usa colpre[5:2] y DESCARTA colpre[1:0].
+//    MEDIDO: colpre[0] (= attr[2]) es el flag de mezcla POR TILE:
+//        attr[2]=0 -> tile OPACO (el blender no le aplica)
+//        attr[2]=1 -> tile MEZCLADO al nivel alpha_lv
+//    Con alpha_lv=0 UNA sola regla da las dos conductas que parecian contradictorias:
+//        * crater (1200/1350): 94% de sus px con attr[2]=0 -> opaco -> SE VE  (MAME lo perdia)
+//        * cortina de transicion (1030/1100): 100% attr[2]=1, un solo tile 0xF4 -> invisible (correcto;
+//          forzarla opaca deja la PANTALLA NEGRA en partida - fue mi primer intento, y estaba MAL)
+//    Por eso K054338 y K053251 son BIT-IDENTICOS entre ambas escenas: la info nunca estuvo ahi.
+//    El bit llega desde el K056832 por lyra_mix/lyrb_mix/lyrc_mix (line buffers 8->9b).
+//
+// Evidencia: placa real (sources/crater-captura.png) + `tools/cowboys_tilebits.py` (histograma de los
+// 2 bits descartados) + regresion golden en 15 escenas: 13 IDENTICAS a MAME, solo 1200/1350 cambian.
+// ⚠️ En 1200 y 1350 golden y RTL DIVERGEN DE MAME a proposito (~6400 px): ahi el oraculo es la PLACA,
+//    no MAME. NO lo "arregles" volviendo a casar con MAME. Ver HANDOFF "SESION 25" y GAPS C-17.
 wire        alpha_en = k38[15][1];
 wire [ 4:0] mixlv    = k38[13][4:0];
 wire [ 7:0] alpha_lv = {mixlv, mixlv[4:2]};   // 5b->8b (=set_alpha_level de MAME)
+// flag de mezcla del pixel de la capa FRONTAL (la unica que el K054338 mezcla en moo)
+wire        mix_front = (front_a & lyra_mix) | (front_b & lyrb_mix) | (front_c & lyrc_mix);
 
 // --- capa frontal (layer[2]) = la de scroll con MENOR prioridad (=frontmost en Konami) ---
 // Snoop de las prioridades CI2/CI3/CI4 escritas al K053251 (addr 2/3/4, din=cpu_dout[5:0]).
@@ -178,6 +209,34 @@ assign front_b = sl2==2'd1;
 assign front_c = sl2==2'd2;
 
 // blend exacto (src*a + dst*(255-a))/255, con floor división por 255 vía mult-shift (0x8081>>23).
+// ---------------- SOMBRA: delta RGB ADITIVO del K054338 (sesion 24) ----------------
+// ANTES esto era `{b8>>1, g8>>1, r8>>1}` — una MITAD hardcodeada. El HW no hace eso:
+//   k054338.cpp:88-93  ->  d = m_regs[K338_REG_SHAD1R + i] & 0x1ff; if (d >= 0x100) d -= 0x200;
+//                          palette.set_shadow_dRGB32(tabla, dR, dG, dB, noclip)
+// Es un DELTA CON SIGNO (9 bits) que se SUMA a cada canal y se satura. Y hay TRES tablas:
+//   shd_out==1 -> k38[2..4]   shd_out==2 -> k38[5..7]   shd_out==3 -> k38[8..10]   (R,G,B)
+// El K053251 ya nos da cual por `shd_out[1:0]` (jtcolmix_053251.v:83-87,138) y nosotros lo estabamos
+// APLASTANDO con `|shd_out` para aplicar el ÷2 fijo.
+// MEDIDO en todos los volcados: los 9 registros valen 0x01c0 => delta = -64 (no -50%).
+//   color 200 -> HW 136 vs ÷2 100  |  color 128 -> 64 en ambos (coincidencia)  |  color 60 -> HW 0 vs 30
+// => con ÷2 las sombras salen MAS OSCURAS en tonos claros: el "se ven muy solidas" reportado.
+// ⚠️ El golden NO modela sombras (cero referencias) => `sim==golden` NO puede validar esto todavia.
+// ⚠️ No implementado el modo `noclip` (K338_CTL_CLIPSL, k38[15][5]): vale 0 en todo lo medido => se
+//    satura siempre. Si alguna escena lo pone a 1, hay que revisar (MAME lo pasa a set_shadow_dRGB32).
+wire [15:0] shdR = shd_out==2'd1 ? k38[2] : shd_out==2'd2 ? k38[5] : k38[ 8];
+wire [15:0] shdG = shd_out==2'd1 ? k38[3] : shd_out==2'd2 ? k38[6] : k38[ 9];
+wire [15:0] shdB = shd_out==2'd1 ? k38[4] : shd_out==2'd2 ? k38[7] : k38[10];
+
+function [7:0] shd_add( input [7:0] c, input [15:0] rg );
+    reg signed [10:0] d, s;
+    begin
+        d = $signed({{2{rg[8]}}, rg[8:0]});      // 9b con signo -> 11b
+        s = $signed({3'b0, c}) + d;
+        shd_add = s[10]      ? 8'd0   :          // negativo -> 0
+                  (s > 255)  ? 8'd255 : s[7:0];  // satura arriba
+    end
+endfunction
+
 function [7:0] blend8( input [7:0] fr, input [7:0] bk, input [7:0] a );
     reg [16:0] num; reg [31:0] mul;
     begin
@@ -192,7 +251,8 @@ always @(posedge clk, posedge rst) begin
         bgr   <= 0;
     end else begin
         { b8, g8, r8 } <= { pal_b, pal_g, pal_r };   // xRGB_888 directo (sin conv58 5->8)
-        if( pxl_cen ) bgr <= ~shad ? { b8, g8, r8 } : { b8>>1, g8>>1, r8>>1 };
+        if( pxl_cen ) bgr <= ~shad ? { b8, g8, r8 }
+                                   : { shd_add(b8,shdB), shd_add(g8,shdG), shd_add(r8,shdR) };
     end
 end
 
@@ -264,8 +324,8 @@ jtframe_dual_ram #(.DW(8),.AW(11)) u_pal_x(
 //   cout_b = color que quedaría si la capa frontal (=alpha) no se dibujara = "fondo" del blend.
 // Si el ganador de la instancia A es un sprite o una capa trasera, quitar la frontal no cambia el
 // ganador -> cout_b==pal_addr -> NO se hace blend (sprites nunca se alpha-mezclan). Si el ganador es
-// la capa frontal, cout_b da lo de detrás y se mezcla. Con alpha_lv=0 el blend = "fondo" (suprime la
-// capa frontal, escena 1200). Réplica del compositing painter's de moo.cpp screen_update.
+// la capa frontal, cout_b da lo de detrás y se mezcla. Réplica del compositing painter's de moo.cpp
+// screen_update. (sesión 24) Además el blend exige `mix_front` (attr[2] del tile) — ver ⭐⭐ K054338.
 wire [8:0] ci2b = front_a ? 9'd0 : ci2;
 wire [7:0] ci3b = front_b ? 8'd0 : ci3;
 wire [7:0] ci4b = front_c ? 8'd0 : ci4;
@@ -326,7 +386,9 @@ end
 // va siempre encima). Delay L=1: bgr/back_bgr van 1 periodo de pxl_cen por detrás de cout/pal_addr
 // (cadena pal->r8->bgr), así que la decisión (calculada en el stage de cout) se alinea con +1.
 // Validado en 1200: L=1 -> 0.0000% (L=2 dejaba residuo de 1px en el borde diagonal de la capa a).
-wire       blend_en_now = alpha_en & ~k251_coln & (pal_addr != cout_b);
+// `mix_front`: SOLO se mezclan los tiles marcados con attr[2]=1. Sin este termino, con alpha_lv=0 la
+// capa frontal entera desaparecia (= el bug del crater de MAME). Ver el bloque ⭐⭐ del K054338.
+wire       blend_en_now = alpha_en & mix_front & ~k251_coln & (pal_addr != cout_b);
 wire       blend_en_a, colnb_a;
 jtframe_sh #(.W(1),.L(1)) u_blenddly(.clk(clk),.clk_en(pxl_cen),.din(blend_en_now),.drop(blend_en_a));
 jtframe_sh #(.W(1),.L(1)) u_colnbdly(.clk(clk),.clk_en(pxl_cen),.din(coln_b     ),.drop(colnb_a  ));
