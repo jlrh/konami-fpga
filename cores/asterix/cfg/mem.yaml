@@ -1,0 +1,98 @@
+params:
+  # Work RAM (32KB) va TRAS el prog de 1MB dentro del banco 0 (como el hermano cowboys pone su ram).
+  - { name: RAM_OFFSET,   value: "22'h100000" }
+  # PCM (K053260) va tras el snd ROM del Z80 (64KB) en el banco 1. offset en WORDS del banco.
+  - { name: PCM_OFFSET,   value: "22'h010000>>1" }
+
+# Frecuencias REALES de asterix.cpp (machine_config): 68k=12MHz(24/2), Z80=6MHz(24/4),
+# YM2151=4MHz(32/8), K053260=4MHz(32/8), pxl=6MHz(24/4). Fijadas en Fase 3.
+clocks:
+  clk48:
+    - freq: 12M
+      outputs:
+        - cen_12      # 68k 12MHz
+        - cen_6       # Z80 6MHz (24/4)
+        - cen_3
+    - freq: 4M
+      outputs:
+        - cen_fm      # YM2151 4MHz (32/8)
+        - cen_fm2
+    - freq: 4M
+      outputs:
+        - cen_pcm     # K053260 4MHz (32/8)
+      gate: [ pcma, pcmb, pcmc, pcmd ]   # el jt053260 pide 4 buses de ROM PCM (1 por canal)
+
+audio:
+  # Canales separados FM / PCM (fidelidad, patron cowboys): jt51 (FM) + jt053260 (PCM). El rcmix de
+  # jtframe mezcla en precision ancha. jt053260 EXISTE en el comun (a diferencia de cowboys, que
+  # escribio k054539 propio). vpp/stereo los aporta el modulo de audio del comun.
+  #
+  # RATIO REAL (asterix.cpp:422-428): ym2151.add_route(gain 1.0) + k053260.add_route(gain 0.75) ->
+  # el hardware pesa FM:PCM = 1.0:0.75. jt51 y jt053260 tienen vpp identico (0.5), asi que sin ajuste
+  # saldrian 1:1; `pre: 0.75` en el PCM reproduce el peso del route de MAME.
+  #
+  # HEADROOM (GOTCHAS §I10): el rcmix NORMALIZA POR EL MAXIMO, no por la suma. Con gain: 1.99 los dos
+  # canales salian a 0xFE (1.98) cada uno -> SUMA 3.97 -> `limmul` RECORTA cuando FM y PCM pican a la
+  # vez (gain_check.py FAIL). Con ratio 1:0.75 la suma es global*(1+0.75)=1.75*global; gain: 0.57 la
+  # deja en ~1.0 (cero recorte teorico en el peor caso, ambos a fondo de escala). gain_check.py OK con
+  # gain: 0.57 (ese era el nivel "nibble=8/neutro" del debug_bus).
+  #
+  # ⚠ SUBIDO A PROPOSITO 2026-07-28 (build de RELEASE, sonido "bajo" reportado en HW): probado en placa
+  # real con el debug_bus de JTFRAME_DEBUG_SOUND_TUNE al MAXIMO (nibble=15/15, x1,875 FM+PCM) sobre
+  # attract+moneda+arranque (42s) -> CERO recorte digital medido (tope=0, pico max ~22% FS). Se hornea
+  # ese mismo factor de forma permanente: gain = 0.57*1,875 = 1,06875. ESTO SUPERA el limite teorico de
+  # gain_check.py (suma pasa de ~1,0 a ~1,87: sube el riesgo de recorte SOLO en el peor caso teorico,
+  # los 2 canales PCM a fondo de escala A LA VEZ en partida — escenario NUNCA estresado en HW). Decision
+  # consciente del usuario, no un descuido: si en el futuro se oye recorte en partida densa, el primer
+  # sospechoso es ESTE valor, bajarlo hacia 0.57 antes de mirar otra cosa.
+  gain: 1.06875
+  rsum: 1k
+  rsum_feedback_res: true
+  channels:
+    - { name: fm,   module: jt51,      rsum: 1k,            rc: [ { r: 4.7k, c: 2.2n } ] }
+    - { name: pcm,  module: jt053260,  rsum: 1k, pre: 0.75, rc: [ { r: 4.7k, c: 2.2n } ] }
+
+sdram:
+  banks:
+    # ---- Banco 0: prog 68k + work RAM ----
+    # §1.3b: ROM_REGION("maincpu")=0x100000 B (asterix.cpp:434). DW16 -> puerto [AW-1:1]. AW=20 = 1MB.
+    #        prog 0..0x3FFFF + HUECO 0x40000-0x7FFFF + datos 0x80000-0xBFFFF (region PLANA, hueco incluido).
+    - buses:
+        - name: ram
+          addr_width: 15      # work RAM asterix = 0x100000-0x107FFF = 32KB = 16K words -> [14:1]. (map .ram())
+          data_width: 16
+          offset: RAM_OFFSET
+          rw: true
+        - name: main
+          addr_width: 20      # region maincpu 0x100000 B -> [19:1] = 512K words = 1MB. (§1.3b OK)
+          data_width: 16
+    # ---- Banco 1: Z80 ROM + PCM (K053260) ----
+    - buses:
+        - name: snd
+          addr_width: 16      # ROM_REGION("audiocpu")=0x10000 B (64KB) -> DW8 [15:0]. (asterix.cpp:440)
+          data_width: 8
+        # El jt053260 expone 4 buses de ROM (uno por canal); todos apuntan a la MISMA region de 2MB
+        # (el chip real tenia un solo bus). Mismo patron que riders (ssriders/tmnt2).
+        # ROM_REGION("k053260")=0x200000 B (2MB) -> DW8 [20:0]. (asterix.cpp:451)
+        - { name: pcma, addr_width: 21, data_width: 8, offset: PCM_OFFSET }
+        - { name: pcmb, addr_width: 21, data_width: 8, offset: PCM_OFFSET }
+        - { name: pcmc, addr_width: 21, data_width: 8, offset: PCM_OFFSET }
+        - { name: pcmd, addr_width: 21, data_width: 8, offset: PCM_OFFSET }
+    # ---- Banco 2: tiles K056832 ----
+    - buses:
+        - name: scr
+          addr_width: 20      # ROM_REGION("k056832")=0x100000 B (1MB) -> DW32 [19:2]=18b word. (asterix.cpp:443)
+          data_width: 32       # (cowboys=21 porque moomesa son 2MB; asterix la MITAD -> AW 20)
+    # ---- Banco 3: sprites K053244/K053245 ----
+    - buses:
+        - name: obj
+          addr_width: 22      # ROM_REGION("k053244")=0x400000 B (4MB) -> DW32 [21:2]=20b word. (asterix.cpp:447)
+          data_width: 32       # (cowboys lyro=23 porque son 8MB; asterix 4MB -> AW 22)
+bram:
+  # EEPROM ER5911 (hi-scores). Default asterix.nv (JTFRAME_IOCTL_RD=128).
+  - name: nvram
+    addr_width: 7
+    data_width: 8
+    simfile: {}
+    rw: true
+    ioctl: { save: true, restore: true, order: 0 }

@@ -8,6 +8,25 @@ FPGA recreations of **Konami** arcade boards, built on the **JTFRAME** framework
 
 ## Cores
 
+### Asterix (Konami, 1993)
+Run-and-gun beat-'em-up (GX068 board, Xexex-family lineage). Hardware: **MC68000** main CPU + **Z80**
+sound CPU + **YM2151** (FM) + **K053260** (PCM sound) + Konami video customs — **K056832** (tilemap),
+**K053244/K053245** (sprites, with shadow blending), **K053251** (priority mixer) — plus the board's
+**palette blitter** (a bus-master ROM→palette copier, recreated as HLE; it is a **sound boot-gate**: the
+68000 will not proceed past POST until the Z80+K053260 handshake completes).
+
+**Status: playable on MiSTer** — boot, video (tilemap + sprites + shadows), the palette blitter, and
+**audio (YM2151 FM + K053260 PCM, all 4 channels including the coin sound)** all run on hardware.
+
+Unlike `moomesa`'s K054539, the **K053260** PCM chip already exists as a validated module in the common
+jtframe tree (`jt053260`), so this core reuses it instead of writing a new one from scratch; the
+core-specific work is the 68000 memory map, the palette blitter, and adapting the K056832/K053244/K053245
+video pipeline (tile-bank, rowscroll, sprite priority/shadow rules) to this board's exact wiring.
+
+A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
+**runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/asterix/`).
+See [`BUILD.md`](BUILD.md).
+
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun beat-'em-up (the cartoon cowboys). Hardware (GX151 / Xexex-family board): **MC68000** main
 CPU + **Z80** sound CPU + **YM2151** (FM) + **K054539** (PCM sound) + Konami video customs — **K056832**
@@ -31,33 +50,34 @@ Or build from source (`cores/moomesa/`). See [`BUILD.md`](BUILD.md).
 
 ## Build
 
-This repo contains **only the core code** (`cores/moomesa/`). The framework and third-party cores
-(jtframe, jt51) are **not included** — jtframe provides them. Quick version:
+This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`).
+The framework and third-party cores (jtframe, jt51) are **not included** — jtframe provides them. Quick
+version:
 
 1. Clone [jtcores](https://github.com/jotego/jtcores) (brings jtframe + modules).
-2. Copy this repo's `cores/moomesa/` into your jtcores checkout.
-3. Build: `jtcore moomesa -mister -c`.
+2. Copy this repo's `cores/<core>/` into your jtcores checkout.
+3. Build: `jtcore <core> -mister -c` (e.g. `jtcore asterix -mister -c`).
 
 📋 **Step-by-step in [`BUILD.md`](BUILD.md).**
 
-Core layout:
+Core layout (same for every core in this repo):
 ```
-cores/moomesa/
-├── hdl/   Core Verilog (cowboys_* video/CPU + k053246/k053247 sprite engine + k054539 PCM chip + jtmoomesa_game GAMETOP + *.hex tables)
+cores/<core>/
+├── hdl/   Core Verilog
 ├── cfg/   macros.def, mem.yaml, files.yaml, mame2mra.toml
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
 ## ROMs
 
-**Not included** (copyrighted material). Everyone provides the original **moomesa** ROMs of their own
-board. The `.mra` describes how to assemble them; every ROM (program, sound, PCM samples, tiles,
+**Not included** (copyrighted material). Everyone provides the original ROMs of their own board for each
+game. The `.mra` describes how to assemble them; every ROM (program, sound, PCM samples, tiles,
 sprites) is loaded at runtime, so the `.rbf` carries no copyrighted data.
 
 ## Credits
 
 - **JTFRAME**, **jt51** — the GPLv3 frameworks this core is built on
-- **MAME** — hardware reference (`moo.cpp` driver, `k054539.cpp` sound chip)
+- **MAME** — hardware reference (`moo.cpp` driver, `k054539.cpp` sound chip; `konami/asterix.cpp` driver)
 - **Furrtek** — silicon reverse-engineering of the K054539
 
 ## Acknowledgements
@@ -86,6 +106,26 @@ Objetivo MiSTer.
 
 ## Cores
 
+### Asterix (Konami, 1993)
+Run-and-gun / yo-contra-el-barrio (placa GX068, familia Xexex). Hardware: CPU principal **MC68000** + CPU
+de sonido **Z80** + **YM2151** (FM) + **K053260** (sonido PCM) + customs de vídeo de Konami — **K056832**
+(tilemap), **K053244/K053245** (sprites, con mezcla de sombra), **K053251** (mezclador de prioridad) —
+más el **blitter de paleta** de la placa (un copiador ROM→paleta por bus-master, recreado por HLE; es un
+**boot-gate de sonido**: el 68000 no pasa del POST hasta que el handshake Z80+K053260 se completa).
+
+**Estado: jugable en MiSTer** — arranque, vídeo (tilemap + sprites + sombras), el blitter de paleta y el
+**audio (FM del YM2151 + PCM del K053260, los 4 canales, incluida la moneda)** funcionan en hardware.
+
+A diferencia del K054539 de `moomesa`, el chip PCM **K053260** ya existe como módulo validado en el árbol
+común de jtframe (`jt053260`), así que este core lo reutiliza en vez de escribir uno desde cero; el
+trabajo propio del core es el mapa de memoria del 68000, el blitter de paleta, y adaptar el pipeline de
+vídeo K056832/K053244/K053245 (banco de tiles, rowscroll, reglas de prioridad/sombra de sprites) al
+cableado exacto de esta placa.
+
+Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
+cargan en **runtime** desde el `.mra`; el bitstream no hornea ningún dato del juego. O compila desde
+fuente (`cores/asterix/`). Ver [`BUILD.md`](BUILD.md).
+
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun / yo-contra-el-barrio (los vaqueros de dibujos). Hardware (placa GX151 / familia Xexex):
 CPU principal **MC68000** + CPU de sonido **Z80** + **YM2151** (FM) + **K054539** (sonido PCM) + customs
@@ -109,33 +149,34 @@ dato con copyright**. O compila desde fuente (`cores/moomesa/`). Ver [`BUILD.md`
 
 ## Construir
 
-Este repo contiene **solo el código del core** (`cores/moomesa/`). El framework y los cores de terceros
-(jtframe, jt51) **no se incluyen** — los aporta jtframe. Versión rápida:
+Este repo contiene **solo el código del core** (`cores/<core>/`, p.ej. `cores/asterix/`,
+`cores/moomesa/`). El framework y los cores de terceros (jtframe, jt51) **no se incluyen** — los aporta
+jtframe. Versión rápida:
 
 1. Clona [jtcores](https://github.com/jotego/jtcores) (trae jtframe + módulos).
-2. Copia `cores/moomesa/` de este repo dentro de tu checkout de jtcores.
-3. Compila: `jtcore moomesa -mister -c`.
+2. Copia `cores/<core>/` de este repo dentro de tu checkout de jtcores.
+3. Compila: `jtcore <core> -mister -c` (p.ej. `jtcore asterix -mister -c`).
 
 📋 **Pasos detallados en [`BUILD.md`](BUILD.md).**
 
-Estructura del core:
+Estructura del core (igual para todos los cores de este repo):
 ```
-cores/moomesa/
-├── hdl/   Verilog del core (módulos cowboys_* de vídeo/CPU + motor de sprites k053246/k053247 + chip PCM k054539 + GAMETOP jtmoomesa_game + tablas *.hex)
+cores/<core>/
+├── hdl/   Verilog del core
 ├── cfg/   macros.def, mem.yaml, files.yaml, mame2mra.toml
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
 ## ROMs
 
-**No se incluyen** (material con copyright). Cada cual aporta las ROMs originales de **moomesa** de su
-placa. El `.mra` describe cómo ensamblarlas; cada ROM (programa, sonido, samples PCM, tiles, sprites) se
+**No se incluyen** (material con copyright). Cada cual aporta las ROMs originales de su propia placa para
+cada juego. El `.mra` describe cómo ensamblarlas; cada ROM (programa, sonido, samples PCM, tiles, sprites) se
 carga en runtime, así que el `.rbf` no lleva ningún dato con copyright.
 
 ## Créditos
 
 - **JTFRAME**, **jt51** — los frameworks GPLv3 sobre los que se construye este core
-- **MAME** — referencia de hardware (driver `moo.cpp`, chip de sonido `k054539.cpp`)
+- **MAME** — referencia de hardware (driver `moo.cpp`, chip de sonido `k054539.cpp`; driver `konami/asterix.cpp`)
 - **Furrtek** — ingeniería inversa del silicio del K054539
 
 ## Agradecimientos

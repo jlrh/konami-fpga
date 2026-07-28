@@ -1,0 +1,56 @@
+[global]
+# Saneado de atribucion (FASE-6 §6.3 / CONVENCION-NOMBRES §F7): el default heredado del arbol jtframe
+# es "jotego" -> el core es NUESTRO, no de jotego. Ver konami-fpga (cowboys/moomesa) para el precedente.
+author=["konami-fpga"]
+
+[parse]
+# Asterix vive en konami/asterix.cpp (placa GX068)
+sourcefile=[ "asterix.cpp" ]
+skip = { bootlegs=true }
+# Prefijo de marca "FF" (decision del usuario 2026-07-28, ver
+# metodologia-cores_FPGA/_inbox/convencion-20260728-prefijo-ff-nombres-mra.md).
+# Cambia <name> y el nombre de fichero del .mra en las 5 variantes.
+rename = [
+    { setname="asterix",    name="Asterix (FF ver EAD)" },
+    { setname="asterixaad", name="Asterix (FF ver AAD)" },
+    { setname="asterixeaa", name="Asterix (FF ver EAA)" },
+    { setname="asterixeac", name="Asterix (FF ver EAC)" },
+    { setname="asterixj",   name="Asterix (FF ver JAD)" },
+]
+
+[buttons]
+names = [
+    { machine="asterix", names="Punch,Jump" },   # beat'em-up: 2 botones (KONAMI16_LSB, button3=UNKNOWN)
+]
+
+[header]
+info="Offsets for each ROM region."
+# Activa BALUT (offsets por region en la cabecera) -> memgen NO exige JTFRAME_BA*_START.
+# Un region por banco, en orden: bank0=maincpu, bank1=audiocpu(+pcm), bank2=k056832, bank3=obj.
+offset = { bits=12, reverse=true, regions=["maincpu","audiocpu","k056832","obj"] }
+frames = [ { width=8 }, ]
+
+[ROM]
+regions = [
+    { name="maincpu",  width=16, reverse=true },   # 68000, ROM_LOAD16_BYTE (par/impar en eab)
+    { name="audiocpu" },                            # Z80 (asterix.cpp usa "audiocpu", no "soundcpu")
+    { name="k053260",  rename="pcm" },              # PCM samples (K053260)
+    { name="k056832",  width=32 },                  # tiles, ROM_LOAD32_WORD
+    { name="k053244",  width=32, rename="obj" },    # sprites, ROM_LOAD32_WORD (NO 64 como moomesa)
+    { name="eeprom",   skip=true }                  # nvram default via [nvram] Defaults
+]
+
+order=["maincpu","audiocpu","pcm","k056832","obj"]
+
+# ER5911 EEPROM default de asterix (asterix.nv de MAME): sin el, arranca en error/al reves.
+nvram={ Defaults=[
+    { setname="asterix", data="""\
+    00 28 ff d7 90 68 65 61 63 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 02 04 00 01 01 00 01 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"""},
+]}

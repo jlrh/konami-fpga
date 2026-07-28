@@ -1,0 +1,32 @@
+asterix:
+  - get:
+    - "*.v"
+    # ⛔ ses.25 (2026-07-23): sin este "*.sv" los FORKS del motor de sprites
+    # (jtasterix_053244.sv, jtasterix_053244_scan.sv) NO llegan a SINTESIS: el files.qip generado
+    # listaba solo los 7 .v y ni uno de los .sv => Quartus habria fallado con "module not found"
+    # (o, si algun dia se arrastrasen los de riders, habria construido el motor VIEJO con el flicker
+    # de debug). El sim NO lo ve porque verilator los encuentra por el -y del directorio hdl/.
+    # Es EL MISMO bug que cowboys documento en su files.yaml: el sim probaba una cosa y Quartus
+    # construia otra.
+    - "*.sv"
+# --- Sprites K053244/K053245 (B2, HECHO) ---
+# Asterix lleva el K053244/K053245 EXACTO que implementa el core `riders` (ssriders/tmnt2/lgtnfght):
+# jt053244 (scan+DMA ordenado por pri_code) + jt053244_scan. El módulo de sprites de asterix
+# `jtasterix_obj.v` (en hdl/) DERIVA de jtriders_obj y añade el spritebank (0x380400) del sprite_callback.
+# jt053244 instancia jt053246_dma/jt053246_mmr (viven en simson). jt053244_scan usa jtframe_toggle.
+# jtasterix_053244{,_scan}.sv (en hdl/) son FORKS de los de riders con el flicker de DEBUG del scan
+# desactivado (descartaba el sprite pri_code=0). Por eso NO se arrastran los de riders.
+riders:
+  - get:
+    - common.yaml
+simson:
+  - get:
+    - jt053246_dma.v
+    - jt053246_mmr.v
+jtframe:
+  - get:
+    - jtframe_toggle.v
+# --- PCM: jt053260 (EXISTE en el comun) ---
+# A diferencia de cowboys (que escribio k054539.v propio, sponsor-gated el de Jotego), asterix usa
+# K053260 y el modulo jt053260 esta disponible: lo aporta el canal de audio `module: jt053260`
+# (cfg/mem.yaml). jt51 (FM) idem via `module: jt51`. NO se listan aqui: los inyecta la seccion audio.

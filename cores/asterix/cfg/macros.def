@@ -1,0 +1,83 @@
+CORENAME=ASTERIX
+GAMETOP=jtasterix_game_sdram
+
+JTFRAME_HEADER=16
+# Asterix (beat'em-up): KONAMI16_LSB(1,IPT_UNKNOWN,IPT_START1) -> el slot de button3 es UNKNOWN,
+# solo hay BUTTON1+BUTTON2. (asterix.cpp INPUT_PORTS_START, 2026-07-19: decision de botones CERRADA = 2.)
+JTFRAME_BUTTONS=2
+JTFRAME_JOY_DURL
+
+# --- Video ---
+# Paleta xBGR_555 (asterix.cpp: PALETTE set_format(xBGR_555,2048) + enable_shadows). 5 bits/canal.
+# (cowboys usa 8 porque moomesa lleva K054338/alpha con mezcla de 8b; asterix NO tiene K054338.)
+JTFRAME_COLORW=5
+# Dot clock REAL = 24_MHz_XTAL/4 = 6 MHz (asterix.cpp: screen.set_raw(24M/4, 384, 16, 304, 262, 16, 240)).
+# -> pxl_cen 6M, pxl2_cen 12M. 6M/384/262 = 59.6 Hz. (cowboys=8M porque moomesa es 32M/4.)
+# SIN JTFRAME_PXLCLK -> pxl_cen UNDRIVEN -> el vtimer del K056832 no avanza (GOTCHA C-06 de cowboys).
+JTFRAME_PXLCLK=6
+# Visarea REAL = 288x224 (hvis 16..304, vvis 16..240). Medido pixel-exacto en los golden de Fase 0.
+# ⭐ SESION 23: era 384 ("= HTOTAL, el recorte visible lo hace LHBL") y eso pintaba 96 columnas que la
+# placa real manda a blanking (los frames del full-core salian 384 de ancho). El vtimer ya recorta a
+# 288 (ver jtasterix_k056832.v); WIDTH tiene que casar o test.cpp aborta con "video size mismatch".
+JTFRAME_WIDTH=288
+JTFRAME_HEIGHT=224
+JTFRAME_OSD_TEST
+JTFRAME_STEREO
+
+JTFRAME_CREDITS_HSTART=24
+JTFRAME_DEBUG_VPOS=5
+
+# BUILD DE RELEASE (2026-07-28): se probo en HW real el escalado por debug_bus de
+# jtasterix_sound.v (JTFRAME_DEBUG_SOUND_TUNE) hasta el maximo (nibble=15/15, x1,875 FM+PCM) sin
+# recorte digital en attract+moneda+arranque (42s, tope=0). Ese nivel queda HORNEADO de forma
+# permanente subiendo `audio: gain` en mem.yaml (0.57 -> 1.06875 = 0.57*1.875); ver el comentario
+# de mem.yaml para el detalle y el aviso de margen teorico. Se quita la macro: ya no hace falta
+# debug_bus/teclado para tener este nivel, y JTFRAME_RELEASE (abajo) desactiva las teclas de debug.
+
+JTFRAME_MR_DDRLOAD
+
+# Build de RELEASE para compartir: desactiva las teclas/menu de debug de jtframe (HERRAMIENTAS.md
+# §6d gotcha 1). Sin esto, el teclado USB en la MiSTer puede alterar `debug_bus` sin querer.
+JTFRAME_RELEASE
+
+# default EEPROM (ER5911) para que no arranque en error/al reves. asterix.nv en la .mra (Fase 5).
+JTFRAME_IOCTL_RD=128
+
+[mister]
+JTFRAME_ARX=4
+JTFRAME_ARY=3
+JTFRAME_OSD_NOLOGO
+
+# --- CRT Adjust (piloto) ---
+# NO es una funcionalidad de jtframe: activa el ajuste de geometria CRT de
+# terceros (rmonic79, GNU GPLv3, github.com/rmonic79/MiSTer-CRT-Adjust),
+# vendorizado en modules/jtframe/hdl/video/rmonic79/crt_adjust.sv. Sustituye
+# los controles nativos "CRT H/V offset"/"CRT scale" (rango +-8) por
+# H-Position/V-Shift/H-Size con mucho mas rango. Ver plan de la sesion CRT-ADJUST.
+CRT_ADJUST
+# HTOTAL/VTOTAL reales, ya medidos y validados en Fase 2 video (0.0000% golden):
+# jtasterix_k056832.v:82 HCNT_END=9'h17F->384, VCNT_END=9'h1FF->262.
+CRT_ADJUST_HTOTAL=384
+CRT_ADJUST_VTOTAL=262
+# cuartos de clk_sys por pixel = (clk_sys/pixel)*4 = (48MHz/6MHz)*4 = 32
+# (clk_sys=48MHz: asterix NO define JTFRAME_SDRAM96; pixel=6MHz=JTFRAME_PXLCLK).
+CRT_ADJUST_RDBASE=32
+# HPOS_MODE=SYNCSHIFT (no CONTENTSHIFT, el default del modulo): medido el
+# timing real (jtasterix_k056832.v:72-93) activo 288/384=75%, front porch 9px,
+# back porch 59px -- asimetrico, no centrado. Es el perfil que la doc del
+# autor recomienda para SYNCSHIFT (contenido anclado, back porch ancho a un
+# lado); CONTENTSHIFT es para juegos anchos/centrados.
+CRT_ADJUST_SYNCSHIFT
+# HPOS_SYNCSHIFT/HPOS_CONTENTSHIFT: macros INTERNOS de crt_adjust.sv (no nuestros,
+# no renombrar). El fichero se auto-define estas 2 constantes con un guard
+# `ifndef` propio (lineas 98-101), pero Quartus Prime 17.0 NO lo resuelve de
+# forma fiable dentro del mismo fichero (probado: "text macro HPOS_CONTENTSHIFT
+# is undefined" + error de sintaxis en crt_adjust.sv:107,205,321,352,
+# build asterix_20260727c). Se predefinen aqui, globales, para que el guard
+# interno del fichero los vea ya definidos y no dependa de ese orden. Valores
+# copiados literales del propio fichero (rtl/crt_adjust.sv:99-100).
+HPOS_SYNCSHIFT=0
+HPOS_CONTENTSHIFT=1
+
+[mist|sidi]
+JTFRAME_SKIP
