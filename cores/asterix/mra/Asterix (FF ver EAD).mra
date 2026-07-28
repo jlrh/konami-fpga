@@ -28,7 +28,7 @@
     <year>1992</year>
     <manufacturer>Konami</manufacturer>
     <players>2</players>
-    <rbf>jtasterix</rbf>
+    <rbf>asterix</rbf>
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="asterix.zip" type="merged" md5="None" address="0x30000000">
