@@ -11,6 +11,15 @@ sourcefile=[ "moo.cpp" ]
 # el bootleg (moomesabl) tiene estructura de ROM distinta y sin proteccion -> fuera por ahora
 skip = { bootlegs=true }
 
+# Prefijo de marca "FF" para evitar colision de nombre/fichero .mra con otro core futuro que use
+# el mismo titulo. Cambia <name> y el nombre de fichero del .mra.
+rename = [
+    { setname="moomesa",    name="Wild West C.O.W.-Boys of Moo Mesa (FF, Konami, 1992)" },
+    { setname="moomesaaab", name="Wild West C.O.W.-Boys of Moo Mesa (FF ver AAB)" },
+    { setname="moomesauab", name="Wild West C.O.W.-Boys of Moo Mesa (FF ver UAB)" },
+    { setname="moomesauac", name="Wild West C.O.W.-Boys of Moo Mesa (FF ver UAC)" },
+]
+
 [buttons]
 names = [
     { machine="moomesa", names="Shoot,Jump,Special" },

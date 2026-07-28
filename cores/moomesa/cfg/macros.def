@@ -2,8 +2,13 @@ CORENAME=MOOMESA
 GAMETOP=jtmoomesa_game_sdram
 
 JTFRAME_HEADER=16
+# El 3er boton fisico (B3) es IPT_UNKNOWN en moo.cpp (solo el set hermano "bucky" lo usa). BUTTONS=3
+# se mantiene por ahora como aislamiento probado en placa de un bug de coin con BUTTONS=2 (hay un bug
+# real sin localizar aun en el framework jtframe compartido) -- ver historial del core para el detalle.
 JTFRAME_BUTTONS=3
 JTFRAME_JOY_DURL
+# Sin esto el overlay de debug (jtframe_debug, `ifndef JTFRAME_RELEASE) queda SIEMPRE compilado.
+JTFRAME_RELEASE
 # Video configuration
 # JTFRAME_PXLCLK: genera pxl_cen/pxl2_cen (jtframe_pxlcen). SIN esto pxl_cen queda UNDRIVEN ->
 # el vtimer del K056832 nunca avanza -> ni LVBL/VS ni frames -> el full-core sim gira infinito.
@@ -39,6 +44,31 @@ JTFRAME_IOCTL_RD=128
 JTFRAME_ARX=4
 JTFRAME_ARY=3
 JTFRAME_OSD_NOLOGO
+
+# --- CRT Adjust (piloto en asterix, generalizado a COLORW=8 para moomesa) ---
+# NO es una funcionalidad de jtframe: activa el ajuste de geometria CRT de
+# terceros (rmonic79, GNU GPLv3, github.com/rmonic79/MiSTer-CRT-Adjust),
+# vendorizado en modules/jtframe/hdl/video/rmonic79/crt_adjust.sv. Sustituye
+# los controles nativos "CRT H/V offset"/"CRT scale" (rango +-8) por
+# H-Position/V-Shift/H-Size con mucho mas rango. Probado en placa: menu OSD
+# "Video" -> CRT Adjust Off/On + H-Position/V-Shift/H-Size.
+CRT_ADJUST
+# HTOTAL/VTOTAL = el periodo REAL del vtimer (no VCNT_END+1: el contador
+# envuelve de VCNT_END a V_START, no a 0). Medidos y validados fieles al
+# chip real (053252 CRTC): HTOTAL=512, VTOTAL=264.
+CRT_ADJUST_HTOTAL=512
+CRT_ADJUST_VTOTAL=264
+# cuartos de clk_sys por pixel = (clk_sys/pixel)*4 = (48MHz/8MHz)*4 = 24
+CRT_ADJUST_RDBASE=24
+# HPOS_MODE=SYNCSHIFT: inferido por analogia de perfil de timing con asterix
+# (activo ~75% del total, front porch pequeno vs back porch mayor). Si al
+# mover H-Position aparece un bloque negro en un borde, tocaria CONTENTSHIFT.
+CRT_ADJUST_SYNCSHIFT
+# HPOS_SYNCSHIFT/HPOS_CONTENTSHIFT: macros INTERNOS de crt_adjust.sv (no
+# propios, no renombrar). Predefinidos porque Quartus Prime 17.0 no resuelve
+# fiable su guard `ifndef` interno dentro de un proyecto grande.
+HPOS_SYNCSHIFT=0
+HPOS_CONTENTSHIFT=1
 
 [mist|sidi]
 JTFRAME_SKIP

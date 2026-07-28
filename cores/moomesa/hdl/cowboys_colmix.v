@@ -256,7 +256,7 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
-jtcolmix_053251 u_k251(
+k053251 u_k251(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
@@ -331,7 +331,7 @@ wire [7:0] ci3b = front_b ? 8'd0 : ci3;
 wire [7:0] ci4b = front_c ? 8'd0 : ci4;
 wire [1:0] shd_out_b;
 
-jtcolmix_053251 u_k251_back(
+k053251 u_k251_back(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
