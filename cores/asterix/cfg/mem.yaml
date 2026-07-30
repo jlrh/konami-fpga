@@ -45,12 +45,25 @@ audio:
   # los 2 canales PCM a fondo de escala A LA VEZ en partida — escenario NUNCA estresado en HW). Decision
   # consciente del usuario, no un descuido: si en el futuro se oye recorte en partida densa, el primer
   # sospechoso es ESTE valor, bajarlo hacia 0.57 antes de mirar otra cosa.
+  #
+  # ⚠ pre DEL PCM SUBIDO 0.75->1.5 (2026-07-30): medido con audio real (placa original vs nuestra FPGA,
+  # ver HANDOFF.md "RATIO FM:PCM MEDIDO") que el PCM sonaba a ~0,30 de ratio contra FM en vez del 0,75
+  # configurado -- causa: el calculo interno de volumen*pan de jt053260_channel.v usa un formato de punto
+  # fijo (1.7, >>7) que da ~2x menos ganancia que el de MAME (1.16, >>15) a los MISMOS valores de
+  # registro (verificado con la formula exacta de ambos). NO se toca el modulo compartido (no es
+  # nuestro, lo usan tmnt/simson/riders) -- se compensa aqui, solo para asterix. Con pre=1.5 el ratio
+  # medido debería acercarse a ~0,60, que es justo el valor medido en la placa original.
+  # Recalculado con la formula real de audio.go: al subir pre, el PCM pasa a ser el canal MAS FUERTE
+  # antes de normalizar, asi que la normalizacion (siempre escala al MAXIMO = gain global) BAJA el FM
+  # un poco (~-3.5dB) en vez de solo subir el PCM -- la suma teorica peor-caso resultante es ~1.77,
+  # MENOR que la actual ~1.86 (que ya esta validada en HW sin recorte, pico max 22% FS). No debería
+  # empeorar el riesgo de recorte.
   gain: 1.06875
   rsum: 1k
   rsum_feedback_res: true
   channels:
     - { name: fm,   module: jt51,      rsum: 1k,            rc: [ { r: 4.7k, c: 2.2n } ] }
-    - { name: pcm,  module: jt053260,  rsum: 1k, pre: 0.75, rc: [ { r: 4.7k, c: 2.2n } ] }
+    - { name: pcm,  module: jt053260,  rsum: 1k, pre: 1.5,  rc: [ { r: 4.7k, c: 2.2n } ] }
 
 sdram:
   banks:

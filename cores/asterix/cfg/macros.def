@@ -25,7 +25,10 @@ JTFRAME_OSD_TEST
 JTFRAME_STEREO
 
 JTFRAME_CREDITS_HSTART=24
-JTFRAME_DEBUG_VPOS=5
+# JTFRAME_DEBUG_VPOS=5   # QUITADO 2026-07-30 (build de release): pintaba un overlay de debug en
+# pantalla. JTFRAME_RELEASE (abajo) NO lo desactiva -- eso solo apaga las TECLAS de debug, esta es
+# una macro independiente que hay que quitar a mano. Si hace falta reactivarlo para depurar, poner
+# de nuevo JTFRAME_DEBUG_VPOS=<linea> y volver a comentar antes de publicar.
 
 # BUILD DE RELEASE (2026-07-28): se probo en HW real el escalado por debug_bus de
 # jtasterix_sound.v (JTFRAME_DEBUG_SOUND_TUNE) hasta el maximo (nibble=15/15, x1,875 FM+PCM) sin
