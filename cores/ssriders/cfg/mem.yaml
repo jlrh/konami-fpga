@@ -1,0 +1,79 @@
+params:
+
+  - { name: RAM_OFFSET,   value: "22'h100000" }
+
+  - { name: PCM_OFFSET,   value: "22'h010000>>1" }
+
+clocks:
+  clk48:
+    - freq: 16M
+      outputs:
+        - cen_16
+        - cen_8
+    - freq: 3579545
+      outputs:
+        - cen_fm
+        - cen_fm2
+    - freq: 3579545
+      outputs:
+        - cen_pcm
+      gate: [ pcma, pcmb, pcmc, pcmd ]
+
+audio:
+
+  gain: 0.57
+  rsum: 1k
+  rsum_feedback_res: true
+  channels:
+    - { name: fm,   module: jt51,      rsum: 1k,            rc: [ { r: 4.7k, c: 2.2n } ] }
+    - { name: pcm,  module: jt053260,  rsum: 1k, pre: 0.75, rc: [ { r: 4.7k, c: 2.2n } ] }
+
+sdram:
+  banks:
+
+    - buses:
+        - name: ram
+          addr_width: 14
+
+          data_width: 16
+          offset: RAM_OFFSET
+          rw: true
+        - name: main
+          addr_width: 20
+
+          data_width: 16
+
+    - buses:
+        - name: snd
+          addr_width: 16
+          data_width: 8
+
+        - { name: pcma, addr_width: 20, data_width: 8, offset: PCM_OFFSET }
+        - { name: pcmb, addr_width: 20, data_width: 8, offset: PCM_OFFSET }
+        - { name: pcmc, addr_width: 20, data_width: 8, offset: PCM_OFFSET }
+        - { name: pcmd, addr_width: 20, data_width: 8, offset: PCM_OFFSET }
+
+    - buses:
+        - name: lyrf
+          addr_width: 20
+          data_width: 32
+        - name: lyra
+          addr_width: 20
+          data_width: 32
+        - name: lyrb
+          addr_width: 20
+          data_width: 32
+
+    - buses:
+        - name: obj
+          addr_width: 21
+          data_width: 32
+
+bram:
+
+  - name: nvram
+    addr_width: 7
+    data_width: 8
+    simfile: {}
+    rw: true
+    ioctl: { save: true, restore: true, order: 0 }

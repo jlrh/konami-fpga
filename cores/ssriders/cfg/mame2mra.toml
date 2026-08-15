@@ -1,0 +1,52 @@
+[global]
+
+author=["ssriders"]
+
+[parse]
+
+sourcefile=[ "tmnt2.cpp" ]
+
+skip = { bootlegs=true, machines=[
+    "blswhstl", "glfgreat", "lgtnfght", "prmrsocr", "punkshot", "qgakumon", "thndrx2", "tmnt2",
+]}
+
+rename = [
+    { setname="ssriders",    name="Sunset Riders (FF 4 Players ver EAC)" },
+    { setname="ssridersebd", name="Sunset Riders (FF 2 Players ver EBD)" },
+]
+
+[buttons]
+
+names = [
+    { machine="ssriders", names="Fire,Jump" },
+]
+
+[header]
+info="Offsets for each ROM region."
+
+offset = { bits=12, reverse=true, regions=["maincpu","audiocpu","k052109","obj"] }
+
+[ROM]
+
+regions = [
+    { name="maincpu",  width=16, reverse=true },
+    { name="audiocpu" },
+    { name="k053260",  rename="pcm" },
+    { name="k052109",  width=32 },
+    { name="k053245",  width=32, rename="obj" },
+    { name="eeprom",   skip=true }
+]
+
+order=["maincpu","audiocpu","pcm","k052109","obj"]
+
+nvram={ Defaults=[
+    { setname="ssriders", data="""\
+    00 00 01 01 01 01 ff 00 00 00 00 00 00 00 00 00
+    03 ff 00 03 00 00 00 20 00 00 00 02 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 fa 1a 90 64 45 41 43 00 05 e5"""},
+]}
