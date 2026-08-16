@@ -21,12 +21,12 @@ clocks:
 
 audio:
 
-  gain: 0.57
+  gain: 0.628
   rsum: 1k
   rsum_feedback_res: true
   channels:
     - { name: fm,   module: jt51,      rsum: 1k,            rc: [ { r: 4.7k, c: 2.2n } ] }
-    - { name: pcm,  module: jt053260,  rsum: 1k, pre: 0.75, rc: [ { r: 4.7k, c: 2.2n } ] }
+    - { name: pcm,  module: jt053260,  rsum: 1k, pre: 1.70, rc: [ { r: 4.7k, c: 2.2n } ] }
 
 sdram:
   banks:
