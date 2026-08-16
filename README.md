@@ -59,20 +59,6 @@ the resulting hardware priority back into sprite RAM) and a 128-byte serial **EE
 **audio (YM2151 FM + K053260 PCM)** all run on hardware. Both sets ship as `.mra`: the 4-player **EAC**
 and the 2-player **EBD**.
 
-Both the **`k052109`** tilemap and the **K053244/K053245 sprite chain** (`k053244.sv`,
-`k053244_scan.sv`, `k053244_dma.v`, `k053244_mmr.v`) are **written for this core** against MAME's device
-model rather than adapted from an existing implementation. The tilemap is driven through a single memory
-window here, unlike the K056832 of the other two cores; only its scan-address generator and MMR bank are
-ported from `jt052109`. In the sprite chain the priority-rejection rule is modelled as the *value* MAME
-calls `z_rejection` instead of a per-game flag, the buffer DMA is an explicit three-phase state machine
-whose clear pass is what implements MAME's `sortedlist[] = -1`, and the 256-entry zoom table is
-**generated from its formula** — `min(511, round(2048/n))`, the reciprocal MAME writes as
-`(0x400000 + z/2)/z` — instead of being tabulated. Everything targets the K053244/K053245 only: there is
-no unexercised K053246/K053247 path. The video path is checked scene by scene against a Python golden
-model derived from MAME.
-
-> ⚠️ Known issue: `H-Size` in MiSTer's CRT Adjust menu splits the picture into three bands. Leave it at 0.
-
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
 **runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/ssriders/`).
 See [`BUILD.md`](BUILD.md).
@@ -189,20 +175,6 @@ en serie de 128 bytes para los ajustes.
 **Estado: jugable en MiSTer** — arranque, vídeo (tilemap + sprites + prioridad/sombra), la protección y
 el **audio (FM del YM2151 + PCM del K053260)** funcionan en hardware. Se entregan los dos sets como
 `.mra`: el de 4 jugadores (**EAC**) y el de 2 (**EBD**).
-
-Tanto el tilemap **`k052109`** como la **cadena de sprites K053244/K053245** (`k053244.sv`,
-`k053244_scan.sv`, `k053244_dma.v`, `k053244_mmr.v`) están **escritos para este core** contra el modelo
-de dispositivo de MAME, no adaptados de una implementación existente. El tilemap se maneja aquí por una
-ventana de memoria única, a diferencia del K056832 de los otros dos cores; de `jt052109` solo se porta
-su generador de direcciones de scan y el banco MMR. En la cadena de sprites, la regla de rechazo por
-prioridad se modela como el *valor* que MAME llama `z_rejection` en vez de como una bandera por juego,
-el DMA del buffer es una máquina de estados explícita cuya fase de borrado es lo que implementa el
-`sortedlist[] = -1` de MAME, y la tabla de zoom de 256 entradas se **genera desde su fórmula**
-—`min(511, round(2048/n))`, el recíproco que MAME escribe como `(0x400000 + z/2)/z`— en vez de estar
-tabulada. Todo apunta al K053244/K053245 y solo a él: no hay camino K053246/K053247 sin ejercitar. El
-camino de vídeo se comprueba escena a escena contra un modelo golden en Python derivado de MAME.
-
-> ⚠️ Pega conocida: el `H-Size` del menú CRT Adjust de MiSTer parte la imagen en tres bandas. Déjalo a 0.
 
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
 cargan en **runtime** desde el `.mra`; el bitstream no hornea ningún dato del juego. O compila desde
