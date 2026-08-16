@@ -233,11 +233,31 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 
 | Qué | De dónde | Dónde va |
 |---|---|---|
-| jtframe — framework de compilacion y modulos comunes: jtframe_toggle/edge/counter, video (vtimer, jtframe_obj.yaml, linebuf), cpu (m68k, z80), sdram (dwnld), ram (dual_nvram16) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| jtframe — framework de compilacion y modulos comunes: edge/counter, video (vtimer, jtframe_obj.yaml, linebuf), cpu (m68k, z80), sdram (dwnld), ram (dual_nvram16). ⚠ NO sirve el upstream tal cual: este core depende de parches nuestros al framework, sobre todo `jtframe_romrq_bcache.v` — ver «Parches al framework» mas abajo | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal) — entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
 | simson — jtcolmix_053251.v -- el K053251 (mezclador de prioridad). La cadena de sprites YA NO viene de aqui: se reescribio en hdl/ en la sesion 94 | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/simson` |
 | jt51 — YM2151 (sonido) | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
-| jt053260 — K053260 (PCM) | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |
+| jt053260 — K053260 (PCM). ⚠ Con el upstream tal cual la voz sale distorsionada: hacen falta los 2 fixes de decode ADPCM — ver «Parches al framework» mas abajo | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |
 | jteeprom — jt5911.sv -- EEPROM en serie de ajustes | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
-
-> Bloque generado por `omf_release`. Edítalo en la receta del core, no aquí.
 <!-- /omf_release:dependencias:ssriders -->
+### Parches al framework
+
+Con las dependencias de arriba **tal cual vienen de su origen, este core no funciona**. Se apoya en
+correcciones que hicimos sobre código de terceros y que no están (todavía) aguas arriba. Se dice aquí
+porque no hay forma de deducirlo del código que sí se publica:
+
+| Fichero | Qué pasa sin el parche |
+|---|---|
+| `modules/jtframe/hdl/sdram/jtframe_romrq_bcache.v` | La caché de 2 vías entrega datos partidos entre dos direcciones. La CPU nunca llega a ejecutar código real: el core no arranca. Es el parche grande (~137 líneas, en dos tandas). |
+| `modules/jt053260/hdl/jt053260_channel.v` | El decodificador ADPCM arranca un byte antes de lo debido y toma los nibbles al revés. Las voces salen distorsionadas. |
+| `modules/jtframe/hdl/video/jtframe_draw.v`, `.../ram/jtframe_obj_buffer.v`, `.../sdram/jtframe_ram_rq.v` | Ajustes menores del camino de sprites y de la petición de ROM. |
+
+En total, **15 ficheros de `modules/jtframe` y 1 de `modules/jt053260`** de nuestro árbol difieren de
+su origen. El resto de diferencias son sondas de simulación (`ifdef SIMULATION`) y no afectan a lo que
+se sintetiza.
+
+Aparte, el ajuste de geometría CRT (`modules/jtframe/hdl/video/rmonic79/crt_adjust.sv`) es obra de
+**rmonic79**, integrada en `jtframe_mister.sv`; tampoco viene en el jtframe de origen.
+
+Lo que **sí** viaja con este repositorio es la compensación de nivel del PCM: no toca el módulo
+compartido, vive en nuestro `cores/ssriders/cfg/mem.yaml` (`pre` del canal PCM).
