@@ -35,6 +35,16 @@ module ssriders_sound(
     output       [ 7:0]      st_dout
 );
 `ifndef NOSOUND
+
+wire signed [15:0] fm_raw_l, fm_raw_r, pcm_raw_l, pcm_raw_r;
+wire        mute_fm  = debug_bus[5];
+wire        mute_pcm = debug_bus[4];
+
+assign fm_l  = mute_fm  ? 16'sd0 : fm_raw_l;
+assign fm_r  = mute_fm  ? 16'sd0 : fm_raw_r;
+assign pcm_l = mute_pcm ? 16'sd0 : pcm_raw_l;
+assign pcm_r = mute_pcm ? 16'sd0 : pcm_raw_r;
+
 wire [ 7:0] cpu_dout, cpu_din, ram_dout, fm_dout, k60_dout;
 wire [15:0] A;
 wire        m1_n, mreq_n, rd_n, wr_n, iorq_n, rfsh_n, nmi_n, int_n,
@@ -137,8 +147,8 @@ jt51 u_jt51(
     .sample     (           ),
     .left       (           ),
     .right      (           ),
-    .xleft      ( fm_l      ),
-    .xright     ( fm_r      )
+    .xleft      ( fm_raw_l  ),
+    .xright     ( fm_raw_r  )
 );
 
 jt053260 u_k053260(
@@ -166,14 +176,14 @@ jt053260 u_k053260(
 
     .aux_l      ( 16'd0     ),
     .aux_r      ( 16'd0     ),
-    .snd_l      ( pcm_l     ),
-    .snd_r      ( pcm_r     ),
+    .snd_l      ( pcm_raw_l ),
+    .snd_r      ( pcm_raw_r ),
     .sample     ( k60_sample),
     .tim2       ( tim2      ),
     .ch_en      ( snd_en[5:1])
 );
 
-wire _unused = &{1'b0, m1_n, iorq_n, cpu_cen, tim2, debug_bus,
+wire _unused = &{1'b0, m1_n, iorq_n, cpu_cen, tim2, debug_bus[7:6], debug_bus[3:0],
                  pcma_ok, pcmb_ok, pcmc_ok, pcmd_ok, main_addr[1], 1'b0};
 
 `ifdef SIMULATION

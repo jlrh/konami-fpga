@@ -60,7 +60,9 @@ reg  [ 3:0] zbin  [0:15 ];
 
 wire [ 1:0] hsz = size[1:0];
 wire [ 1:0] vsz = size[3:2];
-wire        vmir = mirror[1], hmir = mirror[0];
+wire        hmir = mirror[0];
+
+wire [ 1:0] nx_mir = scan_even[9:8];
 wire [ 9:0] hflip_off = ghf ? HFLIP_OFFSET[9:0] : 10'd0;
 wire        last_obj  = &scan_obj;
 
@@ -109,10 +111,10 @@ always @* begin
     srow  = rowmul[6+:10];
 
     case( vsz )
-        2'd0: vmir_eff = vmir && !srow[3] && srow[9:4]==0;
-        2'd1: vmir_eff = vmir && !srow[4] && srow[9:5]==0;
-        2'd2: vmir_eff = vmir && !srow[5] && srow[9:6]==0;
-        2'd3: vmir_eff = vmir && !srow[6] && srow[9:7]==0;
+        2'd0: vmir_eff = nx_mir[1] && !srow[3] && srow[9:4]==0;
+        2'd1: vmir_eff = nx_mir[1] && !srow[4] && srow[9:5]==0;
+        2'd2: vmir_eff = nx_mir[1] && !srow[5] && srow[9:6]==0;
+        2'd3: vmir_eff = nx_mir[1] && !srow[6] && srow[9:7]==0;
     endcase
     hmir_eff = hmir & hhalf;
 

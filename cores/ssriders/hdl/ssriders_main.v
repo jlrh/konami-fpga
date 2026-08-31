@@ -406,7 +406,7 @@ always @(*) begin
     if( p4_cs       ) port_in = { 8'hff, konami_player(joystick4, cab_1p[3]) };
     if( coins_cs    ) port_in = { 8'hff, service[3:0], coin[3:0] };
 
-    if( eepromr_cs  ) port_in = { 8'hff, service[0], 2'b00, 1'b0, ~LVBL, 1'b0, eep_rdy, eep_do };
+    if( eepromr_cs  ) port_in = { 8'hff, dip_test, 2'b00, 1'b0, ~LVBL, 1'b0, eep_rdy, eep_do };
     if( sndmain_cs  ) port_in = { 8'hff, snd2main };
 end
 
