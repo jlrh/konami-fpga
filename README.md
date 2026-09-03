@@ -27,6 +27,41 @@ A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game
 **runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/asterix/`).
 See [`BUILD.md`](BUILD.md).
 
+### Martial Champion (Konami, 1993)
+One-on-one fighting game (GX234 board, `mystwarr.cpp` family — the same MAME driver as Mystic
+Warriors). Hardware: **MC68000** main CPU @ 16 MHz + **Z80** sound CPU + **K054539** (PCM sound) +
+Konami video customs — **K056832** (tilemap, 5 bpp), **K055673** (sprites, `LAYOUT_GX`), **K055555**
+(priority mixer), **K054338** (color / alpha blend), **K053252** (CRTC) — plus the board's
+**K053990** and a 128-byte serial **EEPROM** for settings.
+
+> ℹ️ Two things that set this board apart from the rest of the family. **It has no FM chip at all**:
+> all of its audio is the single K054539, where its siblings pair a YM2151 with the PCM. And the
+> **K053990 is not an encryption or challenge/response protection** — it is a memory-to-memory
+> **blitter that masters the 68000 bus**, so the hard part is arbitrating work RAM and sprite RAM
+> with the CPU, not the arithmetic.
+
+Video is **384×224 at an 8 MHz pixel clock** (HTOTAL 512 / VTOTAL 264) — wider and faster than the
+288×224 @ 6 MHz of its sibling Mystic Warriors.
+
+**Status: runs and is playable on MiSTer** — boot, video (tilemap + sprites + alpha + priority), the
+K053990 blitter and the board's own sound self-test all run on hardware. **One known open issue**:
+with many sprites on screen a character can lose parts of its body for a frame, because the sprite
+ROM fetch does not keep up with the line. This build improves it a great deal but does not close it.
+The one-pixel horizontal framing error of the previous release **is** fixed.
+
+The **K054539** PCM chip is the same from-scratch module as `moomesa`'s — there is no `jt539` in
+jtframe, it is a private module — validated **bit-exact** against a MAME-derived C++ model, plus the
+programmable NMI timer this board's Z80 needs.
+
+A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
+**runtime** from the `.mra`; the bitstream bakes only the K054539's **generated** Q16 volume/pan
+tables (`voltab.hex` / `pantab.hex`, math, not game data) and a zero-init table — **no copyrighted
+data**.
+
+> ⚠️ Unlike the other cores here, **only the `.rbf` and the `.mra` are published** for Martial
+> Champion: `cores/mtlchamp/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot be
+> built from this repo**.
+
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun beat-'em-up (the cartoon cowboys). Hardware (GX151 / Xexex-family board): **MC68000** main
 CPU + **Z80** sound CPU + **YM2151** (FM) + **K054539** (PCM sound) + Konami video customs — **K056832**
@@ -76,13 +111,17 @@ version:
 
 📋 **Step-by-step in [`BUILD.md`](BUILD.md).**
 
-Core layout (same for every core in this repo):
+Core layout:
 ```
 cores/<core>/
 ├── hdl/   Core Verilog
 ├── cfg/   macros.def, mem.yaml, files.yaml, mame2mra.toml
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
+
+> ⚠️ **`mtlchamp` is the exception**: only its `.rbf` and `.mra` are published, so
+> `cores/mtlchamp/` holds `mra/` alone — no `hdl/`, no `cfg/` — and it cannot be built from this
+> repo. Everything above applies to `asterix`, `moomesa` and `ssriders`.
 
 ## ROMs
 
@@ -143,6 +182,42 @@ Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: tod
 cargan en **runtime** desde el `.mra`; el bitstream no hornea ningún dato del juego. O compila desde
 fuente (`cores/asterix/`). Ver [`BUILD.md`](BUILD.md).
 
+### Martial Champion (Konami, 1993)
+Juego de lucha uno contra uno (placa GX234, familia `mystwarr.cpp` — el mismo driver de MAME que
+Mystic Warriors). Hardware: CPU principal **MC68000** @ 16 MHz + CPU de sonido **Z80** + **K054539**
+(sonido PCM) + customs de vídeo de Konami — **K056832** (tilemap, 5 bpp), **K055673** (sprites,
+`LAYOUT_GX`), **K055555** (mezclador de prioridad), **K054338** (color / mezcla alpha), **K053252**
+(CRTC) — más el **K053990** de la placa y una **EEPROM** en serie de 128 bytes para los ajustes.
+
+> ℹ️ Dos cosas separan a esta placa del resto de la familia. **No lleva chip de FM**: todo su audio
+> es el único K054539, mientras que sus hermanas acompañan el PCM con un YM2151. Y el **K053990 no
+> es un cifrado ni una protección de desafío/respuesta** — es un **blitter memoria a memoria que
+> hace de MAESTRO DEL BUS** del 68000, así que la dificultad está en arbitrar con la CPU el acceso
+> a la work RAM y a la sprite RAM, no en la aritmética.
+
+El vídeo es **384×224 con reloj de píxel de 8 MHz** (HTOTAL 512 / VTOTAL 264): más ancho y más
+rápido que los 288×224 @ 6 MHz de su hermana Mystic Warriors.
+
+**Estado: arranca y es jugable en MiSTer** — el arranque, el vídeo (tilemap + sprites + alpha +
+prioridad), el blitter K053990 y el autotest de sonido de la propia placa funcionan en hardware.
+**Queda un defecto conocido**: con muchos sprites en pantalla un personaje puede perder partes del
+cuerpo durante un cuadro, porque el fetch de la ROM de sprites no llega a tiempo dentro de la línea.
+Esta versión lo mejora mucho pero no lo cierra. El descuadre horizontal de un píxel de la versión
+anterior **sí** está arreglado.
+
+El chip PCM **K054539** es el mismo módulo escrito desde cero que el de `moomesa` — no existe
+`jt539` en jtframe, es un módulo privado — validado **bit-exacto** contra un modelo C++ derivado de
+MAME, más el temporizador NMI programable que necesita el Z80 de esta placa.
+
+Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego
+se cargan en **runtime** desde el `.mra`; el bitstream solo hornea las tablas Q16 de volumen/pan del
+K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una tabla de ceros —
+**ningún dato con copyright**.
+
+> ⚠️ A diferencia de los otros cores de este repo, de Martial Champion **solo se publican el `.rbf`
+> y el `.mra`**: `cores/mtlchamp/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core **no
+> se puede compilar desde este repo**.
+
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun / yo-contra-el-barrio (los vaqueros de dibujos). Hardware (placa GX151 / familia Xexex):
 CPU principal **MC68000** + CPU de sonido **Z80** + **YM2151** (FM) + **K054539** (sonido PCM) + customs
@@ -192,13 +267,17 @@ jtframe. Versión rápida:
 
 📋 **Pasos detallados en [`BUILD.md`](BUILD.md).**
 
-Estructura del core (igual para todos los cores de este repo):
+Estructura del core:
 ```
 cores/<core>/
 ├── hdl/   Verilog del core
 ├── cfg/   macros.def, mem.yaml, files.yaml, mame2mra.toml
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
+
+> ⚠️ **`mtlchamp` es la excepción**: de él solo se publican el `.rbf` y el `.mra`, así que
+> `cores/mtlchamp/` contiene únicamente `mra/` — sin `hdl/` ni `cfg/` — y no se puede compilar
+> desde este repo. Todo lo de arriba vale para `asterix`, `moomesa` y `ssriders`.
 
 ## ROMs
 
