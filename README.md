@@ -62,6 +62,41 @@ data**.
 > Champion: `cores/mtlchamp/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot be
 > built from this repo**.
 
+### Mystic Warriors: Wrath of the Ninjas (Konami, 1993)
+Four-player ninja run-and-gun (GX128 board, `mystwarr.cpp` family — the same MAME driver as Martial
+Champion, and the game the driver is named after). Hardware: **MC68000** main CPU @ 16 MHz + **Z80**
+sound CPU @ 8 MHz + **two K054539** PCM chips + **K054321** (sound latch) + the Konami video customs
+— **K056832** (tilemap, 5 bpp), **K055673** (sprites, `LAYOUT_GX`), **K055555** (priority mixer),
+**K054338** (colour / shadow / alpha), **K053252** (CRTC) — and a serial **EEPROM** for settings.
+
+> ℹ️ Like Martial Champion, this board carries **no FM chip**: all of its audio is PCM, here from
+> **two** K054539s. Video is **288×224 at a 6 MHz pixel clock**, the narrower and slower half of the
+> pair.
+
+**Status: runs and is playable on MiSTer** — boot and self-test, video (tilemaps + sprites + zoom +
+sprite shadow/highlight + priority), both PCM chips, 2-button controls and the board's Service Mode
+all run on hardware. This release also closes the **speed** deficit that made the game run at 1.4×:
+the 68000 was executing at 11.32 of its 16 MHz because the work RAM lived in SDRAM (it is static RAM
+on the real board) and the program ROM was served one word per transaction; both are fixed, and it
+now runs at **15.47 MHz, 96.7 % of nominal**.
+
+**Two known open issues.** The `MASK ROM CHECK` of the board's own self-test reports **BAD on all
+eleven mask ROMs** — the ROM read-back port of the three video customs is not implemented; that path
+is used only by the self-test, never while playing. And on the **stage-3 boss** the two searchlight
+beams show a dark band across them that the original PCB does not show.
+
+The **K054539** PCM chip is a private module written from scratch (there is no `jt539` in jtframe),
+shared with `moomesa` and `mtlchamp`, here instantiated twice.
+
+A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
+**runtime** from the `.mra`; the bitstream bakes only the K054539's **generated** Q16 volume/pan
+tables (`voltab.hex` / `pantab.hex`, math, not game data) and a zero-init table — **no copyrighted
+data**.
+
+> ⚠️ As with Martial Champion, **only the `.rbf` and the `.mra` are published** for Mystic Warriors:
+> `cores/mystwarr/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot be built from
+> this repo**.
+
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun beat-'em-up (the cartoon cowboys). Hardware (GX151 / Xexex-family board): **MC68000** main
 CPU + **Z80** sound CPU + **YM2151** (FM) + **K054539** (PCM sound) + Konami video customs — **K056832**
@@ -119,9 +154,9 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`mtlchamp` is the exception**: only its `.rbf` and `.mra` are published, so
-> `cores/mtlchamp/` holds `mra/` alone — no `hdl/`, no `cfg/` — and it cannot be built from this
-> repo. Everything above applies to `asterix`, `moomesa` and `ssriders`.
+> ⚠️ **`mtlchamp` and `mystwarr` are the exceptions**: only their `.rbf` and `.mra` are published,
+> so `cores/mtlchamp/` and `cores/mystwarr/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they
+> cannot be built from this repo. Everything above applies to `asterix`, `moomesa` and `ssriders`.
 
 ## ROMs
 
@@ -218,6 +253,42 @@ K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una ta
 > y el `.mra`**: `cores/mtlchamp/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core **no
 > se puede compilar desde este repo**.
 
+### Mystic Warriors: Wrath of the Ninjas (Konami, 1993)
+Run-and-gun de ninjas para cuatro jugadores (placa GX128, familia `mystwarr.cpp` — el mismo driver de
+MAME que Martial Champion, y el juego que le da nombre). Hardware: CPU principal **MC68000** @ 16 MHz
++ CPU de sonido **Z80** @ 8 MHz + **dos K054539** de PCM + **K054321** (latch de sonido) + los customs
+de vídeo de Konami — **K056832** (tilemap, 5 bpp), **K055673** (sprites, `LAYOUT_GX`), **K055555**
+(mezclador de prioridad), **K054338** (color / sombra / alpha), **K053252** (CRTC) — y una **EEPROM**
+en serie para los ajustes.
+
+> ℹ️ Igual que Martial Champion, esta placa **no lleva chip de FM**: todo su audio es PCM, aquí de
+> **dos** K054539. El vídeo es de **288×224 con reloj de píxel de 6 MHz**, la mitad más estrecha y más
+> lenta de la pareja.
+
+**Estado: arranca y es jugable en MiSTer** — el arranque y el autotest, el vídeo (tilemaps + sprites +
+zoom + sombra/realce de sprite + prioridad), los dos chips de PCM, los 2 botones y el Modo Servicio de
+la propia placa funcionan en hardware. Esta versión cierra además el déficit de **velocidad** que hacía
+que el juego fuese 1,4× más lento: el 68000 ejecutaba a 11,32 de sus 16 MHz porque la work RAM vivía en
+la SDRAM (en la placa real es RAM estática) y la ROM de programa servía una palabra por transacción;
+las dos cosas están arregladas y ahora va a **15,47 MHz, el 96,7 % de lo nominal**.
+
+**Quedan dos defectos conocidos.** El `MASK ROM CHECK` del autotest de la placa da **BAD en las once
+mask ROM**: el puerto de relectura de ROM de los tres customs de vídeo no está implementado, un camino
+que sólo usa el autotest y nunca el juego. Y en el **jefe de la fase 3**, los dos haces de los focos
+salen cortados por una franja oscura que la PCB original no tiene.
+
+El chip PCM **K054539** es un módulo privado escrito desde cero (no existe `jt539` en jtframe),
+compartido con `moomesa` y `mtlchamp`, aquí instanciado dos veces.
+
+Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
+cargan en **runtime** desde el `.mra`; el bitstream solo hornea las tablas Q16 de volumen/pan del
+K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una tabla de ceros —
+**ningún dato con copyright**.
+
+> ⚠️ Igual que con Martial Champion, de Mystic Warriors **solo se publican el `.rbf` y el `.mra`**:
+> `cores/mystwarr/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core **no se puede compilar
+> desde este repo**.
+
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun / yo-contra-el-barrio (los vaqueros de dibujos). Hardware (placa GX151 / familia Xexex):
 CPU principal **MC68000** + CPU de sonido **Z80** + **YM2151** (FM) + **K054539** (sonido PCM) + customs
@@ -275,9 +346,10 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`mtlchamp` es la excepción**: de él solo se publican el `.rbf` y el `.mra`, así que
-> `cores/mtlchamp/` contiene únicamente `mra/` — sin `hdl/` ni `cfg/` — y no se puede compilar
-> desde este repo. Todo lo de arriba vale para `asterix`, `moomesa` y `ssriders`.
+> ⚠️ **`mtlchamp` y `mystwarr` son las excepciones**: de ellos solo se publican el `.rbf` y el
+> `.mra`, así que `cores/mtlchamp/` y `cores/mystwarr/` contienen únicamente `mra/` — sin `hdl/`
+> ni `cfg/` — y no se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`,
+> `moomesa` y `ssriders`.
 
 ## ROMs
 
