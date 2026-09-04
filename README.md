@@ -133,6 +133,38 @@ A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game
 **runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/ssriders/`).
 See [`BUILD.md`](BUILD.md).
 
+### Detana!! Twin Bee (Konami, 1991)
+Vertical cute-'em-up (GX060 board, `tmnt2.cpp` family — the same MAME driver as Sunset Riders).
+Hardware: **MC68000** main CPU + **Z80** sound CPU + **YM2151** (FM) + **K053260** (PCM sound) +
+Konami video customs — **K052109** (tilemap), **K053244/K053245** (sprites) — **K053251** (priority
+mixer) — plus the board's **K054000** (hardware collision detection) and a 128-byte serial **EEPROM**
+for settings.
+
+> ℹ️ Unlike every other `tmnt2.cpp`-family board in this repo, **this one has no physical DIP switches
+> at all** — confirmed against the MAME driver source, `INPUT_PORTS_START(blswhstl)` declares none.
+> Coinage, difficulty and flip-screen live entirely in the EEPROM, set from the game's own internal
+> Test/Service menu.
+
+**Status: playable on MiSTer** — boot, video (tilemap + sprites + priority) and the K054000 collision
+chip all run on hardware; the color path was pixel-matched against MAME at **0.0000 %** across seven
+non-trivial, non-blank frames of the attract mode (spanning close to 3 minutes, up to 97.5 % of the
+screen painted). Audio (YM2151 FM + K053260 PCM, with the board's cross-wired stereo channels) sounds
+right on a full playthrough, though it has no pixel/bit-level measurement yet — that is next.
+
+**Two known open issues.** The board's own internal Test/Service menu is reachable by holding the
+**Test** key (F2 by default), but the OSD's own **Service Mode** checkbox does not reach it yet — it
+only shows the automatic EEPROM/POST check screen. And sprite shadow blending, while wired the same way
+as its siblings, is never exercised by this game (measured **zero** uses across 10,200 frames) and so
+stays unvalidated.
+
+Only the **detatwin** (Japan) `.mra` is published here — it is the only set verified on hardware. The
+World (`blswhstl`) and Asia (`blswhstla`) sets share the same ROMs and board but have not been run on
+hardware yet.
+
+> ⚠️ As with Martial Champion and Mystic Warriors, **only the `.rbf` and the `.mra` are published** for
+> Detana!! Twin Bee: `cores/blswhstl/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot
+> be built from this repo**.
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -154,9 +186,10 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`mtlchamp` and `mystwarr` are the exceptions**: only their `.rbf` and `.mra` are published,
-> so `cores/mtlchamp/` and `cores/mystwarr/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they
-> cannot be built from this repo. Everything above applies to `asterix`, `moomesa` and `ssriders`.
+> ⚠️ **`mtlchamp`, `mystwarr` and `blswhstl` are the exceptions**: only their `.rbf` and `.mra` are
+> published, so `cores/mtlchamp/`, `cores/mystwarr/` and `cores/blswhstl/` hold `mra/` alone — no
+> `hdl/`, no `cfg/` — and they cannot be built from this repo. Everything above applies to `asterix`,
+> `moomesa` and `ssriders`.
 
 ## ROMs
 
@@ -168,7 +201,8 @@ sprites) is loaded at runtime, so the `.rbf` carries no copyrighted data.
 
 - **JTFRAME**, **jt51** — the GPLv3 frameworks this core is built on
 - **MAME** — hardware reference (`moo.cpp` driver, `k054539.cpp` sound chip; `konami/asterix.cpp` and
-  `konami/tmnt2.cpp` drivers, `k052109.cpp` / `k053244_k053245.cpp` / `k053251.cpp` video chips)
+  `konami/tmnt2.cpp` drivers, `k052109.cpp` / `k053244_k053245.cpp` / `k053251.cpp` / `k054000.cpp`
+  video/collision chips)
 - **Furrtek** — silicon reverse-engineering of the K054539
 
 ## Acknowledgements
@@ -326,6 +360,39 @@ Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: tod
 cargan en **runtime** desde el `.mra`; el bitstream no hornea ningún dato del juego. O compila desde
 fuente (`cores/ssriders/`). Ver [`BUILD.md`](BUILD.md).
 
+### Detana!! Twin Bee (Konami, 1991)
+Shoot-'em-up vertical "cute" (placa GX060, familia `tmnt2.cpp` — el mismo driver de MAME que Sunset
+Riders). Hardware: CPU principal **MC68000** + CPU de sonido **Z80** + **YM2151** (FM) + **K053260**
+(sonido PCM) + customs de vídeo de Konami — **K052109** (tilemap), **K053244/K053245** (sprites) —
+**K053251** (mezclador de prioridad) — más el **K054000** de la placa (detección de colisión por
+hardware) y una **EEPROM** en serie de 128 bytes para los ajustes.
+
+> ℹ️ A diferencia del resto de placas de la familia `tmnt2.cpp` de este repo, **ésta no lleva ni un
+> solo dip switch físico** — confirmado contra el fuente del driver de MAME,
+> `INPUT_PORTS_START(blswhstl)` no declara ninguno. Coinage, dificultad y flip de pantalla viven
+> enteros en la EEPROM, y se ajustan desde el propio menú interno de Test/Service del juego.
+
+**Estado: jugable en MiSTer** — el arranque, el vídeo (tilemap + sprites + prioridad) y el chip de
+colisión K054000 funcionan en hardware; el camino de color se comparó píxel a píxel contra MAME dando
+**0,0000 %** en siete cuadros no triviales y no vacíos del atractivo (repartidos en casi 3 minutos,
+hasta el 97,5 % de la pantalla pintada). El audio (FM del YM2151 + PCM del K053260, con los canales de
+estéreo cruzados de la placa) suena bien en una partida completa, aunque todavía no tiene ninguna
+medida a nivel de píxel/bit — es el siguiente paso.
+
+**Quedan dos defectos conocidos.** El menú interno de Test/Service de la propia placa se alcanza
+manteniendo pulsada la tecla **Test** (F2 por defecto), pero el checkbox **Service Mode** del propio
+OSD todavía no llega a él — solo muestra la pantalla automática de chequeo de EEPROM/POST. Y la mezcla
+de sombra de sprites, aunque está cableada igual que en sus hermanos, este juego nunca la ejercita
+(medido: **cero** usos en 10.200 cuadros con un bot), así que queda sin validar.
+
+Se publica solo el `.mra` del set **detatwin** (Japón) — es el único verificado en placa. Los sets
+World (`blswhstl`) y Asia (`blswhstla`) comparten las mismas ROMs y placa pero todavía no se han
+probado en hardware.
+
+> ⚠️ Igual que con Martial Champion y Mystic Warriors, de Detana!! Twin Bee **solo se publican el
+> `.rbf` y el `.mra`**: `cores/blswhstl/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core
+> **no se puede compilar desde este repo**.
+
 ## Construir
 
 Este repo contiene **solo el código del core** (`cores/<core>/`, p.ej. `cores/asterix/`,
@@ -346,10 +413,10 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`mtlchamp` y `mystwarr` son las excepciones**: de ellos solo se publican el `.rbf` y el
-> `.mra`, así que `cores/mtlchamp/` y `cores/mystwarr/` contienen únicamente `mra/` — sin `hdl/`
-> ni `cfg/` — y no se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`,
-> `moomesa` y `ssriders`.
+> ⚠️ **`mtlchamp`, `mystwarr` y `blswhstl` son las excepciones**: de ellos solo se publican el
+> `.rbf` y el `.mra`, así que `cores/mtlchamp/`, `cores/mystwarr/` y `cores/blswhstl/` contienen
+> únicamente `mra/` — sin `hdl/` ni `cfg/` — y no se pueden compilar desde este repo. Todo lo de
+> arriba vale para `asterix`, `moomesa` y `ssriders`.
 
 ## ROMs
 
@@ -361,7 +428,8 @@ carga en runtime, así que el `.rbf` no lleva ningún dato con copyright.
 
 - **JTFRAME**, **jt51** — los frameworks GPLv3 sobre los que se construye este core
 - **MAME** — referencia de hardware (driver `moo.cpp`, chip de sonido `k054539.cpp`; drivers
-  `konami/asterix.cpp` y `konami/tmnt2.cpp`, chips de vídeo `k052109.cpp` / `k053244_k053245.cpp` / `k053251.cpp`)
+  `konami/asterix.cpp` y `konami/tmnt2.cpp`, chips de vídeo/colisión `k052109.cpp` /
+  `k053244_k053245.cpp` / `k053251.cpp` / `k054000.cpp`)
 - **Furrtek** — ingeniería inversa del silicio del K054539
 
 ## Agradecimientos
