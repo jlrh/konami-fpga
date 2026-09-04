@@ -151,11 +151,15 @@ non-trivial, non-blank frames of the attract mode (spanning close to 3 minutes, 
 screen painted). Audio (YM2151 FM + K053260 PCM, with the board's cross-wired stereo channels) sounds
 right on a full playthrough, though it has no pixel/bit-level measurement yet — that is next.
 
-**Two known open issues.** The board's own internal Test/Service menu is reachable by holding the
-**Test** key (F2 by default), but the OSD's own **Service Mode** checkbox does not reach it yet — it
-only shows the automatic EEPROM/POST check screen. And sprite shadow blending, while wired the same way
-as its siblings, is never exercised by this game (measured **zero** uses across 10,200 frames) and so
-stays unvalidated.
+The board's own internal Test/Service menu is edge-triggered on the **Test** line going back
+*inactive*, exactly like flipping a real cabinet switch off — holding **F2** and releasing it works,
+and so does the OSD's own **Service Mode** checkbox, but only by toggling it **On then Off**: On alone
+does nothing (that is the switch closing), Off is the release that the game's software is watching for.
+Holding it On through a reset never produces that release, which is why it looks stuck on the automatic
+EEPROM/POST check screen if you leave it there.
+
+**One known open issue**: sprite shadow blending, while wired the same way as its siblings, is never
+exercised by this game (measured **zero** uses across 10,200 frames) and so stays unvalidated.
 
 Only the **detatwin** (Japan) `.mra` is published here — it is the only set verified on hardware. The
 World (`blswhstl`) and Asia (`blswhstla`) sets share the same ROMs and board but have not been run on
@@ -379,11 +383,16 @@ hasta el 97,5 % de la pantalla pintada). El audio (FM del YM2151 + PCM del K0532
 estéreo cruzados de la placa) suena bien en una partida completa, aunque todavía no tiene ninguna
 medida a nivel de píxel/bit — es el siguiente paso.
 
-**Quedan dos defectos conocidos.** El menú interno de Test/Service de la propia placa se alcanza
-manteniendo pulsada la tecla **Test** (F2 por defecto), pero el checkbox **Service Mode** del propio
-OSD todavía no llega a él — solo muestra la pantalla automática de chequeo de EEPROM/POST. Y la mezcla
-de sombra de sprites, aunque está cableada igual que en sus hermanos, este juego nunca la ejercita
-(medido: **cero** usos en 10.200 cuadros con un bot), así que queda sin validar.
+El menú interno de Test/Service de la propia placa se dispara por **flanco**, cuando la línea de Test
+vuelve a quedar *inactiva* — igual que soltar un interruptor real de cabina. Sostener **F2** y soltarlo
+funciona, y el checkbox **Service Mode** del OSD también, pero solo alternándolo **On y luego Off**:
+On solo no hace nada (es cerrar el interruptor), Off es el soltar que el software del juego está
+esperando. Sostenerlo en On durante un reset nunca produce ese soltar, por eso parece quedarse
+enganchado en la pantalla automática de chequeo de EEPROM/POST si lo dejas ahí.
+
+**Queda un defecto conocido**: la mezcla de sombra de sprites, aunque está cableada igual que en sus
+hermanos, este juego nunca la ejercita (medido: **cero** usos en 10.200 cuadros con un bot), así que
+queda sin validar.
 
 Se publica solo el `.mra` del set **detatwin** (Japón) — es el único verificado en placa. Los sets
 World (`blswhstl`) y Asia (`blswhstla`) comparten las mismas ROMs y placa pero todavía no se han
