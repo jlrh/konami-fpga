@@ -16,13 +16,14 @@
     Version: 1.0
     Date: 27-9-2024 */
 
-    module jtasterix_053244_scan (
+    module jtasterix_053244_scan (    // sprite logic
     input             rst,
     input             clk,
 
+    // ROM addressing 22 bits in total
     output reg [15:0] code,
-
-    output reg [ 6:0] attr,
+    // There are 22 bits communicating both chips on the PCB
+    output reg [ 6:0] attr,     // OC pins
     output            hflip,
     output reg        vflip,
     output reg [ 9:0] hpos,
@@ -30,9 +31,11 @@
     output reg [11:0] hzoom,
     output reg        hz_keep,
 
-    input      [ 8:0] hdump,
-    input      [ 8:0] vdump,
-
+    // base video
+    input      [ 8:0] hdump,    // Not inputs in the original, but
+    input      [ 8:0] vdump,    // generated internally.
+                                // Hdump goes from 20 to 19F, 384 pixels
+                                // Vdump goes from F8 to 1FF, 264 lines
     input             hs,
 
     input      [15:0] scan_even,
@@ -42,11 +45,14 @@
     input             ghf, gvf,
     output     [11:2] scan_addr,
 
+    // shadow
     output reg        shd,
 
+    // indr module / 051937
     output reg        dr_start,
     input             dr_busy,
 
+    // Debug
     input      [ 7:0] debug_bus
 );
 
@@ -56,7 +62,7 @@ reg  [18:0] yz_add;
 reg  [11:0] vzoom;
 reg  [ 9:0] y, y2, x, ydiff, ydiff_b, xadj, yadj;
 reg  [ 8:0] vlatch, ymove, full_h, vscl, hscl, full_w;
-reg  [ 7:0] scan_obj;
+reg  [ 7:0] scan_obj; // max 256 objects
 reg  [ 3:0] size;
 reg  [ 2:0] hstep, hcode, hsum, vsum;
 reg  [ 1:0] scan_sub, reserved;
@@ -86,8 +92,9 @@ always @(posedge clk) begin
     yadj <= yoffset + 10'h107;
     hscl <= rd_pzoffset(hzoom);
     /* verilator lint_off WIDTH */
-    yz_add  <= vzoom[9:0]*ydiff_b;
-
+    yz_add  <= vzoom[9:0]*ydiff_b; // vzoom < 10'h40 enlarge, >10'h40 reduce
+                                   // opposite to the one in Aliens, which always
+                                   // shrunk for non-zero zoom values
     /* verilator lint_on WIDTH */
 end
 
@@ -100,6 +107,7 @@ function [8:0] zmove( input [1:0] sz, input[8:0] scl );
     endcase
 endfunction
 
+// Extra offset table for sprites in Reduction process
 function [8:0] rd_pzoffset( input [11:0] zoom );
     case( zoom[11:8] )
         0:       rd_pzoffset =        zoffset [zoom[7:0]];
@@ -115,7 +123,7 @@ always @* begin
     y2     = y + {1'b0,ymove};
     ydiff_b= y2 + { vlatch[8], vlatch };
     ydiff  = yz_add[6+:10];
-
+    // test ver/parodius/scene/9 -> "bomb", scan_obj 5
     case( vsz )
         0: vmir_eff = nx_mir[1] && ydiff[3] && ydiff[9:4]==0;
         1: vmir_eff = nx_mir[1] && ydiff[4] && ydiff[9:5]==0;
@@ -124,10 +132,10 @@ always @* begin
     endcase
     hmir_eff = hmir & hhalf;
     case( vsz )
-        0: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:4]==0;
-        1: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:5]==0;
-        2: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:6]==0;
-        3: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:7]==0;
+        0: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:4]==0; // 16
+        1: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:5]==0; // 32
+        2: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:6]==0; // 64
+        3: inzone = ydiff_b[9]==ydiff[9] && ydiff[9:7]==0; // 128
     endcase
     if( yz_add[16] ) inzone=0;
     case( hsz )
@@ -160,7 +168,7 @@ jtframe_toggle #(.W(1))u_toggle(
     .q      ( flicker   )
 );
 `endif
-
+// Table scan
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         hs_l     <= 0;
@@ -183,7 +191,11 @@ always @(posedge clk, posedge rst) begin
         dr_start <= 0;
         if( hs && !hs_l && vdump>9'h10D && vdump<9'h1f1) begin
 `ifdef OBJDIAG
-
+            // SONDA ses.32: comprueba si la linea anterior se quedo sin terminar de escanear
+            // (budget de ciclos agotado antes de `hs`) -- si ocurre con `dr_busy`=1 y `hz_keep`=1,
+            // el motor de dibujo (jtframe_draw, unico e instanciado una vez) queda ABANDONADO a
+            // mitad de una celda de un sprite compuesto: la siguiente linea reinicia scan_obj/sub
+            // a 0 sin esperar a que termine.
             if( !done )
                 $display("SCAN-OVERRUN vdump=%0d scan_obj=%0d scan_sub=%0d indr=%0d dr_busy=%b hz_keep=%b hstep=%0d hzoom=%0d",
                           vdump, scan_obj, scan_sub, indr, dr_busy, hz_keep, hstep, hzoom);
@@ -198,12 +210,12 @@ always @(posedge clk, posedge rst) begin
                 0: begin
                     hhalf <= 0;
                     { sq, pre_vf, pre_hf, size } <= scan_even[14:8];
-                    code    <= {1'b0, scan_odd[14:0]};
+                    code    <= {1'b0, scan_odd[14:0]}; // bit 14 needed for tmnt2
                     pri <= scan_even[6:0];
                     hstep   <= 0;
                     hz_keep <= 0;
-
-                    if( !scan_even[15]  ) begin
+                    // if( !scan_even[15]  || scan_obj[6:0]!=2  ) begin
+                    if( !scan_even[15] /* ASTERIX B2: flicker de debug DESACTIVADO (descartaba el sprite scan_obj==debug_bus, i.e. pri_code 0 con debug_bus=0) */ ) begin
                         scan_sub <= 0;
                         scan_obj <= scan_obj + 1'd1;
                         if( last_obj ) done <= 1;
@@ -224,7 +236,12 @@ always @(posedge clk, posedge rst) begin
                 end
                 3: begin
 `ifdef OBJDIAG
-
+                    // SONDA ses.32 (cont.3): movida a ESTE estado (3), a proposito -- version anterior
+                    // en el estado 4 leia `nx_mir`/`vmir_eff` FUERA de tiempo (scan_addr ya habia
+                    // avanzado a la siguiente sub-palabra, asi que `nx_mir` en estado 4 es basura de
+                    // OTRA palabra, no la de mirror) y eso daba una falsa alarma de mirror-vertical
+                    // espurio en las celdas 2/3. AQUI, en el mismo ciclo que hace `vflip<=...vmir_eff`,
+                    // nx_mir SI es la palabra de atributo (word3) real -- lectura correcta.
                     if( code==16'h0a60 )
                     $display("VPROBE3 vdump=%0d ydiff=%0d vmir_eff=%b nx_mir=%b pre_vf=%b gvf=%b nx_vflip=%b",
                               vdump, ydiff, vmir_eff, nx_mir, pre_vf, gvf, pre_vf^gvf^vmir_eff);
@@ -234,22 +251,25 @@ always @(posedge clk, posedge rst) begin
                     vflip <= pre_vf ^ gvf ^ vmir_eff;
                 end
                 4: begin
-
+                    // Add the vertical offset to the code, must wait for zoom
+                    // calculations, so it cannot be done at step 3
                     {code[5],code[3],code[1]} <= {code[5],code[3],code[1]} + vsum;
-
+                    // will !x[9] create problems in large sprites?
+                    // it is needed to prevent the police car from showing up
+                    // at the end of level 1 in Simpsons (see scene 3)
                     if( ~inzone ) begin
                         { indr, scan_sub } <= 0;
                         scan_obj <= scan_obj + 1'd1;
                         if( last_obj ) done <= 1;
                     end
                 end
-                default: begin
+                default: begin // in draw state
                     case( hsz )
                         1: if(hstep>=1) hhalf <= 1;
                         2: if(hstep>=2) hhalf <= 1;
                         3: if(hstep>=4) hhalf <= 1;
                     endcase
-                    {indr, scan_sub} <= 5;
+                    {indr, scan_sub} <= 5; // stay here
                     if( (!dr_start && !dr_busy) || !inzone ) begin
                         {code[4],code[2],code[0]} <= hcode + hsum;
                         if( hstep==0 ) begin
@@ -264,7 +284,7 @@ always @(posedge clk, posedge rst) begin
                             { indr, scan_sub } <= 0;
                             scan_obj <= scan_obj + 1'd1;
                             indr     <= 0;
-
+                            // hz_keep <= 0;
                             if( last_obj ) done <= 1;
                         end
                     end
@@ -278,39 +298,39 @@ initial pzoffset ='{
     8, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4
 };
 
-initial zoffset ='{
-    511, 511, 511, 511, 511, 410, 341, 293,
-    256, 228, 205, 186, 171, 158, 146, 137,
-    128, 120, 114, 108, 102,  98,  93,  89,
-     85,  82,  79,  76,  73,  71,  68,  66,
-     64,  62,  60,  59,  57,  55,  54,  53,
-     51,  50,  49,  48,  47,  46,  45,  44,
-     43,  42,  41,  40,  39,  39,  38,  37,
-     37,  36,  35,  35,  34,  34,  33,  33,
-     32,  32,  31,  31,  30,  30,  29,  29,
-     28,  28,  28,  27,  27,  27,  26,  26,
-     26,  25,  25,  25,  24,  24,  24,  24,
-     23,  23,  23,  23,  22,  22,  22,  22,
-     21,  21,  21,  21,  20,  20,  20,  20,
-     20,  20,  19,  19,  19,  19,  19,  18,
-     18,  18,  18,  18,  18,  18,  17,  17,
-     17,  17,  17,  17,  17,  16,  16,  16,
-     16,  16,  16,  16,  16,  15,  15,  15,
-     15,  15,  15,  15,  15,  15,  14,  14,
-     14,  14,  14,  14,  14,  14,  14,  14,
-     13,  13,  13,  13,  13,  13,  13,  13,
-     13,  13,  13,  13,  12,  12,  12,  12,
-     12,  12,  12,  12,  12,  12,  12,  12,
-     12,  12,  12,  11,  11,  11,  11,  11,
-     11,  11,  11,  11,  11,  11,  11,  11,
-     11,  11,  11,  11,  10,  10,  10,  10,
-     10,  10,  10,  10,  10,  10,  10,  10,
-     10,  10,  10,  10,  10,  10,  10,  10,
-      9,   9,   9,   9,   9,   9,   9,   9,
-      9,   9,   9,   9,   9,   9,   9,   9,
-      9,   9,   9,   9,   9,   9,   9,   9,
-      9,   8,   8,   8,   8,   8,   8,   8,
-      8,   8,   8,   8,   8,   8,   8,   8
+initial zoffset ='{                             //  octal count
+    511, 511, 511, 511, 511, 410, 341, 293,     //   0-  7
+    256, 228, 205, 186, 171, 158, 146, 137,     //  10- 17
+    128, 120, 114, 108, 102,  98,  93,  89,     //  20- 27
+     85,  82,  79,  76,  73,  71,  68,  66,     //  30- 37
+     64,  62,  60,  59,  57,  55,  54,  53,     //  40- 47
+     51,  50,  49,  48,  47,  46,  45,  44,     //  50- 57
+     43,  42,  41,  40,  39,  39,  38,  37,     //  60- 67
+     37,  36,  35,  35,  34,  34,  33,  33,     //  70- 77
+     32,  32,  31,  31,  30,  30,  29,  29,     // 100-107
+     28,  28,  28,  27,  27,  27,  26,  26,     // 110-117
+     26,  25,  25,  25,  24,  24,  24,  24,     // 120-127
+     23,  23,  23,  23,  22,  22,  22,  22,     // 130-137
+     21,  21,  21,  21,  20,  20,  20,  20,     // 140-147
+     20,  20,  19,  19,  19,  19,  19,  18,     // 150-157
+     18,  18,  18,  18,  18,  18,  17,  17,     // 160-167
+     17,  17,  17,  17,  17,  16,  16,  16,     // 170-177
+     16,  16,  16,  16,  16,  15,  15,  15,     // 200-207
+     15,  15,  15,  15,  15,  15,  14,  14,     // 210-217
+     14,  14,  14,  14,  14,  14,  14,  14,     // 220-122
+     13,  13,  13,  13,  13,  13,  13,  13,     // 230-237
+     13,  13,  13,  13,  12,  12,  12,  12,     // 240-247
+     12,  12,  12,  12,  12,  12,  12,  12,     // 250-257
+     12,  12,  12,  11,  11,  11,  11,  11,     // 260-267
+     11,  11,  11,  11,  11,  11,  11,  11,     // 270-277
+     11,  11,  11,  11,  10,  10,  10,  10,     // 300-307
+     10,  10,  10,  10,  10,  10,  10,  10,     // 310-317
+     10,  10,  10,  10,  10,  10,  10,  10,     // 320-327
+      9,   9,   9,   9,   9,   9,   9,   9,     // 330-337
+      9,   9,   9,   9,   9,   9,   9,   9,     // 340-347
+      9,   9,   9,   9,   9,   9,   9,   9,     // 350-357
+      9,   8,   8,   8,   8,   8,   8,   8,     // 360-367
+      8,   8,   8,   8,   8,   8,   8,   8      // 370-377
 };
 
 endmodule
