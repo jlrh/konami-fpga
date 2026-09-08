@@ -489,3 +489,19 @@ Aparte, el ajuste de geometría CRT (`modules/jtframe/hdl/video/rmonic79/crt_adj
 
 Lo que **sí** viaja con este repositorio es la compensación de nivel del PCM: no toca el módulo
 compartido, vive en nuestro `cores/ssriders/cfg/mem.yaml` (`pre` del canal PCM).
+
+<!-- omf_release:dependencias:ffssriders -->
+## Dependencias externas de `ffssriders`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffssriders`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes: edge/counter, video (vtimer, jtframe_obj.yaml, linebuf), cpu (m68k, z80), sdram (dwnld), ram (dual_nvram16). ⚠ NO sirve el upstream tal cual: este core depende de parches nuestros al framework, sobre todo `jtframe_romrq_bcache.v` — ver «Parches al framework» mas abajo | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal) — entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
+| simson — jtcolmix_053251.v -- el K053251 (mezclador de prioridad). La cadena de sprites YA NO viene de aqui: se reescribio en hdl/ en la sesion 94 | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/simson` |
+| jt51 — YM2151 (sonido) | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
+| jt053260 — K053260 (PCM). ⚠ Con el upstream tal cual la voz sale distorsionada: hacen falta los 2 fixes de decode ADPCM — ver «Parches al framework» mas abajo | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |
+| jteeprom — jt5911.sv -- EEPROM en serie de ajustes | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
+<!-- /omf_release:dependencias:ffssriders -->

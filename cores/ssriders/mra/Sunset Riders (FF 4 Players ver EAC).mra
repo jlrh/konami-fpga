@@ -8,7 +8,7 @@
     <year>1991</year>
     <manufacturer>Konami</manufacturer>
     <players>4</players>
-    <rbf>ssriders</rbf>
+    <rbf>ffssriders</rbf>
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="ssriders.zip" md5="None" address="0x30000000" asm_md5="88130a850377514e9cd89fd749ee2c54">
