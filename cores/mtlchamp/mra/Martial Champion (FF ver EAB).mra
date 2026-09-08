@@ -8,7 +8,7 @@
     <year>1993</year>
     <manufacturer>Konami</manufacturer>
     <players>4</players>
-    <rbf>mtlchamp</rbf>
+    <rbf>ffmtlchamp</rbf>
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="mtlchamp.zip" md5="None" address="0x30000000">
