@@ -7,7 +7,7 @@
     <year>1992</year>
     <manufacturer>Konami</manufacturer>
     <players>4</players>
-    <rbf>moomesa</rbf>
+    <rbf>ffmoomesa</rbf>
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="moomesa.zip" type="merged" md5="None" address="0x30000000">
