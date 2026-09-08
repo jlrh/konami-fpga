@@ -8,7 +8,7 @@
     <year>1993</year>
     <manufacturer>Konami</manufacturer>
     <players>4</players>
-    <rbf>mystwarr</rbf>
+    <rbf>ffmystwarr</rbf>
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="mystwarr.zip" md5="None" address="0x30000000">
