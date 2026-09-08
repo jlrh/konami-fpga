@@ -505,3 +505,16 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jt053260 — K053260 (PCM). ⚠ Con el upstream tal cual la voz sale distorsionada: hacen falta los 2 fixes de decode ADPCM — ver «Parches al framework» mas abajo | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |
 | jteeprom — jt5911.sv -- EEPROM en serie de ajustes | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
 <!-- /omf_release:dependencias:ffssriders -->
+
+<!-- omf_release:dependencias:ffasterix -->
+## Dependencias externas de `ffasterix`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffasterix`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes (jtframe_toggle.v) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| riders (jtcores) — common.yaml -- catalogo compartido del motor de sprites K053244/K053245 que usa la familia riders/asterix | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/riders/cfg` |
+| simson (jtcores) — jt053246_dma.v / jt053246_mmr.v -- DMA y registros del K053244/K053245, compartidos con Simpsons | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/simson/hdl` |
+<!-- /omf_release:dependencias:ffasterix -->
