@@ -11,7 +11,7 @@
     <rbf>ffmystwarr</rbf>
     <joystick>8</joystick>
     <region>World</region>
-    <rom index="0" zip="mystwarr.zip" md5="None" address="0x30000000">
+    <rom index="0" zip="mystwarr.zip" md5="None" address="0x30000000" asm_md5="aa282fd9a09d286288b5c640e440730f">
 
         <part>
             00 00 00 02 40 06 C0 08
