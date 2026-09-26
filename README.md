@@ -518,3 +518,18 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | riders (jtcores) — common.yaml -- catalogo compartido del motor de sprites K053244/K053245 que usa la familia riders/asterix | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/riders/cfg` |
 | simson (jtcores) — jt053246_dma.v / jt053246_mmr.v -- DMA y registros del K053244/K053245, compartidos con Simpsons | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/simson/hdl` |
 <!-- /omf_release:dependencias:ffasterix -->
+
+<!-- omf_release:dependencias:ffblswhstl -->
+## Dependencias externas de `ffblswhstl`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffblswhstl`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes: edge/counter, video (vtimer, jtframe_obj.yaml, linebuf), cpu (m68k, z80), sdram (dwnld), ram (dual_nvram16). ⚠ Compilado contra la copia de jtcores del 2026-09-02 con parches propios al framework (entre ellos jtframe_romrq_bcache.v): con un jtframe de fabrica no se garantiza que el core arranque | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal) — entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
+| jt51 — YM2151 (sonido) | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
+| jt053260 — K053260 (PCM). ⚠ Lleva los 2 fixes de decode ADPCM del arbol de trabajo: con el upstream tal cual la voz puede salir distorsionada | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |
+| jteeprom — jt5911.sv -- EEPROM en serie de ajustes (ER5911) | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
+<!-- /omf_release:dependencias:ffblswhstl -->
