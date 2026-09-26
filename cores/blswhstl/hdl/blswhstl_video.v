@@ -1,7 +1,3 @@
-/*  ssriders — integracion de tilemap, sprites y mezclador.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module blswhstl_video(
     input             rst,
     input             clk,
@@ -119,8 +115,6 @@ assign tile_nmin   = 1'b1;
 
 always @(posedge clk) vdtac <= ~dma_bsy;
 
-/* verilator tracing_on */
-
 `ifndef BLS_HB_OFFSET
  `define BLS_HB_OFFSET 0
 `endif
@@ -185,8 +179,6 @@ blswhstl_k052109 #(
     .ioctl_addr ( ioctl_addr     ),
     .ioctl_din  ( tile_ioctl_din )
 );
-
-/* verilator tracing_on */
 
 assign ommra    = objreg_byte ? {cpu_addr[4:2], cpu_dsn[1]} : {cpu_addr[3:1], cpu_dsn[1]};
 
@@ -267,7 +259,6 @@ assign shadow       = {1'b0, obj_shd};
 
 wire cpu_weg = cpu_we && cpu_dsn!=2'b11;
 
-/* verilator tracing_on */
 blswhstl_colmix u_colmix(
     .rst        ( rst       ),
     .clk        ( clk       ),

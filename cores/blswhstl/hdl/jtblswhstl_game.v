@@ -1,12 +1,7 @@
-/*  blswhstl — top del core, contrato jtframe.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module jtblswhstl_game(
     `include "jtframe_game_ports.inc"
 );
 
-/* verilator tracing_off */
 wire        rom_cs, oram_cs, objreg_cs, pal_cs, tile_cs,
             pcu_cs, k054000_cs, watchdog_cs,
             sndirq, snd_wrn, cpu_we, vdtac, dma_bsy, tile_irqn, flip, rst8;
@@ -22,53 +17,7 @@ wire [15:0] oram_din;
 
 assign ram_addr = main_addr[13:1];
 assign ram_we   = cpu_we & ram_cs;
-wire [15:0] ram_data_m;
-`ifdef BL_CHEAT_VIDAS
-
-wire        cheat_on = debug_bus[7];
-wire        lv_sel   = ram_cs & (ram_addr==13'h04B) & ~ram_dsn[1];
-wire        lv_wr    = lv_sel &  cpu_we;
-wire        lv_rd    = lv_sel & ~cpu_we;
-wire [ 7:0] rd_hi    = ram_data[15:8];
-wire        rd_low   = (rd_hi==8'd1) | (rd_hi==8'd2);
-wire        wr_low   = (cpu_dout[15:8]==8'd1) | (cpu_dout[15:8]==8'd2);
-assign ram_data_m = (cheat_on & lv_rd & rd_low) ? { 8'd3, ram_data[7:0] } : ram_data;
-assign ram_din    = (cheat_on & lv_wr & wr_low) ? { 8'd3, cpu_dout[7:0] } : cpu_dout;
-
-reg [7:0] t_rd_raw=0, t_wr_first=0, t_wr_last=0, t_wr_cnt=0, t_wr_hit=0, t_rd_forced=0;
-reg       t_seen_wr=0, t_seen_rd=0, lv_wr_l=0, fr_l=0, wr_low_l=0;
-wire      forced_now = cheat_on & lv_rd & ram_ok & rd_low;
-always @(posedge clk) begin
-    lv_wr_l  <= lv_wr;
-    fr_l     <= forced_now;
-    wr_low_l <= wr_low;
-    if( lv_rd & ram_ok ) begin t_rd_raw <= rd_hi; t_seen_rd <= 1'b1; end
-    if( forced_now & ~fr_l & ~&t_rd_forced ) t_rd_forced <= t_rd_forced + 8'd1;
-    if( lv_wr ) begin
-        t_wr_last <= cpu_dout[15:8];
-        t_seen_wr <= 1'b1;
-        if( !lv_wr_l ) begin
-            t_wr_first <= cpu_dout[15:8];
-            if( ~&t_wr_cnt ) t_wr_cnt <= t_wr_cnt + 8'd1;
-        end
-    end
-    if( lv_wr_l & ~lv_wr & wr_low_l & ~&t_wr_hit ) t_wr_hit <= t_wr_hit + 8'd1;
-end
-reg [7:0] st_cheat;
-always @* case( debug_bus[3:0] )
-    4'd0: st_cheat = { cheat_on, t_seen_wr, t_seen_rd, 5'd0 };
-    4'd1: st_cheat = t_rd_raw;
-    4'd2: st_cheat = t_wr_first;
-    4'd3: st_cheat = t_wr_last;
-    4'd4: st_cheat = t_wr_cnt;
-    4'd5: st_cheat = t_wr_hit;
-    4'd6: st_cheat = t_rd_forced;
-    default: st_cheat = 8'hA5;
-endcase
-`else
-assign ram_din    = cpu_dout;
-assign ram_data_m = ram_data;
-`endif
+assign ram_din  = cpu_dout;
 
 assign obj_addr = lyro_addr_v[19:2];
 
@@ -83,7 +32,7 @@ assign oram_addr = conv13( main_addr[13:1] );
 assign oram_we   = {2{oram_cs & cpu_we}} & ~ram_dsn;
 assign oram_din  = cpu_dout;
 
-k054000 u_k054000(
+jtk054000 u_k054000(
     .rst    ( rst               ),
     .clk    ( clk               ),
     .cs     ( k054000_cs        ),
@@ -93,15 +42,10 @@ k054000 u_k054000(
     .dout   ( k054000_dout      )
 );
 
-`ifdef BL_CHEAT_VIDAS
-assign debug_view = debug_bus[6] ? st_video : st_cheat;
-`else
 assign debug_view = debug_bus[6] ? st_video : st_main;
-`endif
 
 wire [3:0] gfx_en_eff = gfx_en;
 
-/* verilator tracing_off */
 blswhstl_main u_main(
     .rst            ( rst           ),
     .clk            ( clk           ),
@@ -111,7 +55,7 @@ blswhstl_main u_main(
     .rom_data       ( main_data     ),
     .rom_cs         ( main_cs       ),
     .rom_ok         ( main_ok       ),
-    .ram_dout       ( ram_data_m    ),
+    .ram_dout       ( ram_data      ),
     .ram_cs         ( ram_cs        ),
     .ram_ok         ( ram_ok        ),
     .ram_dsn        ( ram_dsn       ),
@@ -159,7 +103,6 @@ blswhstl_main u_main(
     .debug_bus      ( debug_bus     )
 );
 
-/* verilator tracing_on */
 blswhstl_video u_video(
     .rst            ( rst           ),
     .clk            ( clk           ),
@@ -241,7 +184,6 @@ blswhstl_video u_video(
     .st_dout        ( st_video      )
 );
 
-/* verilator tracing_on */
 blswhstl_sound u_sound(
     .rst        ( rst           ),
     .clk        ( clk           ),

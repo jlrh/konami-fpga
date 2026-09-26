@@ -1,7 +1,3 @@
-/*  ssriders — K053244 register bank.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module k053244_mmr(
     input             rst,
     input             clk,

@@ -1,7 +1,3 @@
-/*  ssriders — sprites K053244/K053245.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module blswhstl_obj #(parameter
     RAMW   = 13,
     HFLIP_OFFSET = 0,

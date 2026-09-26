@@ -1,7 +1,3 @@
-/*  blswhstl — CPU principal 68000 y mapa de memoria.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module blswhstl_main(
     input                rst,
     input                clk,

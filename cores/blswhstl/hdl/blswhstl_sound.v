@@ -1,7 +1,3 @@
-/*  ssriders — subsistema de sonido Z80 + YM2151 + K053260.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module blswhstl_sound(
     input                    rst,
     input                    clk,
@@ -92,7 +88,6 @@ jtframe_edge #(.QSET(0),.ATRST(0)) u_nmi(
     .q      ( nmi_n     )
 );
 
-/* verilator tracing_off */
 jtframe_sysz80 #(.RAM_AW(11), .CLR_INT(1), .RECOVERY(1)) u_cpu(
     .rst_n      ( ~rst      ),
     .clk        ( clk       ),
@@ -118,7 +113,6 @@ jtframe_sysz80 #(.RAM_AW(11), .CLR_INT(1), .RECOVERY(1)) u_cpu(
     .rom_ok     ( rom_ok    )
 );
 
-/* verilator tracing_on */
 jt51 u_jt51(
     .rst        ( rst       ),
     .clk        ( clk       ),

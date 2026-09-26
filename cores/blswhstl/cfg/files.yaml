@@ -4,6 +4,12 @@ blswhstl:
 
     - "*.sv"
 
+simson:
+  - get:
+    - jtcolmix_053251.v
+    - jtk054000.v
+    - jtk054000_mmr.v
+
 jtframe:
   - get:
     - jtframe_edge.v

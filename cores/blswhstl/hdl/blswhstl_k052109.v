@@ -1,7 +1,3 @@
-/*  ssriders — K052109 (tilemaps) + K051962 (pixel mux).
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module blswhstl_k052109 #(
 
     parameter [8:0] HB_OFFSET=0,

@@ -528,6 +528,7 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | Qué | De dónde | Dónde va |
 |---|---|---|
 | jtframe — framework de compilacion y modulos comunes: edge/counter, video (vtimer, jtframe_obj.yaml, linebuf), cpu (m68k, z80), sdram (dwnld), ram (dual_nvram16). ⚠ Compilado contra la copia de jtcores del 2026-09-02 con parches propios al framework (entre ellos jtframe_romrq_bcache.v): con un jtframe de fabrica no se garantiza que el core arranque | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| simson — jtcolmix_053251.v (K053251, mezclador de prioridades), jtk054000.v y jtk054000_mmr.v (K054000, colisiones), usados TAL CUAL (byte a byte con la copia de jtcores del 2026-09-02). files.yaml los pide en su seccion simson: | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/simson/hdl` |
 | fx68k — MC68000 (CPU principal) — entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
 | jt51 — YM2151 (sonido) | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
 | jt053260 — K053260 (PCM). ⚠ Lleva los 2 fixes de decode ADPCM del arbol de trabajo: con el upstream tal cual la voz puede salir distorsionada | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |

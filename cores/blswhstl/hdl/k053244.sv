@@ -1,7 +1,3 @@
-/*  ssriders — K053244/K053245 sprite generator, top level.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module k053244(
     input             rst,
     input             clk,

@@ -1,7 +1,3 @@
-/*  ssriders — K053244/K053245 sprite table scanner.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module k053244_scan(
     input             rst,
     input             clk,
@@ -98,9 +94,7 @@ always @(posedge clk) begin
     xadj   <= (ghf ? (10'd614 - xoffset) : (xoffset + 10'd102)) + hflip_off;
     yadj   <= yoffset + 10'h107;
     hscl   <= zoom_step( hzoom );
-    /* verilator lint_off WIDTH */
     rowmul <= vzoom[9:0] * ydist;
-    /* verilator lint_on WIDTH */
 end
 
 always @* begin

@@ -1,7 +1,3 @@
-/*  ssriders — mezcla de prioridades K053251 + paleta xBGR_555.
-    Free software under the GNU General Public License v3.
-    2026 Jose Luis Rodriguez.  */
-
 module blswhstl_colmix(
     input             rst,
     input             clk,
