@@ -517,8 +517,8 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jtframe — framework de compilacion y modulos comunes (jtframe_toggle.v) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
 | riders (jtcores) — common.yaml -- catalogo compartido del motor de sprites K053244/K053245 que usa la familia riders/asterix | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/riders/cfg` |
 | simson (jtcores) — jt053246_dma.v / jt053246_mmr.v -- DMA y registros del K053244/K053245, compartidos con Simpsons | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/simson/hdl` |
+| aliens (jtcores) — jtaliens_scroll.v / jt052109.v / jt051960.v / jt051962.v -- los pide riders/cfg/common.yaml | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/aliens/hdl` |
 <!-- /omf_release:dependencias:ffasterix -->
-
 <!-- omf_release:dependencias:ffblswhstl -->
 ## Dependencias externas de `ffblswhstl`
 
