@@ -1,0 +1,37 @@
+xexex:
+  - get:
+    - "*.v"
+
+    - "*.sv"
+
+    - xexex_clk48_96.sdc
+jtframe:
+  - get:
+    - jtframe_edge.v
+    - jtframe_counter.v
+  - from: video
+    get:
+      - jtframe_vtimer.v
+      - jtframe_obj.yaml
+      - jtframe_linebuf.v
+      - jtframe_linebuf_gate.v
+  - from: video/layouts
+    get:
+      - jtframe_8x8x4_packed_msb.v
+  - from: cpu
+    unless: [NOMAIN]
+    get:
+      - jtframe_m68k.yaml
+  - from: cpu
+    get:
+      - jtframe_z80.yaml
+  - from: sdram
+    get:
+      - jtframe_dwnld.v
+  - from: ram
+    get:
+      - jtframe_dual_nvram16.v
+jt51:
+jteeprom:
+  - get:
+    - jt5911.sv

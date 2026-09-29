@@ -1,0 +1,55 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Xexex (FF ver EAA)</name>
+    <setname>xexex</setname>
+    <mameversion>0288</mameversion>
+    <year>1991</year>
+    <manufacturer>Konami</manufacturer>
+    <players>2</players>
+    <rbf>ffxexex</rbf>
+    <joystick>8</joystick>
+    <region>World</region>
+    <rom index="0" zip="xexex.zip" md5="None" address="0x30000000">
+        <interleave output="16">
+            <part name="067eaa02.16f" crc="36ea7a48" map="01"/>
+            <part name="067eaa01.16d" crc="3ebcb066" map="10"/>
+        </interleave>
+        <part repeat="0x80000"> FF</part>
+        <interleave output="16">
+            <part name="067b04.13f" crc="26ec5dc8" map="01"/>
+            <part name="067b03.13d" crc="97833086" map="10"/>
+        </interleave>
+        <part repeat="0x40000"> FF</part>
+        <part name="067eaa05.4e" crc="0e33d6ec"/>
+        <part name="067b06.3e" crc="3b12fce4"/>
+        <part name="067b07.1e" crc="ec87fe1b"/>
+        <part name="067b08.22f" crc="ca816b7b"/>
+        <interleave output="32">
+            <part name="067b14.1n" crc="02a44bfa" map="0021"/>
+            <part name="067b13.2n" crc="633c8eb5" map="2100"/>
+        </interleave>
+        <interleave output="64">
+            <part name="067b12.17n" crc="08d611b0" map="00000021"/>
+            <part name="067b11.19n" crc="a26f7507" map="00002100"/>
+            <part name="067b10.20n" crc="ee31db8d" map="00210000"/>
+            <part name="067b09.22n" crc="88f072ef" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="2">
+        <part>
+05 6D FA 92 90 67 45 41 41 00 00 00 00 00 00 00
+00 D9 D8 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <rom index="1">
+        <part>00 80</part>
+    </rom>
+    <buttons names="Shot,Flint,Start,Coin,Core credits" default="A,B,Start,Select,-" count="2"/>
+</misterromdescription>

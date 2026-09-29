@@ -169,6 +169,27 @@ hardware yet.
 > Detana!! Twin Bee: `cores/blswhstl/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot
 > be built from this repo**.
 
+### Xexex (Konami, 1991)
+Horizontal shoot-'em-up (GX067 board). Hardware: **MC68000** main CPU + **Z80** sound CPU + **YM2151**
+(FM) + **K054539** (PCM sound) + Konami video customs — **K056832** (tilemap), **K053246/K053247**
+(sprites, with zoom and shadows), **K053251** (priority mixer), **K054338** (alpha blending and
+backdrop) — plus the **K053250** "LVC" road/line generator that draws the stage backgrounds (the green
+aurora, the red tunnel). The K053250 has no public RTL anywhere; it was written from the MAME model and
+validated pixel-exact against MAME on frame captures.
+
+**Status: boots and runs the attract mode on MiSTer** — video (tilemaps, zoomed sprites, alpha
+blending, the K053250 backgrounds) and audio (YM2151 FM + K054539 PCM, including the digitized
+"XEXEX" voice) run on hardware. Work in progress: it is still being checked stage by stage against the
+original board.
+
+The K053250 needs one ROM word per column per line in its column (SWAP) mode — up to ~370 different
+words in a single 64 µs line on the red-tunnel stage — so its 512 KB ROM is **interleaved across two
+SDRAM banks** at load time and read by two engines in parallel.
+
+A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
+**runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/xexex/`).
+See [`BUILD.md`](BUILD.md).
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -402,6 +423,27 @@ probado en hardware.
 > `.rbf` y el `.mra`**: `cores/blswhstl/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core
 > **no se puede compilar desde este repo**.
 
+### Xexex (Konami, 1991)
+Shoot-'em-up horizontal (placa GX067). Hardware: CPU principal **MC68000** + CPU de sonido **Z80** +
+**YM2151** (FM) + **K054539** (sonido PCM) + customs de vídeo de Konami — **K056832** (tilemap),
+**K053246/K053247** (sprites, con zoom y sombras), **K053251** (mezclador de prioridad), **K054338**
+(mezcla alpha y fondo) — más el generador de líneas **K053250** "LVC", que dibuja los fondos de las
+fases (la aurora verde, el túnel rojo). No existe RTL público del K053250 en ningún sitio; se ha escrito
+a partir del modelo de MAME y se ha validado píxel a píxel contra MAME sobre capturas de fotogramas.
+
+**Estado: arranca y corre el modo attract en MiSTer** — vídeo (tilemaps, sprites con zoom, mezcla
+alpha, los fondos del K053250) y sonido (YM2151 FM + K054539 PCM, incluida la voz digitalizada
+"XEXEX") funcionan en hardware. En desarrollo: se sigue comprobando fase a fase contra la placa
+original.
+
+En su modo por columnas (SWAP), el K053250 necesita una palabra de ROM por columna y por línea — hasta
+~370 palabras distintas en una sola línea de 64 µs en la fase del túnel rojo —, así que su ROM de 512 KB
+se **intercala entre dos bancos de SDRAM** al cargarla y la leen dos motores en paralelo.
+
+Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
+cargan en **tiempo de ejecución** desde la `.mra`; el bitstream no lleva datos del juego. O compílalo
+desde el código (`cores/xexex/`). Ver [`BUILD.md`](BUILD.md).
+
 ## Construir
 
 Este repo contiene **solo el código del core** (`cores/<core>/`, p.ej. `cores/asterix/`,
@@ -534,3 +576,16 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jt053260 — K053260 (PCM). ⚠ Lleva los 2 fixes de decode ADPCM del arbol de trabajo: con el upstream tal cual la voz puede salir distorsionada | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt053260` |
 | jteeprom — jt5911.sv -- EEPROM en serie de ajustes (ER5911) | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
 <!-- /omf_release:dependencias:ffblswhstl -->
+
+<!-- omf_release:dependencias:ffxexex -->
+## Dependencias externas de `ffxexex`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffxexex`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes (vtimer, SDRAM, descarga, CPUs 68000/Z80) | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| jt51 — YM2151 | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
+| jteeprom — EEPROM ER5911 (jt5911.sv) | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
+<!-- /omf_release:dependencias:ffxexex -->

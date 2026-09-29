@@ -1,0 +1,39 @@
+[global]
+author=["konami-fpga"]
+
+[parse]
+sourcefile=[ "xexex.cpp" ]
+
+skip = { bootlegs=true, setnames=[ "orius", "xexexa", "xexexj" ] }
+rename = [
+    { setname="xexex", name="Xexex (FF ver EAA)" },
+]
+
+[buttons]
+names = [
+    { machine="xexex", names="Shot,Flint" },
+]
+
+[ROM]
+regions = [
+    { name="maincpu",  width=16, reverse=true },
+    { name="audiocpu", start="JTFRAME_BA1_START" },
+    { name="k054539",  start="PCM_START", rename="pcm" },
+    { name="k056832",  start="JTFRAME_BA2_START", width=32 },
+    { name="k053250",  start="LVC_START", rename="lvc" },
+    { name="k053246",  start="JTFRAME_BA3_START", width=64, rename="obj" },
+    { name="eeprom",   skip=true }
+]
+order=["maincpu","audiocpu","pcm","lvc","k056832","obj"]
+
+nvram={ Defaults=[
+    { setname="xexex", data="""\
+    05 6d fa 92 90 67 45 41 41 00 00 00 00 00 00 00
+    00 d9 d8 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"""},
+]}

@@ -1,0 +1,77 @@
+params:
+  - { name: RAM_OFFSET, value: "22'h100000" }
+  - { name: PCM_OFFSET, value: "22'h020000>>1" }
+  - { name: LVCO_OFFSET, value: "22'h180000>>1" }
+  - { name: LVC_OFFSET, value: "22'h320000>>1" }
+clocks:
+  clk48:
+    - freq: 16M
+      outputs:
+        - cen_16
+        - cen_8
+        - cen_4
+        - cen_2
+    - freq: 18432k
+      gate: [pcm]
+      outputs:
+        - cen_pcm
+audio:
+
+  gain: 1.99
+  rsum: 1k
+  rsum_feedback_res: true
+  channels:
+    - { name: fm,   module: jt51,     rsum: 1k, rc: [ { r: 4.7k, c: 2.2n } ] }
+    - { name: pcm,  module: jt054539, rsum: 1k, rc: [ { r: 4.7k, c: 2.2n } ] }
+download:
+  pre_addr: true
+sdram:
+  banks:
+
+    - buses:
+        - name: ram
+          addr_width: 16
+          data_width: 16
+          offset: RAM_OFFSET
+          rw: true
+        - name: main
+          addr_width: 21
+          data_width: 16
+
+        - name: lvco
+          addr_width: 18
+          data_width: 32
+          offset: LVCO_OFFSET
+
+    - buses:
+        - name: snd
+          addr_width: 17
+          data_width: 8
+        - name: pcm
+          addr_width: 22
+          data_width: 8
+          offset: PCM_OFFSET
+
+        - name: lvc
+          addr_width: 18
+          data_width: 32
+
+          offset: LVC_OFFSET
+
+    - buses:
+        - name: scr
+          addr_width: 21
+          data_width: 32
+
+    - buses:
+        - name: lyro
+          addr_width: 22
+          data_width: 32
+bram:
+
+  - name: nvram
+    addr_width: 7
+    data_width: 8
+    simfile: {}
+    rw: true
+    ioctl: { save: true, restore: true, order: 0 }
