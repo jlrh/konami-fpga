@@ -186,6 +186,19 @@ The K053250 needs one ROM word per column per line in its column (SWAP) mode —
 words in a single 64 µs line on the red-tunnel stage — so its 512 KB ROM is **interleaved across two
 SDRAM banks** at load time and read by two engines in parallel.
 
+**Refresh rate (OSD → Refresh Rate: Native 54Hz / 50Hz / 60Hz)** — the original board runs at
+**54.07 Hz** (15.625 kHz, 289 lines), which some CRT TVs won't lock to. Over analog output (VGA/SCART,
+direct video) you can switch to:
+
+- **50Hz** (312 lines, 50.08 Hz, PAL-style): the full 384×256 picture is kept.
+- **60Hz** (262 lines, 59.64 Hz, NTSC-style 240p): only 240 lines fit, so **8 lines are cropped at the
+  top and 8 at the bottom**.
+
+The game logic and the music tempo run once per frame, exactly as on the original hardware, so they
+follow the refresh rate: **~7 % slower at 50Hz, ~10 % faster at 60Hz** (sound pitch is unchanged).
+Keep **Native** for HDMI — MiSTer's scaler already adapts to 54 Hz there. The change takes effect at
+the end of the current frame.
+
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
 **runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/xexex/`).
 See [`BUILD.md`](BUILD.md).
@@ -439,6 +452,19 @@ original.
 En su modo por columnas (SWAP), el K053250 necesita una palabra de ROM por columna y por línea — hasta
 ~370 palabras distintas en una sola línea de 64 µs en la fase del túnel rojo —, así que su ROM de 512 KB
 se **intercala entre dos bancos de SDRAM** al cargarla y la leen dos motores en paralelo.
+
+**Frecuencia de refresco (OSD → Refresh Rate: Native 54Hz / 50Hz / 60Hz)** — la placa original va a
+**54,07 Hz** (15,625 kHz, 289 líneas), y algunos televisores CRT no enganchan. Por la salida analógica
+(VGA/SCART, direct video) se puede elegir:
+
+- **50Hz** (312 líneas, 50,08 Hz, tipo PAL): se conserva la imagen completa de 384×256.
+- **60Hz** (262 líneas, 59,64 Hz, 240p tipo NTSC): solo caben 240 líneas, así que **se recortan 8 arriba
+  y 8 abajo**.
+
+La lógica del juego y el tempo de la música avanzan una vez por fotograma, igual que en la placa
+original, así que siguen al refresco: **~7 % más lento a 50Hz, ~10 % más rápido a 60Hz** (el tono del
+sonido no cambia). Por HDMI deja **Native**: el escalador de MiSTer ya se adapta a los 54 Hz. El cambio
+se aplica al terminar el fotograma en curso.
 
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
 cargan en **tiempo de ejecución** desde la `.mra`; el bitstream no lleva datos del juego. O compílalo
