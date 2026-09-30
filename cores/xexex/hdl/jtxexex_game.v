@@ -169,6 +169,7 @@ xexex_video u_video (
     .clk            ( clk           ),
     .pxl_cen        ( pxl_cen       ),
     .pxl2_cen       ( pxl2_cen      ),
+    .vmode          ( status[14:13] ),
 
     .tile_irqn      ( tile_irqn     ),
     .tile_nmin      (               ),

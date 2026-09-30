@@ -5,6 +5,7 @@ module xexex_video(
     input             clk,
     input             pxl_cen,
     input             pxl2_cen,
+    input      [ 1:0] vmode,
 
     output            lhbl,
     output            lvbl,
@@ -118,12 +119,18 @@ always @(posedge clk) vdtac <= 1'b1;
 /* verilator tracing_on */
 
 reg hs_crt=0, vs_crt=0;
+wire [1:0] vm;
 assign hs = hs_crt;
 assign vs = vs_crt;
 always @(posedge clk) if(pxl_cen) begin
     if( hdump==9'h1A3 ) begin
         hs_crt <= 1;
-        vs_crt <= vdump>=9'h0EB && vdump<=9'h0F0;
+
+        case( vm )
+            2'd1:    vs_crt <= vdump>=9'h0DB && vdump<=9'h0DD;
+            2'd2:    vs_crt <= vdump>=9'h0F5 && vdump<=9'h0F7;
+            default: vs_crt <= vdump>=9'h0EB && vdump<=9'h0F0;
+        endcase
     end
     if( hdump==9'h1CB ) hs_crt <= 0;
 end
@@ -141,6 +148,8 @@ xexex_k056832 u_scroll(
     .vdump      ( vdump     ),
     .vrender    ( vrender   ),
     .vrender1   ( vrender1  ),
+    .vmode      ( vmode     ),
+    .vm         ( vm        ),
 
     .vram_cs    ( tilesys_cs),
     .reg_cs     ( tilereg_cs),
@@ -210,6 +219,7 @@ xexex_k053250 u_lvc(
     .lhbl       ( lhbl      ),
     .hdump      ( hdump     ),
     .vrender1   ( vrender1  ),
+    .pc_line    ( vm==2'd2 ? 9'h0F2 : 9'h0F0 ),
     .pxl        ( lvc_pxl   )
 );
 

@@ -27,6 +27,7 @@ module xexex_k053250(
     input             lhbl,
     input      [ 8:0] hdump,
     input      [ 8:0] vrender1,
+    input      [ 8:0] pc_line,
     output     [ 8:0] pxl
 );
 
@@ -138,7 +139,8 @@ wire signed [23:0] dmax = swp ? $signed({15'd0,VY1}) : $signed({15'd0,VX1});
 localparam R_IDLE=0, R_E0=1, R_E1=2, R_E2=3, R_E3=4, R_E4=5, R_CALC=6, R_DIV=7, R_CLIP=8, R_MUL=9,
            R_FLIP=10, R_PIX=11, R_WAIT=12, R_STORE=13, R_S0=14, R_S1=15, R_S2=16, R_S3=17, R_SW=18,
            R_PF=19, R_PFW=20, R_WE=21, R_PCF=22, R_RC1=23, R_RC2=24, R_SDN=25;
-localparam [8:0] PC_LINE = 9'h0F0;
+
+wire [8:0] PC_LINE = pc_line;
 
 parameter  [11:0] PF_LIM = 12'd2300;
 reg  [4:0]  rst_st;

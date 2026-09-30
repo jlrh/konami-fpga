@@ -7,6 +7,8 @@ module xexex_k056832(
 
     output            lhbl, lvbl, hs, vs,
     output     [ 8:0] hdump, vdump, vrender, vrender1,
+    input      [ 1:0] vmode,
+    output     [ 1:0] vm,
 
     input             vram_cs,
     input             reg_cs,
@@ -36,17 +38,15 @@ function signed [9:0] offx(input [1:0] l);
     case(l) 2'd0: offx=-10'sd2; 2'd1: offx=10'sd2; 2'd2: offx=10'sd4; default: offx=10'sd6; endcase
 endfunction
 
-jtframe_vtimer #(
+xexex_vtimer #(
     .HCNT_START(9'h000), .HCNT_END(9'h1FF),
 
-    .HB_START(9'h182), .HB_END(9'h002), .HS_START(9'h193),
+    .HB_START(9'h182), .HB_END(9'h002), .HS_START(9'h193)
 
-    .V_START(9'h0DF), .VB_START(9'h1FF), .VB_END(9'h0FF),
-    .VS_START(9'h0EB), .VS_END(9'h0F1), .VCNT_END(9'h1FF)
 ) u_vtimer(
-    .clk(clk), .pxl_cen(pxl_cen),
+    .clk(clk), .pxl_cen(pxl_cen), .vmode(vmode), .vm(vm),
     .vdump(vdump), .vrender(vrender), .vrender1(vrender1),
-    .H(hdump), .Hinit(), .Vinit(),
+    .H(hdump),
     .LHBL(lhbl), .LVBL(lvbl), .HS(hs), .VS(vs)
 );
 
