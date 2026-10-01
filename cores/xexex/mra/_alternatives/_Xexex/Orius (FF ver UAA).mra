@@ -1,7 +1,7 @@
 <misterromdescription>
     <rotation>horizontal</rotation>
-    <name>Xexex (FF ver EAA)</name>
-    <setname>xexex</setname>
+    <name>Orius (FF ver UAA)</name>
+    <setname>orius</setname>
     <mameversion>0288</mameversion>
     <year>1991</year>
     <manufacturer>Konami</manufacturer>
@@ -9,10 +9,10 @@
     <rbf>ffxexex</rbf>
     <joystick>8</joystick>
     <region>World</region>
-    <rom index="0" zip="xexex.zip" md5="None" address="0x30000000" asm_md5="f67acd3d15bddaca4897d65796e78301">
+    <rom index="0" zip="xexex.zip" md5="None" address="0x30000000" asm_md5="81f230899c88200929efbfc30afc2fc9">
         <interleave output="16">
-            <part name="067eaa02.16f" crc="36ea7a48" map="01"/>
-            <part name="067eaa01.16d" crc="3ebcb066" map="10"/>
+            <part name="067uaa02.16f" crc="77709f64" map="01"/>
+            <part name="067uaa01.16d" crc="f1263d3e" map="10"/>
         </interleave>
         <part repeat="0x80000"> FF</part>
         <interleave output="16">
@@ -20,7 +20,7 @@
             <part name="067b03.13d" crc="97833086" map="10"/>
         </interleave>
         <part repeat="0x40000"> FF</part>
-        <part name="067eaa05.4e" crc="0e33d6ec"/>
+        <part name="067uaa05.4e" crc="0e33d6ec"/>
         <part name="067b06.3e" crc="3b12fce4"/>
         <part name="067b07.1e" crc="ec87fe1b"/>
         <part name="067b08.22f" crc="ca816b7b"/>
@@ -37,7 +37,7 @@
     </rom>
     <rom index="2">
         <part>
-05 6D FA 92 90 67 45 41 41 00 00 00 00 00 00 00
+05 7D FA 82 90 67 55 41 41 00 00 00 00 00 00 00
 00 D9 D8 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00

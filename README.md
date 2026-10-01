@@ -199,6 +199,12 @@ follow the refresh rate: **~7 % slower at 50Hz, ~10 % faster at 60Hz** (sound pi
 Keep **Native** for HDMI — MiSTer's scaler already adapts to 54 Hz there. The change takes effect at
 the end of the current frame.
 
+**Versions** — `Xexex (FF ver EAA).mra` (Europe) is the main one; the other three regional releases
+are in [`cores/xexex/mra/_alternatives/_Xexex/`](cores/xexex/mra/_alternatives/_Xexex/), all with the
+same `.rbf`: **Orius (ver UAA)** (USA), **Xexex (ver AAA)** (Asia) and **Xexex (ver JAA)** (Japan). Each one
+ships the factory EEPROM of its region. All four `.mra` files expect the **MAME 0.288 merged** romset
+(`xexex.zip` containing the parent and the three clones).
+
 A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game ROMs are loaded at
 **runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/xexex/`).
 See [`BUILD.md`](BUILD.md).
@@ -465,6 +471,12 @@ La lógica del juego y el tempo de la música avanzan una vez por fotograma, igu
 original, así que siguen al refresco: **~7 % más lento a 50Hz, ~10 % más rápido a 60Hz** (el tono del
 sonido no cambia). Por HDMI deja **Native**: el escalador de MiSTer ya se adapta a los 54 Hz. El cambio
 se aplica al terminar el fotograma en curso.
+
+**Versiones** — `Xexex (FF ver EAA).mra` (Europa) es la principal; las otras tres versiones regionales
+están en [`cores/xexex/mra/_alternatives/_Xexex/`](cores/xexex/mra/_alternatives/_Xexex/), todas con el
+mismo `.rbf`: **Orius (ver UAA)** (EE. UU.), **Xexex (ver AAA)** (Asia) y **Xexex (ver JAA)** (Japón). Cada
+una lleva la EEPROM de fábrica de su región. Las cuatro `.mra` esperan el romset **merged de MAME 0.288**
+(`xexex.zip` con el padre y los tres clones).
 
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
 cargan en **tiempo de ejecución** desde la `.mra`; el bitstream no lleva datos del juego. O compílalo

@@ -1,7 +1,7 @@
 <misterromdescription>
     <rotation>horizontal</rotation>
-    <name>Xexex (FF ver EAA)</name>
-    <setname>xexex</setname>
+    <name>Xexex (FF ver AAA)</name>
+    <setname>xexexa</setname>
     <mameversion>0288</mameversion>
     <year>1991</year>
     <manufacturer>Konami</manufacturer>
@@ -9,10 +9,10 @@
     <rbf>ffxexex</rbf>
     <joystick>8</joystick>
     <region>World</region>
-    <rom index="0" zip="xexex.zip" md5="None" address="0x30000000" asm_md5="f67acd3d15bddaca4897d65796e78301">
+    <rom index="0" zip="xexex.zip" md5="None" address="0x30000000" asm_md5="11ad0625f1e7f3e575e1224dfec313e5">
         <interleave output="16">
-            <part name="067eaa02.16f" crc="36ea7a48" map="01"/>
-            <part name="067eaa01.16d" crc="3ebcb066" map="10"/>
+            <part name="067aaa02.16f" crc="b7b98d52" map="01"/>
+            <part name="067aaa01.16d" crc="cf557144" map="10"/>
         </interleave>
         <part repeat="0x80000"> FF</part>
         <interleave output="16">
@@ -37,7 +37,7 @@
     </rom>
     <rom index="2">
         <part>
-05 6D FA 92 90 67 45 41 41 00 00 00 00 00 00 00
+05 69 FA 96 90 67 41 41 41 00 00 00 00 00 00 00
 00 D9 D8 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
