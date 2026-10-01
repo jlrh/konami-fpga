@@ -1,0 +1,60 @@
+<!-- This core incorporates JTFRAME/jtcores components licensed under GNU GPLv2.
+     License text: https://opensource.org/licenses/gpl-2.0.php -->
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Hot Chase (FF, Konami, 1988)</name>
+    <setname>hotchase</setname>
+    <mameversion>0288</mameversion>
+    <year>1988</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffhotchase</rbf>
+    <joystick/>
+    <region>World</region>
+    <rom index="0" zip="hotchase.zip" type="merged" md5="None">
+        <interleave output="16">
+            <part name="763k04" crc="60f73178" map="01"/>
+            <part name="763k05" crc="f34fef0b" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="763k02" crc="9510f961" map="01"/>
+            <part name="763k03" crc="28e3a444" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="763k06" crc="b77e0c07" map="01"/>
+            <part name="763k07" crc="ae12fa90" map="10"/>
+        </interleave>
+        <part name="763f01" crc="4fddd061"/>
+        <part name="763e11" crc="9d99a5a7"/>
+        <part name="763e10" crc="ca409210"/>
+        <part name="763e08" crc="054a9a63"/>
+        <part name="763e09" crc="c39857db"/>
+        <part name="763e17" crc="8db4e0aa"/>
+        <part name="763e20" crc="a22c6fce"/>
+        <part name="763e18" crc="50920d01"/>
+        <part name="763e21" crc="77e0e93e"/>
+        <part name="763e19" crc="a2622e56"/>
+        <part name="763e22" crc="967c49d1"/>
+        <part name="763e14" crc="60392aa1"/>
+        <part name="763a13" crc="8bed8e0d"/>
+        <part name="763e15" crc="7110aa43"/>
+        <part name="763a12" crc="05f1e553"/>
+    </rom>
+    <rom index="1">
+        <part>00 80</part>
+    </rom>
+    <switches page_id="1" page_name="Switches" base="16" default="ff,73">
+        <DSW1/>
+        <dip name="Coin A" bits="0,3" ids="Free Play,5/3,5/1,4/3,4/1,3/4,3/2,3/1,2/5,2/3,2/1,1/5,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="4,7" ids="1/99,5/3,5/1,4/3,-,3/4,3/2,3/1,2/5,2/3,2/1,1/5,1/4,1/3,1/2,1/1"/>
+        <DSW2/>
+        <dip name="Speed Unit" bits="8" ids="M.P.H.,KM"/>
+        <dip name="Motor Control" bits="9" ids="On,Off"/>
+        <dip name="Driving Technique" bits="10" ids="High Technique Required,Normal"/>
+        <dip name="Difficulty" bits="11,12" ids="Very Difficult,Difficult,Normal,Easy"/>
+        <dip name="Steering and Seat Vibration" bits="13" ids="On,Off"/>
+        <dip name="Steering Wheel Specifications" bits="14" ids="Optical Sensor,Potentiometer"/>
+        <dip name="Demo Sounds" bits="15" ids="On,Off"/>
+    </switches>
+    <buttons names="Accelerator,Brake,Shift,Start,Coin,Core credits" default="A,B,X,Start,Select,-" count="3"/>
+</misterromdescription>
