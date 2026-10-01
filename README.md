@@ -209,6 +209,21 @@ A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game
 **runtime** from the `.mra`; the bitstream bakes no game data. Or build from source (`cores/xexex/`).
 See [`BUILD.md`](BUILD.md).
 
+### WEC Le Mans 24 (Konami, 1986)
+Sit-down racing game (GX602 board). Hardware: **two MC68000** CPUs @ 10 MHz (main + sub, the sub
+draws the road and shares 16 KB of RAM with the main) + **Z80** sound CPU + **YM2151** (FM) +
+**K007232** (PCM) + **007452** (multiplier/divider) — plus the board's sprite **blitter** (a
+list-driven DMA into sprite RAM), zoomed sprites read straight from ROM, the discrete **road
+generator**, and the colour-blend "protection" chip (interpolates two RGB444 colours).
+
+**Status: work in progress — boots and plays on MiSTer.** Video and audio of the attract mode,
+recorded on hardware, match MAME. Still being checked: the FM/PCM audio balance in-game and CRT
+centring.
+
+> ⚠️ Like Martial Champion and Mystic Warriors, **only the `.rbf` and the `.mra` are published** for
+> WEC Le Mans while it is WIP: `cores/wecleman/` holds just `mra/`. This core **cannot be built from
+> this repo** yet.
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -481,6 +496,22 @@ una lleva la EEPROM de fábrica de su región. Las cuatro `.mra` esperan el roms
 Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: todas las ROMs del juego se
 cargan en **tiempo de ejecución** desde la `.mra`; el bitstream no lleva datos del juego. O compílalo
 desde el código (`cores/xexex/`). Ver [`BUILD.md`](BUILD.md).
+
+### WEC Le Mans 24 (Konami, 1986)
+Juego de carreras de cabina (placa GX602). Hardware: **dos MC68000** a 10 MHz (principal + secundaria;
+la secundaria dibuja la carretera y comparte 16 KB de RAM con la principal) + CPU de sonido **Z80** +
+**YM2151** (FM) + **K007232** (PCM) + **007452** (multiplicador/divisor) — más el **blitter** de sprites
+de la placa (un DMA por lista hacia la RAM de sprites), sprites con zoom leídos directamente de ROM, el
+**generador de carretera** discreto y el chip de mezcla de color de la "protección" (interpola dos
+colores RGB444).
+
+**Estado: en desarrollo — arranca y se juega en MiSTer.** El vídeo y el sonido del modo attract,
+grabados en hardware, coinciden con MAME. Pendiente de comprobar: el balance de sonido FM/PCM en partida
+y el centrado en CRT.
+
+> ⚠️ Como Martial Champion y Mystic Warriors, de WEC Le Mans **solo se publican el `.rbf` y el `.mra`**
+> mientras está en desarrollo: `cores/wecleman/` solo contiene `mra/`. Este core **aún no se puede
+> compilar desde este repo**.
 
 ## Construir
 
