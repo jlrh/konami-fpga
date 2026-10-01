@@ -224,6 +224,19 @@ centring.
 > WEC Le Mans while it is WIP: `cores/wecleman/` holds just `mra/`. This core **cannot be built from
 > this repo** yet.
 
+### Hot Chase (Konami, 1988)
+Sit-down racing game (GX763 board), on the same driver as WEC Le Mans. Hardware: **two MC68000** CPUs
+@ 10 MHz (main + sub, sharing 16 KB of RAM) + **6809E** sound CPU + **three K007232** (PCM, no FM) +
+**two K051316** (PSAC: zoomed/rotated background and text layers) — plus the board's sprite **blitter**,
+zoomed sprites read straight from ROM and the road generator.
+
+**Status: work in progress — boots and plays on MiSTer.** In simulation the video matches MAME pixel
+for pixel (160 attract and in-game scenes) and the main CPU runs at MAME's speed. Not yet compared
+against MAME: the audio. A third K051316 on the sub CPU's bus is not emulated by MAME either.
+
+> ⚠️ Like WEC Le Mans, **only the `.rbf` and the `.mra` are published** for Hot Chase while it is WIP:
+> `cores/hotchase/` holds just `mra/`. This core **cannot be built from this repo** yet.
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -512,6 +525,19 @@ y el centrado en CRT.
 > ⚠️ Como Martial Champion y Mystic Warriors, de WEC Le Mans **solo se publican el `.rbf` y el `.mra`**
 > mientras está en desarrollo: `cores/wecleman/` solo contiene `mra/`. Este core **aún no se puede
 > compilar desde este repo**.
+
+### Hot Chase (Konami, 1988)
+Juego de carreras de cabina (placa GX763), del mismo driver que WEC Le Mans. Hardware: **dos MC68000**
+a 10 MHz (principal + secundaria, comparten 16 KB de RAM) + CPU de sonido **6809E** + **tres K007232**
+(PCM, sin FM) + **dos K051316** (PSAC: capas de fondo y texto con zoom/rotación) — más el **blitter** de
+sprites de la placa, sprites con zoom leídos directamente de ROM y el generador de carretera.
+
+**Estado: en desarrollo — arranca y se juega en MiSTer.** En simulación el vídeo coincide con MAME píxel
+a píxel (160 escenas de attract y de partida) y la CPU principal va a la velocidad de MAME. Pendiente de
+comparar con MAME: el sonido. Un tercer K051316 en el bus de la CPU secundaria tampoco lo emula MAME.
+
+> ⚠️ Como WEC Le Mans, de Hot Chase **solo se publican el `.rbf` y el `.mra`** mientras está en
+> desarrollo: `cores/hotchase/` solo contiene `mra/`. Este core **aún no se puede compilar desde este repo**.
 
 ## Construir
 
