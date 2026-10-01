@@ -9,7 +9,7 @@
     <rbf>ffxexex</rbf>
     <joystick>8</joystick>
     <region>World</region>
-    <rom index="0" zip="xexex.zip" md5="None" address="0x30000000" asm_md5="11ad0625f1e7f3e575e1224dfec313e5">
+    <rom index="0" zip="xexex.zip" type="merged" md5="None" address="0x30000000" asm_md5="11ad0625f1e7f3e575e1224dfec313e5">
         <interleave output="16">
             <part name="067aaa02.16f" crc="b7b98d52" map="01"/>
             <part name="067aaa01.16d" crc="cf557144" map="10"/>
