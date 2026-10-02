@@ -1,0 +1,75 @@
+[global]
+
+author=["konami-fpga"]
+
+[parse]
+
+sourcefile=[ "mystwarr.cpp" ]
+skip = { bootlegs=true, setnames=[
+    "metamrph","metamrphe","metamrphj","metamrphu",
+    "viostorm","viostorma","viostormab","viostormb","viostorme","viostormj","viostormu","viostormub",
+    "martchmp","martchmpa","martchmpc","martchmpj","martchmpj1","martchmpu","martchmpu1",
+    "dadandrn","dadandarn","gaiapols","gaiapolsj","gaiapolsu"
+] }
+
+rename = [
+    { setname="mystwarr", name="Mystic Warriors (FF ver EAA)" },
+]
+
+[buttons]
+names = [
+
+    { machine="mystwarr", names="Shoot,Jump,-" },
+]
+
+[header]
+info="Offsets for each ROM region."
+offset = { bits=12, reverse=true, regions=["maincpu","soundcpu","k056832","obj"] }
+
+[ROM]
+
+regions = [
+
+    { name="maincpu",  width=16, reverse=true },
+
+    { name="soundcpu", start="JTFRAME_BA1_START", mirror=true },
+    { name="k054539",  start="PCM_START", rename="pcm" },
+
+    { name="k056832",  start="JTFRAME_BA2_START", width=32, parts=[
+        { name="128a08.1h", crc="63d6cfa0", map="0012" },
+        { name="128a09.1k", crc="573a7725", map="1200" },
+    ] },
+
+    { name="scrx", files=[ { name="128a10.3h", crc="558e545a", size=0x80000 } ] },
+
+    { name="obj", start="JTFRAME_BA3_START", width=64, files=[
+        { name="128a16.22k", crc="459b6407", size=0x100000, offset=0 },
+        { name="128a15.20k", crc="6bbfedf4", size=0x100000, offset=2 },
+        { name="128a14.19k", crc="f7bd89dd", size=0x100000, offset=4 },
+        { name="128a13.17k", crc="e89b66a2", size=0x100000, offset=6 },
+    ] },
+
+    { name="objx", width=16, files=[
+        { name="128a12.12k", crc="63de93e2", size=0x80000, offset=0 },
+        { name="128a11.10k", crc="4eac941a", size=0x80000, offset=1 },
+    ] },
+
+    { name="k055673",  skip=true },
+
+    { name="gfx3",     skip=true },
+    { name="eeprom",   skip=true }
+]
+
+order=["maincpu","soundcpu","pcm","k056832","scrx","obj","objx"]
+
+nvram={ Defaults=[
+    { setname="mystwarr", data="""\
+    03 d7 fc 28 91 28 45 41 41 00 00 00 00 00 00 00
+    00 00 01 01 01 01 00 00 00 00 00 00 00 00 00 00
+    02 01 00 03 00 00 00 20 00 00 00 02 00 00 00 00
+    00 00 00 00 28 03 02 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"""},
+]}

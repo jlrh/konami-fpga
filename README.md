@@ -705,3 +705,17 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | fx68k — MC68000 (CPU principal) -- entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
 | jteeprom — jt5911.sv -- EEPROM en serie de ajustes | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
 <!-- /omf_release:dependencias:ffmtlchamp -->
+
+<!-- omf_release:dependencias:ffmystwarr -->
+## Dependencias externas de `ffmystwarr`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffmystwarr`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes (vtimer, SDRAM, descarga, CPUs 68000/Z80). ⚠ Este core depende de parches al framework, sobre todo `jtframe_romrq_bcache.v`; con un jtframe de fabrica no arranca | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal): fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
+| riders — jt054321.v -- comunicacion 68000<->Z80 (K054321) | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/riders` |
+| jteeprom — jt5911.sv -- EEPROM serie ER5911 | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
+<!-- /omf_release:dependencias:ffmystwarr -->

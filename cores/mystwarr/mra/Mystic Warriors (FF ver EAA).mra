@@ -12,12 +12,10 @@
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="mystwarr.zip" md5="None" address="0x30000000" asm_md5="aa282fd9a09d286288b5c640e440730f">
-
         <part>
             00 00 00 02 40 06 C0 08
             FF FF 00 00 00 00 00 00
         </part>
-
         <interleave output="16">
             <part name="128eaa02.20g" crc="f8ffa352" map="01"/>
             <part name="128eaa01.20f" crc="508f249c" map="10"/>
@@ -27,32 +25,25 @@
             <part name="128a04.19g" crc="88c6a3e4" map="01"/>
             <part name="128a03.19f" crc="e98094f3" map="10"/>
         </interleave>
-
         <part name="128a05.6b" crc="0e5194e0"/>
         <part name="128a05.6b" crc="0e5194e0"/>
-
         <part name="128a06.2d" crc="88ed598c"/>
         <part name="128a07.1d" crc="db79a66e"/>
-
         <interleave output="32">
             <part name="128a08.1h" crc="63d6cfa0" map="0012" length="0x100000"/>
             <part name="128a09.1k" crc="573a7725" map="1200" length="0x100000"/>
         </interleave>
-
         <part name="128a10.3h" crc="558e545a"/>
-
         <interleave output="64">
             <part name="128a16.22k" crc="459b6407" map="00000021"/>
             <part name="128a15.20k" crc="6bbfedf4" map="00002100"/>
             <part name="128a14.19k" crc="f7bd89dd" map="00210000"/>
             <part name="128a13.17k" crc="e89b66a2" map="21000000"/>
         </interleave>
-
         <interleave output="16">
             <part name="128a12.12k" crc="63de93e2" map="01"/>
             <part name="128a11.10k" crc="4eac941a" map="10"/>
         </interleave>
-
     </rom>
     <rom index="2">
         <part>
