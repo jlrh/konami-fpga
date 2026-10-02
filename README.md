@@ -89,10 +89,6 @@ A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game
 tables (`voltab.hex` / `pantab.hex`, math, not game data) and a zero-init table — **no copyrighted
 data**.
 
-> ⚠️ **Only the `.rbf` and the `.mra` are published** for Mystic Warriors:
-> `cores/mystwarr/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot be built from
-> this repo**.
-
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun beat-'em-up (the cartoon cowboys). Hardware (GX151 / Xexex-family board): **MC68000** main
 CPU + **Z80** sound CPU + **YM2151** (FM) + **K054539** (PCM sound) + Konami video customs — **K056832**
@@ -256,9 +252,9 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`mystwarr` and `blswhstl` are the exceptions**: only their `.rbf` and `.mra` are published, so
-> `cores/mystwarr/` and `cores/blswhstl/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot
-> be built from this repo. Everything above applies to `asterix`, `moomesa`, `ssriders` and `mtlchamp`.
+> ⚠️ **`blswhstl` is the exception**: only its `.rbf` and `.mra` are published, so `cores/blswhstl/`
+> holds `mra/` alone — no `hdl/`, no `cfg/` — and it cannot be built from this repo. Everything above
+> applies to `asterix`, `moomesa`, `ssriders`, `mtlchamp` and `mystwarr`.
 
 ## ROMs
 
@@ -383,10 +379,6 @@ Hay un `.rbf` precompilado en [`releases/`](releases/) — **distribuible**: tod
 cargan en **runtime** desde el `.mra`; el bitstream solo hornea las tablas Q16 de volumen/pan del
 K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una tabla de ceros —
 **ningún dato con copyright**.
-
-> ⚠️ De Mystic Warriors **solo se publican el `.rbf` y el `.mra`**:
-> `cores/mystwarr/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core **no se puede compilar
-> desde este repo**.
 
 ### Wild West C.O.W.-Boys of Moo Mesa (Konami, 1992)
 Run-and-gun / yo-contra-el-barrio (los vaqueros de dibujos). Hardware (placa GX151 / familia Xexex):
@@ -554,10 +546,9 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`mystwarr` y `blswhstl` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
-> así que `cores/mystwarr/` y `cores/blswhstl/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y
-> no se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`, `moomesa`, `ssriders` y
-> `mtlchamp`.
+> ⚠️ **`blswhstl` es la excepción**: de él solo se publican el `.rbf` y el `.mra`, así que
+> `cores/blswhstl/` contiene únicamente `mra/` — sin `hdl/` ni `cfg/` — y no se puede compilar desde
+> este repo. Todo lo de arriba vale para `asterix`, `moomesa`, `ssriders`, `mtlchamp` y `mystwarr`.
 
 ## ROMs
 
