@@ -53,7 +53,6 @@
         <dip name="Driving Technique" bits="10" ids="High Technique Required,Normal"/>
         <dip name="Difficulty" bits="11,12" ids="Very Difficult,Difficult,Normal,Easy"/>
         <dip name="Steering and Seat Vibration" bits="13" ids="On,Off"/>
-        <dip name="Steering Wheel Specifications" bits="14" ids="Optical Sensor,Potentiometer"/>
         <dip name="Demo Sounds" bits="15" ids="On,Off"/>
     </switches>
     <buttons names="Accelerator,Brake,Shift,Start,Coin,Core credits" default="A,B,X,Start,Select,-" count="3"/>
