@@ -231,11 +231,13 @@ Sit-down racing game (GX763 board), on the same driver as WEC Le Mans. Hardware:
 zoomed sprites read straight from ROM and the road generator.
 
 **Status: work in progress — boots and plays on MiSTer.** In simulation the video matches MAME pixel
-for pixel (160 attract and in-game scenes) and the main CPU runs at MAME's speed. Not yet compared
-against MAME: the audio. A third K051316 on the sub CPU's bus is not emulated by MAME either.
+for pixel (160 attract and in-game scenes), the main CPU runs at MAME's speed and the sound bench
+matches MAME. A third K051316 on the sub CPU's bus is not emulated by MAME either.
 
-> ⚠️ Like WEC Le Mans, **only the `.rbf` and the `.mra` are published** for Hot Chase while it is WIP:
-> `cores/hotchase/` holds just `mra/`. This core **cannot be built from this repo** yet.
+**Controls** (core menu): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* for the
+left/right buttons (Ramp, Pot + spring, Pot (free), and Optical (GT) — the optical, stopless wheel
+of the Konami GT cabinet; reset after selecting it) and *Ramp speed*. The analog axes are scaled to
+the steering range the game actually uses.
 
 ## Build
 
@@ -533,11 +535,13 @@ a 10 MHz (principal + secundaria, comparten 16 KB de RAM) + CPU de sonido **6809
 sprites de la placa, sprites con zoom leídos directamente de ROM y el generador de carretera.
 
 **Estado: en desarrollo — arranca y se juega en MiSTer.** En simulación el vídeo coincide con MAME píxel
-a píxel (160 escenas de attract y de partida) y la CPU principal va a la velocidad de MAME. Pendiente de
-comparar con MAME: el sonido. Un tercer K051316 en el bus de la CPU secundaria tampoco lo emula MAME.
+a píxel (160 escenas de attract y de partida), la CPU principal va a la velocidad de MAME y el banco de
+sonido coincide con MAME. Un tercer K051316 en el bus de la CPU secundaria tampoco lo emula MAME.
 
-> ⚠️ Como WEC Le Mans, de Hot Chase **solo se publican el `.rbf` y el `.mra`** mientras está en
-> desarrollo: `cores/hotchase/` solo contiene `mra/`. Este core **aún no se puede compilar desde este repo**.
+**Controles** (menú del core): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* para los
+botones izquierda/derecha (Ramp, Pot + spring, Pot (free) y Optical (GT) — el volante óptico sin topes
+del mueble Konami GT; hay que hacer Reset al elegirlo) y *Ramp speed*. Los ejes analógicos se escalan
+al giro que usa realmente el juego.
 
 ## Construir
 
@@ -684,3 +688,16 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jt51 — YM2151 | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
 | jteeprom — EEPROM ER5911 (jt5911.sv) | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
 <!-- /omf_release:dependencias:ffxexex -->
+
+<!-- omf_release:dependencias:ffhotchase -->
+## Dependencias externas de `ffhotchase`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffhotchase`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes: edge/ff, video (vtimer), cpu (jtframe_m68k, jtframe_sys6809 + mc6809i, 68kdtack), ram (dual_ram/ram 8 y 16 bits), sdram, sonido. Probado solo con el arbol jtframe de este proyecto (sin parches que este core necesite), no con el upstream | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal y secundaria) -- entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
+| jt007232 — K007232 (PCM, tres chips): jt007232.v, jt007232_channel.v, jt007232_gain.v | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt007232` |
+<!-- /omf_release:dependencias:ffhotchase -->

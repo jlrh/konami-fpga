@@ -1,0 +1,51 @@
+params:
+
+  - { name: SUB_OFFSET,  value: "(0<<22) | (`SUB_START >> 1)" }
+  - { name: PCM1_OFFSET, value: "(`PCM1_START-`JTFRAME_BA1_START) >> 1" }
+  - { name: PCM2_OFFSET, value: "(`PCM2_START-`JTFRAME_BA1_START) >> 1" }
+  - { name: PCM3_OFFSET, value: "(`PCM3_START-`JTFRAME_BA1_START) >> 1" }
+
+  - { name: PSAC1_OFFSET, value: "(2<<22) | ((`PSAC1_START-`JTFRAME_BA2_START) >> 1)" }
+  - { name: PSAC2_OFFSET, value: "(2<<22) | ((`PSAC2_START-`JTFRAME_BA2_START+32'h8000) >> 1)" }
+download:
+
+  post_addr: true
+  post_data: true
+clocks:
+  clk48:
+
+    - freq: 7159090
+      outputs:
+        - cen_snd
+
+    - freq: 3579545
+      outputs:
+        - cen_pcm
+audio:
+  rsum: 12k
+  gain: 0.5
+
+  channels:
+    - {name: pcm1, rsum: 2k, stereo: true, data_width: 12}
+    - {name: pcm2, rsum: 2k, stereo: true, data_width: 12}
+    - {name: pcm3, rsum: 2k, stereo: true, data_width: 12}
+sdram:
+  banks:
+    - buses:
+        - { name: main, addr_width: 18, data_width: 16 }
+    - buses:
+        - { name: snd,   addr_width: 15, data_width: 8 }
+        - { name: pcm1a, addr_width: 18, data_width: 8, offset: PCM1_OFFSET }
+        - { name: pcm1b, addr_width: 18, data_width: 8, offset: PCM1_OFFSET }
+        - { name: pcm2a, addr_width: 18, data_width: 8, offset: PCM2_OFFSET }
+        - { name: pcm2b, addr_width: 18, data_width: 8, offset: PCM2_OFFSET }
+        - { name: pcm3a, addr_width: 20, data_width: 8, offset: PCM3_OFFSET }
+        - { name: pcm3b, addr_width: 20, data_width: 8, offset: PCM3_OFFSET }
+    - buses:
+        - { name: spr,  addr_width: 22, data_width: 32 }
+    - buses:
+        - { name: road, addr_width: 17, data_width: 16 }
+bram:
+  - { name: sub,   addr_width: 17, data_width: 16, rom: { offset: SUB_OFFSET } }
+  - { name: psac1, addr_width: 17, data_width: 8, rom: { offset: PSAC1_OFFSET } }
+  - { name: psac2, addr_width: 15, data_width: 8, rom: { offset: PSAC2_OFFSET } }

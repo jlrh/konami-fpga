@@ -1,0 +1,41 @@
+[global]
+author=["jlrh"]
+
+[parse]
+sourcefile=[ "wecleman.cpp" ]
+
+skip.setnames = [ "wecleman", "weclemana", "weclemanb", "weclemanc" ]
+rename = [
+    { setname="hotchase",  name="Hot Chase (FF, Konami, 1988)" },
+    { setname="hotchasea", name="Hot Chase (FF, Konami, 1988, set 2)" },
+]
+
+[buttons]
+names = [
+    { machine="hotchase", names="Accelerator,Brake,Shift" },
+]
+
+[dipsw]
+
+delete=[{names=["Unused","Unknown","Steering Wheel Specifications"]}]
+
+[ROM]
+
+regions = [
+    { name="maincpu",   width=16, reverse=true },
+    { name="sub",       start="SUB_START", width=16, reverse=true },
+
+    { name="audiocpu",  start="JTFRAME_BA1_START", no_offset=true, len=0x8000 },
+    { name="k007232_1", start="PCM1_START" },
+    { name="k007232_2", start="PCM2_START" },
+    { name="k007232_3", start="PCM3_START" },
+
+    { name="sprites",   start="JTFRAME_BA2_START", len=0x300000 },
+    { name="k051316_1", start="PSAC1_START" },
+
+    { name="k051316_2", start="PSAC2_START", len=0x10000 },
+    { name="road",      start="JTFRAME_BA3_START" },
+    { name="user1",     start="USER1_START" },
+]
+order = [ "maincpu", "sub", "audiocpu", "k007232_1", "k007232_2", "k007232_3", "sprites",
+          "k051316_1", "k051316_2", "road", "user1" ]

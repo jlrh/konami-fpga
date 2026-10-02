@@ -1,0 +1,21 @@
+hotchase:
+  - get:
+    - "*.v"
+jtframe:
+  - get:
+    - jtframe_edge.v
+    - jtframe_ff.v
+  - from: video
+    get:
+      - jtframe_vtimer.v
+  - from: cpu
+    get:
+      - jtframe_m68k.yaml
+      - jtframe_6809.yaml
+  - from: ram
+    get:
+      - jtframe_dual_ram16.v
+      - jtframe_dual_ram.v
+      - jtframe_ram16.v
+      - jtframe_ram.v
+jt007232:
