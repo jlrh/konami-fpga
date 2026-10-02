@@ -1,0 +1,98 @@
+params:
+
+  - { name: RAM_OFFSET,  value: "22'h200000" }
+  - { name: PCM_OFFSET,  value: "22'h040000>>1" }
+
+  - { name: SCRX_OFFSET, value: "23'h640000>>1" }
+
+  - { name: OBJX_OFFSET, value: "23'h440000>>1" }
+clocks:
+  clk48:
+    - freq: 16M
+      outputs:
+        - cen_16
+        - cen_8
+    - freq: 18432k
+      gate: [pcm]
+      outputs:
+        - cen_pcm
+audio:
+
+  gain: 1.0
+  rsum: 1k
+  rsum_feedback_res: true
+
+  channels:
+    - { name: pcm, module: jt054539, rsum: 1k, rc: [ { r: 4.7k, c: 2.2n } ] }
+sdram:
+  banks:
+
+    - buses:
+        - name: ram
+          addr_width: 16
+          data_width: 16
+          offset: RAM_OFFSET
+          rw: true
+        - name: main
+          addr_width: 22
+          data_width: 16
+
+    - buses:
+        - name: snd
+          addr_width: 17
+        - name: pcm
+          addr_width: 22
+          data_width: 8
+          offset: PCM_OFFSET
+
+        - name: objx
+          addr_width: 21
+          data_width: 16
+          offset: OBJX_OFFSET
+
+        - name: scrx
+          addr_width: 19
+          data_width: 8
+          offset: SCRX_OFFSET
+        - name: scrxb
+          addr_width: 19
+          offset: SCRX_OFFSET
+          data_width: 8
+
+        - name: objxb
+          addr_width: 21
+          data_width: 16
+          offset: OBJX_OFFSET
+
+    - buses:
+        - name: scr
+          addr_width: 21
+          data_width: 32
+
+        - name: scrb
+          addr_width: 21
+          data_width: 32
+
+    - buses:
+        - name: obj
+          addr_width: 23
+          data_width: 32
+
+        - name: objb
+          addr_width: 23
+          data_width: 32
+
+        - name: objc
+          addr_width: 23
+          data_width: 32
+        - name: objd
+          addr_width: 23
+          data_width: 32
+bram:
+
+  - name: nvram
+    addr_width: 7
+    data_width: 8
+    simfile: {}
+    rw: true
+    ioctl: { save: true, restore: true, order: 0 }

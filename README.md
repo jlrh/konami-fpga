@@ -701,3 +701,16 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | fx68k — MC68000 (CPU principal y secundaria) -- entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
 | jt007232 — K007232 (PCM, tres chips): jt007232.v, jt007232_channel.v, jt007232_gain.v | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `modules/jt007232` |
 <!-- /omf_release:dependencias:ffhotchase -->
+
+<!-- omf_release:dependencias:ffmtlchamp -->
+## Dependencias externas de `ffmtlchamp`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffmtlchamp`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes: edge/counter, video (vtimer, jtframe_obj.yaml, linebuf), cpu (jtframe_m68k, jtframe_z80), sdram (dwnld, romrq), ram (dual_nvram16, ram). Probado solo con el arbol jtframe de este proyecto, no con el upstream | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal) -- entra via jtframe_m68k.yaml, pero es un repo aparte: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
+| jteeprom — jt5911.sv -- EEPROM en serie de ajustes | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
+<!-- /omf_release:dependencias:ffmtlchamp -->

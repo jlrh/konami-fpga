@@ -12,12 +12,10 @@
     <joystick>8</joystick>
     <region>World</region>
     <rom index="0" zip="mtlchamp.zip" md5="None" address="0x30000000">
-
         <part>
             00 00 00 04 C0 0A C0 0C
             FF FF 00 00 00 00 00 00
         </part>
-
         <interleave output="16">
             <part name="234eab02.20g" crc="d8bc85c9" map="01"/>
             <part name="234eab01.20f" crc="7c4d1e50" map="10"/>
@@ -27,32 +25,25 @@
             <part name="234_d04.19g" crc="030a1925" map="01"/>
             <part name="234_d03.19f" crc="abb577c6" map="10"/>
         </interleave>
-
         <part name="234_d05.6b" crc="efb6bcaa"/>
         <part name="234_d05.6b" crc="efb6bcaa"/>
-
         <part name="234a06.2d" crc="12d32384"/>
         <part name="234a07.1d" crc="05ee239f"/>
-
         <interleave output="16">
             <part name="234a12.12k" crc="c7f2b099" map="01"/>
             <part name="234a11.10k" crc="82923713" map="10"/>
         </interleave>
-
         <part name="234a10.3h" crc="51f50fe2"/>
-
         <interleave output="32">
             <part name="234a08.1h" crc="27e94288" map="0012" length="0x100000"/>
             <part name="234a09.1k" crc="03aad28f" map="1200" length="0x100000"/>
         </interleave>
-
         <interleave output="64">
             <part name="234a16.22k" crc="14d909a5" map="00000021"/>
             <part name="234a15.20k" crc="a5028418" map="00002100"/>
             <part name="234a14.19k" crc="d7921f47" map="00210000"/>
             <part name="234a13.17k" crc="5974392e" map="21000000"/>
         </interleave>
-
     </rom>
     <rom index="2">
         <part>

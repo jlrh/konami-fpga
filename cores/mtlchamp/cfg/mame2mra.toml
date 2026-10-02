@@ -1,0 +1,78 @@
+[global]
+
+author=["konami-fpga"]
+
+[parse]
+
+sourcefile=[ "mystwarr.cpp" ]
+
+skip = { bootlegs=true, setnames=[
+    "mystwarr","mystwarru","mystwarrj","mystwarra","mystwarraa",
+    "mmaulers","mmaulersu","dadandrn",
+    "viostorm","viostormeb","viostormu","viostormub","viostormubbl",
+    "viostormj","viostorma","viostormab","viostormabbl",
+    "metamrph","metamrphe","metamrphu","metamrphj","metamrpha",
+    "mtlchamp1","mtlchampu","mtlchampu1","mtlchampj","mtlchampa",
+    "gaiapols","gaiapolsu","gaiapolsj"
+] }
+
+rename = [
+    { setname="mtlchamp", name="Martial Champion (FF ver EAB)" },
+]
+
+[buttons]
+
+names = [
+    { machine="mtlchamp", names="Attack,Jump,Special" },
+]
+
+[header]
+info="Offsets for each ROM region."
+offset = { bits=12, reverse=true, regions=["maincpu","soundcpu","k056832","obj"] }
+
+[ROM]
+
+regions = [
+
+    { name="maincpu",  width=16, reverse=true },
+
+    { name="soundcpu", start="JTFRAME_BA1_START", mirror=true },
+    { name="k054539",  start="PCM_START", rename="pcm" },
+
+    { name="objx", start="OBJX_START", width=16, files=[
+        { name="234a12.12k", crc="c7f2b099", size=0x100000, offset=0 },
+        { name="234a11.10k", crc="82923713", size=0x100000, offset=1 },
+    ] },
+
+    { name="k056832",  start="JTFRAME_BA2_START", width=32, parts=[
+        { name="234a08.1h", crc="27e94288", map="0012" },
+        { name="234a09.1k", crc="03aad28f", map="1200" },
+    ] },
+
+    { name="scrx", start="SCRX_START", files=[ { name="234a10.3h", crc="51f50fe2", size=0x80000 } ] },
+
+    { name="obj", start="JTFRAME_BA3_START", width=64, files=[
+        { name="234a16.22k", crc="14d909a5", size=0x200000, offset=0 },
+        { name="234a15.20k", crc="a5028418", size=0x200000, offset=2 },
+        { name="234a14.19k", crc="d7921f47", size=0x200000, offset=4 },
+        { name="234a13.17k", crc="5974392e", size=0x200000, offset=6 },
+    ] },
+
+    { name="k055673",  skip=true },
+
+    { name="eeprom",   skip=true }
+]
+
+order=["maincpu","soundcpu","pcm","objx","scrx","k056832","obj"]
+
+nvram={ Defaults=[
+    { setname="mtlchamp", data="""\
+    04 32 fb cd 92 34 45 41 42 00 00 00 00 00 00 00
+    00 59 4c 00 01 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"""},
+]}
