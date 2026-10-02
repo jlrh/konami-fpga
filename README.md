@@ -58,10 +58,6 @@ A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game
 tables (`voltab.hex` / `pantab.hex`, math, not game data) and a zero-init table — **no copyrighted
 data**.
 
-> ⚠️ Unlike the other cores here, **only the `.rbf` and the `.mra` are published** for Martial
-> Champion: `cores/mtlchamp/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot be
-> built from this repo**.
-
 ### Mystic Warriors: Wrath of the Ninjas (Konami, 1993)
 Four-player ninja run-and-gun (GX128 board, `mystwarr.cpp` family — the same MAME driver as Martial
 Champion, and the game the driver is named after). Hardware: **MC68000** main CPU @ 16 MHz + **Z80**
@@ -93,7 +89,7 @@ A prebuilt `.rbf` is in [`releases/`](releases/) — **distributable**: all game
 tables (`voltab.hex` / `pantab.hex`, math, not game data) and a zero-init table — **no copyrighted
 data**.
 
-> ⚠️ As with Martial Champion, **only the `.rbf` and the `.mra` are published** for Mystic Warriors:
+> ⚠️ **Only the `.rbf` and the `.mra` are published** for Mystic Warriors:
 > `cores/mystwarr/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot be built from
 > this repo**.
 
@@ -165,7 +161,7 @@ Only the **detatwin** (Japan) `.mra` is published here — it is the only set ve
 World (`blswhstl`) and Asia (`blswhstla`) sets share the same ROMs and board but have not been run on
 hardware yet.
 
-> ⚠️ As with Martial Champion and Mystic Warriors, **only the `.rbf` and the `.mra` are published** for
+> ⚠️ As with Mystic Warriors, **only the `.rbf` and the `.mra` are published** for
 > Detana!! Twin Bee: `cores/blswhstl/` holds just `mra/`, with no `hdl/` or `cfg/`. This core **cannot
 > be built from this repo**.
 
@@ -220,7 +216,7 @@ generator**, and the colour-blend "protection" chip (interpolates two RGB444 col
 recorded on hardware, match MAME. Still being checked: the FM/PCM audio balance in-game and CRT
 centring.
 
-> ⚠️ Like Martial Champion and Mystic Warriors, **only the `.rbf` and the `.mra` are published** for
+> ⚠️ Like Mystic Warriors, **only the `.rbf` and the `.mra` are published** for
 > WEC Le Mans while it is WIP: `cores/wecleman/` holds just `mra/`. This core **cannot be built from
 > this repo** yet.
 
@@ -260,10 +256,9 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`mtlchamp`, `mystwarr` and `blswhstl` are the exceptions**: only their `.rbf` and `.mra` are
-> published, so `cores/mtlchamp/`, `cores/mystwarr/` and `cores/blswhstl/` hold `mra/` alone — no
-> `hdl/`, no `cfg/` — and they cannot be built from this repo. Everything above applies to `asterix`,
-> `moomesa` and `ssriders`.
+> ⚠️ **`mystwarr` and `blswhstl` are the exceptions**: only their `.rbf` and `.mra` are published, so
+> `cores/mystwarr/` and `cores/blswhstl/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot
+> be built from this repo. Everything above applies to `asterix`, `moomesa`, `ssriders` and `mtlchamp`.
 
 ## ROMs
 
@@ -357,10 +352,6 @@ se cargan en **runtime** desde el `.mra`; el bitstream solo hornea las tablas Q1
 K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una tabla de ceros —
 **ningún dato con copyright**.
 
-> ⚠️ A diferencia de los otros cores de este repo, de Martial Champion **solo se publican el `.rbf`
-> y el `.mra`**: `cores/mtlchamp/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core **no
-> se puede compilar desde este repo**.
-
 ### Mystic Warriors: Wrath of the Ninjas (Konami, 1993)
 Run-and-gun de ninjas para cuatro jugadores (placa GX128, familia `mystwarr.cpp` — el mismo driver de
 MAME que Martial Champion, y el juego que le da nombre). Hardware: CPU principal **MC68000** @ 16 MHz
@@ -393,7 +384,7 @@ cargan en **runtime** desde el `.mra`; el bitstream solo hornea las tablas Q16 d
 K054539 (`voltab.hex` / `pantab.hex`, matemáticas, no datos del juego) y una tabla de ceros —
 **ningún dato con copyright**.
 
-> ⚠️ Igual que con Martial Champion, de Mystic Warriors **solo se publican el `.rbf` y el `.mra`**:
+> ⚠️ De Mystic Warriors **solo se publican el `.rbf` y el `.mra`**:
 > `cores/mystwarr/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core **no se puede compilar
 > desde este repo**.
 
@@ -468,7 +459,7 @@ Se publica solo el `.mra` del set **detatwin** (Japón) — es el único verific
 World (`blswhstl`) y Asia (`blswhstla`) comparten las mismas ROMs y placa pero todavía no se han
 probado en hardware.
 
-> ⚠️ Igual que con Martial Champion y Mystic Warriors, de Detana!! Twin Bee **solo se publican el
+> ⚠️ Igual que con Mystic Warriors, de Detana!! Twin Bee **solo se publican el
 > `.rbf` y el `.mra`**: `cores/blswhstl/` contiene únicamente `mra/`, sin `hdl/` ni `cfg/`. Este core
 > **no se puede compilar desde este repo**.
 
@@ -524,7 +515,7 @@ colores RGB444).
 grabados en hardware, coinciden con MAME. Pendiente de comprobar: el balance de sonido FM/PCM en partida
 y el centrado en CRT.
 
-> ⚠️ Como Martial Champion y Mystic Warriors, de WEC Le Mans **solo se publican el `.rbf` y el `.mra`**
+> ⚠️ Como Mystic Warriors, de WEC Le Mans **solo se publican el `.rbf` y el `.mra`**
 > mientras está en desarrollo: `cores/wecleman/` solo contiene `mra/`. Este core **aún no se puede
 > compilar desde este repo**.
 
@@ -563,10 +554,10 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`mtlchamp`, `mystwarr` y `blswhstl` son las excepciones**: de ellos solo se publican el
-> `.rbf` y el `.mra`, así que `cores/mtlchamp/`, `cores/mystwarr/` y `cores/blswhstl/` contienen
-> únicamente `mra/` — sin `hdl/` ni `cfg/` — y no se pueden compilar desde este repo. Todo lo de
-> arriba vale para `asterix`, `moomesa` y `ssriders`.
+> ⚠️ **`mystwarr` y `blswhstl` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
+> así que `cores/mystwarr/` y `cores/blswhstl/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y
+> no se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`, `moomesa`, `ssriders` y
+> `mtlchamp`.
 
 ## ROMs
 
