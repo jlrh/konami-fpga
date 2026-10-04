@@ -710,3 +710,17 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | riders — jt054321.v -- comunicacion 68000<->Z80 (K054321) | [https://github.com/jotego/jtcores](https://github.com/jotego/jtcores) | `cores/riders` |
 | jteeprom — jt5911.sv -- EEPROM serie ER5911 | [https://github.com/jotego/jteeprom](https://github.com/jotego/jteeprom) | `modules/jteeprom` |
 <!-- /omf_release:dependencias:ffmystwarr -->
+
+<!-- omf_release:dependencias:ffkonamigt -->
+## Dependencias externas de `ffkonamigt`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffkonamigt`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes: ff/sh, frac_cen, cpu (jtframe_m68k, T80 + jtframe_z80wait), ram (ram, dual_ram, prom), video (blank), sdram, sonido. Probado solo con el arbol jtframe de este proyecto, no con el upstream | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| fx68k — MC68000 (CPU principal) -- entra via jtframe_m68k.yaml: fx68k.sv, fx68kAlu.sv, uaddrPla.sv | [https://github.com/jtfpga/fx68k](https://github.com/jtfpga/fx68k) | `modules/fx68k` |
+| jt49 — 2x AY-3-8910 y jt49_dcrm2. Commit ff924b3 + el parche jt49-custom-exp.patch del core GX400 (macro JT49_EXP, para la curva de compresion medida en placa, nemesis_jt49_exp.v) | [https://github.com/jotego/jt49](https://github.com/jotego/jt49) | `modules/jt49` |
+| GX400 — video K005290-K005295, sonido K005289 y logica de la placa Nemesis de LMN-san, OScherler y Raki (GPLv3): sus ficheros van en hdl/ con sus cabeceras originales | [https://github.com/GX400-Friends/gx400-src](https://github.com/GX400-Friends/gx400-src) | `(incluido en cores/konamigt/hdl)` |
+<!-- /omf_release:dependencias:ffkonamigt -->

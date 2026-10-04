@@ -1,0 +1,48 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Konami GT (FF, Konami, 1985)</name>
+    <setname>konamigt</setname>
+    <mameversion>0288</mameversion>
+    <year>1985</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffkonamigt</rbf>
+    <joystick/>
+    <region>World</region>
+    <rom index="0" zip="konamigt.zip" type="merged" md5="None">
+        <interleave output="16">
+            <part name="561-c05.12c" crc="8d651f44" map="01"/>
+            <part name="561-c01.12a" crc="56245bfd" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="561-c06.13c" crc="209942d4" map="01"/>
+            <part name="561-c02.13a" crc="3407b7cb" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="561-b07.14c" crc="e9bd6250" map="01"/>
+            <part name="561-b03.14a" crc="aef7df48" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="561-b08.15c" crc="b7236567" map="01"/>
+            <part name="561-b04.15a" crc="94bd4bd7" map="10"/>
+        </interleave>
+        <part name="561-b09.9c" crc="539d0c49"/>
+        <part name="400-a01.fse" crc="5827b1e8"/>
+        <part name="400-a02.fse" crc="2f44f970"/>
+    </rom>
+    <rom index="1">
+        <part>00 80</part>
+    </rom>
+    <switches page_id="1" page_name="Switches" base="16" default="ff,6f,ff">
+        <DSW0/>
+        <dip name="Coin A" bits="0,3" ids="Free Play,4/3,4/1,3/4,3/2,3/1,2/5,2/3,2/1,1/7,1/6,1/5,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="4,7" ids="No B,4/3,4/1,3/4,3/2,3/1,2/5,2/3,2/1,1/7,1/6,1/5,1/4,1/3,1/2,1/1"/>
+        <DSW1/>
+        <dip name="Difficulty" bits="12,13" ids="Hardest,Hard,Normal,Easy"/>
+        <dip name="Demo Sounds" bits="15" ids="On,Off"/>
+        <TEST/>
+        <dip name="Flip Screen" bits="16" ids="On,Off"/>
+        <dip name="Service Mode" bits="18" ids="On,Off"/>
+    </switches>
+    <buttons names="Accelerator,Brake,Gear Shift,Start,Coin,Core credits" default="A,B,X,Start,Select,-" count="3"/>
+</misterromdescription>

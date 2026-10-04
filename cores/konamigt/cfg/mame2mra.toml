@@ -1,0 +1,28 @@
+[global]
+author=["jlrh"]
+
+[parse]
+sourcefile=[ "nemesis.cpp" ]
+
+skip.setnames = [ "nemesis", "nemesisuk", "twinbee", "gradius", "gwarrior", "salamand", "salamandj", "lifefrce",
+                  "lifefrcej", "blkpnthr", "citybomb", "citybombj", "kittenk", "nyanpani", "hcrash", "hcrashc",
+                  "bubsys", "twinbeeb", "gradiusb", "rf2", "salamandt", "lifefrceb", "gwarriorb" ]
+rename = [
+    { setname="konamigt", name="Konami GT (FF, Konami, 1985)" },
+]
+
+[buttons]
+names = [
+    { machine="konamigt", names="Accelerator,Brake,Gear Shift" },
+]
+
+[dipsw]
+delete=[{names=["Unused","Unknown"]}]
+
+[ROM]
+regions = [
+    { name="maincpu",  width=16, reverse=true },
+    { name="audiocpu", start="SND_START", len=0x4000 },
+    { name="k005289",  start="JTFRAME_PROM_START" },
+]
+order = [ "maincpu", "audiocpu", "k005289" ]

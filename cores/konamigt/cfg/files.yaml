@@ -1,0 +1,24 @@
+konamigt:
+  - get:
+    - "*.v"
+jtframe:
+  - get:
+    - jtframe_ff.v
+    - jtframe_sh.v
+  - from: clocking
+    get:
+      - jtframe_frac_cen.v
+  - from: cpu
+    get:
+      - jtframe_m68k.yaml
+      - T80.yaml
+      - jtframe_z80wait.v
+  - from: ram
+    get:
+      - jtframe_ram.v
+      - jtframe_dual_ram.v
+      - jtframe_prom.v
+  - from: video
+    get:
+      - jtframe_blank.v
+jt49:
