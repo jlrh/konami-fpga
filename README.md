@@ -231,6 +231,23 @@ left/right buttons (Ramp, Pot + spring, Pot (free), and Optical (GT) — the opt
 of the Konami GT cabinet; reset after selecting it) and *Ramp speed*. The analog axes are scaled to
 the steering range the game actually uses.
 
+### Chequered Flag (Konami, 1988)
+Sit-down racing game (GX717 board), vertical screen. Hardware: **Konami 052001** main CPU (6809-based) +
+**Z80** sound CPU + **YM2151** (FM) + **two K007232** (PCM) + Konami video customs — **two K051316** (PSAC:
+road and background layers with zoom/rotation), **K051960/K051937** (sprites) and **K051733** (maths and
+collision).
+
+**Status: boots and plays on MiSTer, tested on hardware.** In simulation the video matches MAME pixel for
+pixel (170 attract and in-game scenes). Flip 180° in the core menu (also on CRT).
+
+**Controls** (core menu): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* for the
+left/right buttons (Ramp, Pot + spring, Pot (free)) and *Ramp speed*. The accelerator is analog, as on
+the original pedal; the analog axes are scaled to the steering range the game actually uses. Button 3
+is the LOW/HIGH gear lever.
+
+> ⚠️ The main CPU needs our fix to `jtkcpu` (Z/C flags of `MUL`/`LMUL`, as in MAME): see
+> `cores/chequeredflag/patches/` and the dependencies of `ffcheqflag` below.
+
 ### Over Drive (Konami, 1990)
 Sit-down racing game (GX789 board), vertical screen. Hardware: **two MC68000** CPUs (main + sub) +
 **6809** sound CPU + **YM2151** (FM) + **two K053260** (PCM) + Konami video customs — **two K051316**
@@ -297,7 +314,7 @@ cores/<core>/
 > ⚠️ **`wecleman` and `overdriv` are the exceptions**: only their `.rbf` and `.mra` are published, so
 > `cores/wecleman/` and `cores/overdriv/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot be
 > built from this repo. Everything above applies to `asterix`, `blswhstl`, `moomesa`, `ssriders`,
-> `mtlchamp`, `mystwarr`, `xexex`, `hotchase` and `konamigt`.
+> `mtlchamp`, `mystwarr`, `xexex`, `hotchase`, `konamigt` and `chequeredflag`.
 
 ## ROMs
 
@@ -571,6 +588,23 @@ botones izquierda/derecha (Ramp, Pot + spring, Pot (free) y Optical (GT) — el 
 del mueble Konami GT; hay que hacer Reset al elegirlo) y *Ramp speed*. Los ejes analógicos se escalan
 al giro que usa realmente el juego.
 
+### Chequered Flag (Konami, 1988)
+Juego de carreras de cabina (placa GX717), pantalla vertical. Hardware: CPU principal **Konami 052001**
+(derivada del 6809) + CPU de sonido **Z80** + **YM2151** (FM) + **dos K007232** (PCM) + customs de vídeo
+de Konami — **dos K051316** (PSAC: capas de carretera y fondo con zoom/rotación), **K051960/K051937**
+(sprites) y **K051733** (cálculo y colisiones).
+
+**Estado: arranca y se juega en MiSTer, probado en placa.** En simulación el vídeo coincide con MAME píxel
+a píxel (170 escenas de attract y de partida). Flip 180° en el menú del core (también en CRT).
+
+**Controles** (menú del core): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* para los
+botones izquierda/derecha (Ramp, Pot + spring, Pot (free)) y *Ramp speed*. El acelerador es analógico,
+como el pedal original; los ejes analógicos se escalan al giro que usa realmente el juego. El botón 3 es
+la palanca de marchas LOW/HIGH.
+
+> ⚠️ La CPU principal necesita nuestro arreglo de `jtkcpu` (flags Z/C de `MUL`/`LMUL`, como MAME): ver
+> `cores/chequeredflag/patches/` y las dependencias de `ffcheqflag` más abajo.
+
 ### Over Drive (Konami, 1990)
 Juego de carreras de cabina (placa GX789), pantalla vertical. Hardware: **dos MC68000** (principal +
 secundaria) + CPU de sonido **6809** + **YM2151** (FM) + **dos K053260** (PCM) + chips de vídeo Konami —
@@ -636,7 +670,7 @@ cores/<core>/
 > ⚠️ **`wecleman` y `overdriv` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
 > así que `cores/wecleman/` y `cores/overdriv/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y no
 > se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`, `blswhstl`, `moomesa`,
-> `ssriders`, `mtlchamp`, `mystwarr`, `xexex`, `hotchase` y `konamigt`.
+> `ssriders`, `mtlchamp`, `mystwarr`, `xexex`, `hotchase`, `konamigt` y `chequeredflag`.
 
 ## ROMs
 
