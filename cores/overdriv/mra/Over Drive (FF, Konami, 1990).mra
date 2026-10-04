@@ -1,0 +1,44 @@
+<misterromdescription>
+    <rotation>vertical (cw)</rotation>
+    <name>Over Drive (FF, Konami, 1990)</name>
+    <setname>overdriv</setname>
+    <mameversion>0288</mameversion>
+    <year>1990</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffoverdriv</rbf>
+    <joystick/>
+    <region>World</region>
+    <rom index="0" zip="overdriv.zip" type="merged" md5="None">
+        <interleave output="16">
+            <part name="789_n04.b17" crc="aefe87a6" map="01"/>
+            <part name="789_n05.d17" crc="f7885713" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="789_e08.k10" crc="24427195" map="01"/>
+            <part name="789_e09.l10" crc="46fb7e88" map="10"/>
+        </interleave>
+        <part name="789_e01.e4" crc="1085f069"/>
+        <part name="789e03.j1" crc="51ebfebe"/>
+        <part name="789e02.f1" crc="bdd3b5c6"/>
+        <part name="789e06.a21" crc="14a085e6"/>
+        <interleave output="64">
+            <part name="789e12.r1" crc="14a10fb2" map="00000021"/>
+            <part name="789e13.r4" crc="6314a628" map="00002100"/>
+            <part name="789e14.r10" crc="b5eca14b" map="00210000"/>
+            <part name="789e15.r15" crc="5d93e0c3" map="21000000"/>
+        </interleave>
+        <part name="789e18.p22" crc="985a4a75"/>
+        <part name="789e19.r22" crc="15c54ea2"/>
+        <part name="789e20.s22" crc="ea204acd"/>
+        <part name="789e17.p17" crc="04c07248"/>
+        <part name="789e16.p12" crc="9348dee1"/>
+        <part repeat="0x10000"> FF</part>
+        <part name="789e07.c23" crc="8a6ceab9"/>
+    </rom>
+    <nvram index="2" size="128"/>
+    <rom index="1">
+        <part>01 80</part>
+    </rom>
+    <buttons names="Accelerator,Brake,Shift,Start,Coin,Core credits" default="A,B,X,Start,Select,-" count="3"/>
+</misterromdescription>
