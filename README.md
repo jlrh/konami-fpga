@@ -2,6 +2,8 @@
 
 Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer**.
 
+<!-- MOSAICO:AUTO -->
+
 ## Horizontal
 
 <table>
@@ -31,6 +33,10 @@ Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer*
 <td align="center" width="33%"><a href="DETAILS.md#over-drive-konami-1990"><img src="docs/screens/overdriv.png" alt="Over Drive"></a><br><b>Over Drive</b> · 1990</td>
 </tr>
 </table>
+
+<!-- /MOSAICO:AUTO -->
+
+<!-- INSTALAR:AUTO -->
 
 ## How to install the Konami cores on your MiSTer FPGA
 
@@ -80,3 +86,5 @@ espera cada core está en [`ROMS.md`](https://github.com/jlrh/jlrh-misterfpga-db
 
 Hechos sobre el framework **JTFRAME** (GPLv3). Proyecto independiente — **no** es un core oficial de jotego. Licencia:
 GPLv3 ([`LICENSE`](LICENSE)).
+
+<!-- /INSTALAR:AUTO -->
