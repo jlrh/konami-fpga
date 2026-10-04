@@ -231,6 +231,48 @@ left/right buttons (Ramp, Pot + spring, Pot (free), and Optical (GT) — the opt
 of the Konami GT cabinet; reset after selecting it) and *Ramp speed*. The analog axes are scaled to
 the steering range the game actually uses.
 
+### Over Drive (Konami, 1990)
+Sit-down racing game (GX789 board), vertical screen. Hardware: **two MC68000** CPUs (main + sub) +
+**6809** sound CPU + **YM2151** (FM) + **two K053260** (PCM) + Konami video customs — **two K051316**
+(PSAC: background and cockpit layers with zoom/rotation), **K053246/K053247** (sprites), **two K053250**
+(LVC: the road), **K053251** (priority mixer), **K053252** (CRTC) — plus a math coprocessor on the sub
+CPU's bus and a serial **EEPROM** for settings and records.
+
+> ℹ️ MAME is **not** a complete reference for this game (`MACHINE_NOT_WORKING`): it does not draw the
+> road, does not emulate the coprocessor and gets the CPU interrupts wrong, so its game speed is off. The
+> core was checked against **video recorded from a real PCB** and against a MAME patched to match that
+> video; where the two disagree, the PCB wins.
+
+**Status: work in progress — boots and plays on MiSTer**, with the road, the coprocessor, the visible
+window measured on the PCB, Flip 180° and Test/Service in the core menu. Saving settings and records
+(EEPROM to SD) is in this build but not yet confirmed on hardware.
+
+**Controls** (core menu): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* (Ramp,
+Pot + spring, Pot (free)) and *Ramp speed*. The steering wheel is held centred for the first second
+after boot, because the game calibrates its centre then.
+
+Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
+
+### Konami GT (Konami, 1985)
+Sit-down racing game (GX400 board, game 561) — the same board as Nemesis/Gradius, with a steering
+wheel and pedal card in place of the joystick. Hardware: **MC68000** main CPU @ 9.2 MHz + **Z80** sound
+CPU + **two AY-3-8910** + **K005289** (wavetable sound) + the GX400 video customs **K005290–K005295**
+(two tilemaps with character RAM, zoomed sprites).
+
+The GX400 video, sound and board logic are the **GX400 core by LMN-san, OScherler and Raki** (GPLv3),
+built from the schematics and measured on real boards; this core reuses it as is. The new part is the
+Konami GT memory map and the wheel/pedal card.
+
+**Status: work in progress — boots and plays on MiSTer.** In simulation the video matches MAME frame by
+frame in boot, attract and race start; the only differences are inside zoomed sprites, where MAME uses an
+approximate zoom rule and the GX400 core follows the measured board. The sound bench (Z80 + 2× AY +
+K005289) matches MAME's timing.
+
+**Controls** (core menu): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* for the
+left/right buttons (Ramp, Pot + spring, Pot (free) and Optical (GT) — the cabinet's own optical,
+stopless wheel; no reset needed) and *Ramp speed*, plus *Spinner as wheel* for a MiSTer spinner or
+mouse. The accelerator has 4 levels and the brake 2, as on the original pedals.
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -252,9 +294,10 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`blswhstl` is the exception**: only its `.rbf` and `.mra` are published, so `cores/blswhstl/`
-> holds `mra/` alone — no `hdl/`, no `cfg/` — and it cannot be built from this repo. Everything above
-> applies to `asterix`, `moomesa`, `ssriders`, `mtlchamp` and `mystwarr`.
+> ⚠️ **`wecleman` and `overdriv` are the exceptions**: only their `.rbf` and `.mra` are published, so
+> `cores/wecleman/` and `cores/overdriv/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot be
+> built from this repo. Everything above applies to `asterix`, `blswhstl`, `moomesa`, `ssriders`,
+> `mtlchamp`, `mystwarr`, `xexex`, `hotchase` and `konamigt`.
 
 ## ROMs
 
@@ -269,6 +312,8 @@ sprites) is loaded at runtime, so the `.rbf` carries no copyrighted data.
   `konami/tmnt2.cpp` drivers, `k052109.cpp` / `k053244_k053245.cpp` / `k053251.cpp` / `k054000.cpp`
   video/collision chips)
 - **Furrtek** — silicon reverse-engineering of the K054539
+- **LMN-san, OScherler and Raki** — the GPLv3 GX400 core (video, sound and board logic) that Konami GT
+  reuses
 
 ## Acknowledgements
 
@@ -526,6 +571,48 @@ botones izquierda/derecha (Ramp, Pot + spring, Pot (free) y Optical (GT) — el 
 del mueble Konami GT; hay que hacer Reset al elegirlo) y *Ramp speed*. Los ejes analógicos se escalan
 al giro que usa realmente el juego.
 
+### Over Drive (Konami, 1990)
+Juego de carreras de cabina (placa GX789), pantalla vertical. Hardware: **dos MC68000** (principal +
+secundaria) + CPU de sonido **6809** + **YM2151** (FM) + **dos K053260** (PCM) + chips de vídeo Konami —
+**dos K051316** (PSAC: capas de fondo y de cabina con zoom/rotación), **K053246/K053247** (sprites), **dos
+K053250** (LVC: la carretera), **K053251** (mezclador de prioridades), **K053252** (CRTC) — más un
+coprocesador matemático en el bus de la CPU secundaria y una **EEPROM** serie para ajustes y récords.
+
+> ℹ️ MAME **no** es una referencia completa para este juego (`MACHINE_NOT_WORKING`): no dibuja la
+> carretera, no emula el coprocesador y tiene mal las interrupciones de las CPUs, así que la velocidad
+> del juego no es la real. El core se ha comprobado contra **vídeo grabado de una PCB real** y contra un
+> MAME parcheado para casar con ese vídeo; donde no coinciden, manda la PCB.
+
+**Estado: en desarrollo — arranca y se juega en MiSTer**, con la carretera, el coprocesador, la ventana
+visible medida en la PCB, Flip 180° y Test/Service en el menú del core. Guardar ajustes y récords (EEPROM
+en la SD) está en este build pero aún no se ha confirmado en placa.
+
+**Controles** (menú del core): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* (Ramp,
+Pot + spring, Pot (free)) y *Ramp speed*. El volante se mantiene centrado durante el primer segundo tras
+el arranque, porque el juego calibra su centro en ese momento.
+
+De este core solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
+### Konami GT (Konami, 1985)
+Juego de carreras de cabina (placa GX400, juego 561) — la misma placa que Nemesis/Gradius, con una
+tarjeta de volante y pedales en lugar del joystick. Hardware: CPU principal **MC68000** a 9,2 MHz + CPU
+de sonido **Z80** + **dos AY-3-8910** + **K005289** (sonido por tabla de ondas) + los chips de vídeo GX400
+**K005290–K005295** (dos capas de tiles con RAM de caracteres, sprites con zoom).
+
+El vídeo, el sonido y la lógica de la placa GX400 son el **core GX400 de LMN-san, OScherler y Raki**
+(GPLv3), hecho a partir de los esquemas y medido en placas reales; este core lo reutiliza tal cual. Lo
+nuevo es el mapa de memoria de Konami GT y la tarjeta de volante y pedales.
+
+**Estado: en desarrollo — arranca y se juega en MiSTer.** En simulación el vídeo coincide con MAME
+cuadro a cuadro en el arranque, el attract y la salida de la carrera; las únicas diferencias están dentro
+de los sprites con zoom, donde MAME usa una regla de zoom aproximada y el core GX400 sigue la placa
+medida. El banco de sonido (Z80 + 2× AY + K005289) coincide con los tiempos de MAME.
+
+**Controles** (menú del core): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* para los
+botones izquierda/derecha (Ramp, Pot + spring, Pot (free) y Optical (GT) — el volante óptico sin topes
+del propio mueble; no hace falta Reset) y *Ramp speed*, además de *Spinner as wheel* para un spinner o
+ratón de MiSTer. El acelerador tiene 4 niveles y el freno 2, como los pedales originales.
+
 ## Construir
 
 Este repo contiene **solo el código del core** (`cores/<core>/`, p.ej. `cores/asterix/`,
@@ -546,9 +633,10 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`blswhstl` es la excepción**: de él solo se publican el `.rbf` y el `.mra`, así que
-> `cores/blswhstl/` contiene únicamente `mra/` — sin `hdl/` ni `cfg/` — y no se puede compilar desde
-> este repo. Todo lo de arriba vale para `asterix`, `moomesa`, `ssriders`, `mtlchamp` y `mystwarr`.
+> ⚠️ **`wecleman` y `overdriv` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
+> así que `cores/wecleman/` y `cores/overdriv/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y no
+> se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`, `blswhstl`, `moomesa`,
+> `ssriders`, `mtlchamp`, `mystwarr`, `xexex`, `hotchase` y `konamigt`.
 
 ## ROMs
 
@@ -563,6 +651,8 @@ carga en runtime, así que el `.rbf` no lleva ningún dato con copyright.
   `konami/asterix.cpp` y `konami/tmnt2.cpp`, chips de vídeo/colisión `k052109.cpp` /
   `k053244_k053245.cpp` / `k053251.cpp` / `k054000.cpp`)
 - **Furrtek** — ingeniería inversa del silicio del K054539
+- **LMN-san, OScherler y Raki** — el core GX400 (GPLv3: vídeo, sonido y lógica de la placa) que
+  reutiliza Konami GT
 
 ## Agradecimientos
 
@@ -724,3 +814,17 @@ hacen falta estas piezas, que se distribuyen desde su propio origen:
 | jt49 — 2x AY-3-8910 y jt49_dcrm2. Commit ff924b3 + el parche jt49-custom-exp.patch del core GX400 (macro JT49_EXP, para la curva de compresion medida en placa, nemesis_jt49_exp.v) | [https://github.com/jotego/jt49](https://github.com/jotego/jt49) | `modules/jt49` |
 | GX400 — video K005290-K005295, sonido K005289 y logica de la placa Nemesis de LMN-san, OScherler y Raki (GPLv3): sus ficheros van en hdl/ con sus cabeceras originales | [https://github.com/GX400-Friends/gx400-src](https://github.com/GX400-Friends/gx400-src) | `(incluido en cores/konamigt/hdl)` |
 <!-- /omf_release:dependencias:ffkonamigt -->
+
+<!-- omf_release:dependencias:ffcheqflag -->
+## Dependencias externas de `ffcheqflag`
+
+Este repositorio contiene **solo el código de los cores**. Para compilar `ffcheqflag`
+hacen falta estas piezas, que se distribuyen desde su propio origen:
+
+| Qué | De dónde | Dónde va |
+|---|---|---|
+| jtframe — framework de compilacion y modulos comunes (vtimer, line buffers, objetos, Z80, SDRAM, descarga). Probado solo con el arbol jtframe de este proyecto, no con el upstream | [https://github.com/jotego/jtframe](https://github.com/jotego/jtframe) | `modules/jtframe` |
+| jtkcpu — CPU Konami 052001 (CPU principal). Commit 4b9caa1 + cores/chequeredflag/patches/jtkcpu_alu-mul-lmul-flags.patch (flags Z/C de MUL y LMUL como MAME; sin el, las multiplicaciones del juego salen desviadas en +-1) | [https://github.com/jotego/jtkcpu](https://github.com/jotego/jtkcpu) | `modules/jtkcpu` |
+| jt51 — YM2151 | [https://github.com/jotego/jt51](https://github.com/jotego/jt51) | `modules/jt51` |
+| jt007232 — 2x K007232 (PCM) | [https://github.com/jotego/jt007232](https://github.com/jotego/jt007232) | `modules/jt007232` |
+<!-- /omf_release:dependencias:ffcheqflag -->

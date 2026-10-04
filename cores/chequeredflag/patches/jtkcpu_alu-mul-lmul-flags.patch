@@ -1,0 +1,20 @@
+--- a/jtkcpu/hdl/jtkcpu_alu.v
++++ b/jtkcpu/hdl/jtkcpu_alu.v
+@@ -337,7 +337,7 @@
+         end
+         LMUL: begin
+             { rslt_hi, rslt }  = opnd0*opnd1;
+-            c_out = rslt_hi[15];
++            c_out = rslt[15];
+         end
+         //
+         ABSA, ABSB, ABSD: begin  // ABS
+@@ -363,6 +363,8 @@
+ 
+     if( up_z )
+         z_out = alu16 ? rslt==0 : rslt[7:0]==0;
++    if( op==MUL  ) z_out = rslt==0;
++    if( op==LMUL ) z_out = {rslt_hi, rslt}==0;
+     if( up_n )
+         n_out = rslt[msb];
+ end

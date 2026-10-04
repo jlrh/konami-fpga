@@ -1,0 +1,18 @@
+chequeredflag:
+  - get:
+    - "*.v"
+jtframe:
+  - get:
+    - jtframe_edge.v
+    - jtframe_counter.v
+  - from: video
+    get:
+      - jtframe_vtimer.v
+      - jtframe_obj.yaml
+      - jtframe_linebuf.v
+  - from: cpu
+    get:
+      - jtframe_z80.yaml
+jtkcpu:
+jt51:
+jt007232:

@@ -1,0 +1,33 @@
+[global]
+
+author=["jlrh"]
+
+[parse]
+sourcefile=[ "chqflag.cpp" ]
+
+rename = [
+    { setname="chqflag",  name="Chequered Flag (FF, Konami, 1988)" },
+    { setname="chqflagj", name="Chequered Flag (FF, Japan, Konami, 1988)" },
+]
+
+[buttons]
+names = [
+    { machine="chqflag",  names="Accelerator,Brake,Shift" },
+    { machine="chqflagj", names="Accelerator,Brake,Shift" },
+]
+
+[dipsw]
+delete=[{names=["Unused","Unknown"]}]
+
+[ROM]
+regions = [
+    { name="maincpu" },
+    { name="audiocpu",  start="JTFRAME_BA1_START" },
+    { name="k007232_1", start="PCM_START" },
+    { name="k007232_2", start="PCM2_START" },
+
+    { name="k051316_2", start="PSAC2A_START", sequence=[0,1,2,3,0,1,2,3] },
+    { name="k051960",   start="JTFRAME_BA3_START", width=32, reverse=true },
+    { name="k051316_1", start="PSAC1_START" },
+]
+order = [ "maincpu", "audiocpu", "k007232_1", "k007232_2", "k051316_2", "k051960", "k051316_1" ]

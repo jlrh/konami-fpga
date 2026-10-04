@@ -1,0 +1,48 @@
+<misterromdescription>
+    <rotation>vertical (cw)</rotation>
+    <name>Chequered Flag (FF, Konami, 1988)</name>
+    <setname>chqflag</setname>
+    <mameversion>0288</mameversion>
+    <year>1988</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffcheqflag</rbf>
+    <joystick/>
+    <region>World</region>
+    <rom index="0" zip="chqflag.zip" type="merged" md5="None" address="0x30000000">
+        <part name="717e10" crc="72fc56f6"/>
+        <part name="717h02" crc="f5bd4e78"/>
+        <part name="717e01" crc="966b8ba8"/>
+        <part name="717e03" crc="ebe73c22"/>
+        <part name="717e09" crc="d74e857d"/>
+        <part name="717e07.l20" crc="b9a565a8"/>
+        <part name="717e08.l22" crc="b68a212e"/>
+        <part name="717e11.n20" crc="ebb171ec"/>
+        <part name="717e12.n22" crc="9269335d"/>
+        <part name="717e07.l20" crc="b9a565a8"/>
+        <part name="717e08.l22" crc="b68a212e"/>
+        <part name="717e11.n20" crc="ebb171ec"/>
+        <part name="717e12.n22" crc="9269335d"/>
+        <interleave output="32">
+            <part name="717e05" crc="46ccb506" map="0012"/>
+            <part name="717e04" crc="1a50a1cc" map="1200"/>
+        </interleave>
+        <part name="717e06.n16" crc="1ec26c7a"/>
+    </rom>
+    <rom index="1">
+        <part>01 80</part>
+    </rom>
+    <switches page_id="1" page_name="Switches" base="16" default="ff,5f,ff,ff">
+        <DSW1/>
+        <dip name="Coin A" bits="0,3" ids="Free Play,4/3,4/1,3/4,3/2,3/1,2/5,2/3,2/1,1/7,1/6,1/5,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="4,7" ids="Invalid,4/3,4/1,3/4,3/2,3/1,2/5,2/3,2/1,1/7,1/6,1/5,1/4,1/3,1/2,1/1"/>
+        <DSW2/>
+        <dip name="Difficulty" bits="13,14" ids="Very Difficult,Difficult,Normal,Easy"/>
+        <dip name="Demo Sounds" bits="15" ids="On,Off"/>
+        <IN0/>
+        <IN1/>
+        <dip name="Title" bits="30" ids="Checkered Flag,Chequered Flag"/>
+        <dip name="Service Mode" bits="31" ids="On,Off"/>
+    </switches>
+    <buttons names="Accelerator,Brake,Shift,Start,Coin,Core credits" default="A,B,X,Start,Select,-" count="3"/>
+</misterromdescription>
