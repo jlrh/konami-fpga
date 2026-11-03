@@ -10,16 +10,19 @@ Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer*
 <tr>
 <td align="center" width="33%"><a href="DETAILS.md#asterix-konami-1993"><img src="docs/screens/asterix.png" alt="Asterix"></a><br><b>Asterix</b> · 1993</td>
 <td align="center" width="33%"><a href="DETAILS.md#wild-west-cow-boys-of-moo-mesa-konami-1992"><img src="docs/screens/moomesa.png" alt="Wild West C.O.W.-Boys of Moo Mesa"></a><br><b>C.O.W.-Boys of Moo Mesa</b> · 1992</td>
-<td align="center" width="33%"><a href="DETAILS.md#hot-chase-konami-1988"><img src="docs/screens/hotchase.png" alt="Hot Chase"></a><br><b>Hot Chase</b> · 1988</td>
+<td align="center" width="33%"><a href="DETAILS.md#gti-club-konami-1996"><img src="docs/screens/gticlub.png" alt="GTI Club"></a><br><b>GTI Club</b> · 1996</td>
 </tr>
 <tr>
+<td align="center" width="33%"><a href="DETAILS.md#hot-chase-konami-1988"><img src="docs/screens/hotchase.png" alt="Hot Chase"></a><br><b>Hot Chase</b> · 1988</td>
 <td align="center" width="33%"><a href="DETAILS.md#konami-gt-konami-1985"><img src="docs/screens/konamigt.png" alt="Konami GT"></a><br><b>Konami GT</b> · 1985</td>
 <td align="center" width="33%"><a href="DETAILS.md#martial-champion-konami-1993"><img src="docs/screens/mtlchamp.png" alt="Martial Champion"></a><br><b>Martial Champion</b> · 1993</td>
-<td align="center" width="33%"><a href="DETAILS.md#mystic-warriors-wrath-of-the-ninjas-konami-1993"><img src="docs/screens/mystwarr.png" alt="Mystic Warriors"></a><br><b>Mystic Warriors</b> · 1993</td>
 </tr>
 <tr>
+<td align="center" width="33%"><a href="DETAILS.md#mystic-warriors-wrath-of-the-ninjas-konami-1993"><img src="docs/screens/mystwarr.png" alt="Mystic Warriors"></a><br><b>Mystic Warriors</b> · 1993</td>
 <td align="center" width="33%"><a href="DETAILS.md#sunset-riders-konami-1991"><img src="docs/screens/ssriders.png" alt="Sunset Riders"></a><br><b>Sunset Riders</b> · 1991</td>
 <td align="center" width="33%"><a href="DETAILS.md#wec-le-mans-24-konami-1986"><img src="docs/screens/wecleman.png" alt="WEC Le Mans 24"></a><br><b>WEC Le Mans 24</b> · 1986</td>
+</tr>
+<tr>
 <td align="center" width="33%"><a href="DETAILS.md#xexex-konami-1991"><img src="docs/screens/xexex.png" alt="Xexex"></a><br><b>Xexex</b> · 1991</td>
 </tr>
 </table>

@@ -290,6 +290,30 @@ left/right buttons (Ramp, Pot + spring, Pot (free) and Optical (GT) — the cabi
 stopless wheel; no reset needed) and *Ramp speed*, plus *Spinner as wheel* for a MiSTer spinner or
 mouse. The accelerator has 4 levels and the brake 2, as on the original pedals.
 
+### GTI Club (Konami, 1996)
+Sit-down 3D rally game (Konami's PowerPC "Hornet"-era hardware). Hardware: **PowerPC 403GA** main CPU
+@ 32 MHz + **ADSP-21062 SHARC** DSP @ 36 MHz (3D geometry) + **K001005/K001006** (3D rasteriser with
+z-buffer, textures and palette) + **K001604** (two 2D tilemap layers with rotation/zoom) + **68EC000**
+sound CPU + **RF5C400** (32-channel PCM). Video 512×384 at 24 kHz.
+
+Unlike the other cores here, it is **not** built on JTFRAME: the PowerPC, the SHARC, the 3D pipeline,
+the K001604 and the RF5C400 are new, written for this core; the sound CPU is **fx68k** (Jorge Cwik).
+
+**Status: work in progress — boots and plays on MiSTer, tested on hardware.** Passes the POST, attract
+and full races with 3D and textures, including Very Hard. Two builds:
+
+- **`GTI Club (FF, Konami, 1996)`** (`ffgticlub`): HDMI, as usual.
+- **`GTI Club CRT 480i (FF, Konami, 1996)`** (`ffgticlubsd`): for CRTs. **No HDMI output**: the 24 kHz
+  picture goes out of the analog port as 480i, through the **crt480i** module by Chris Watson
+  (GPL-2.0-or-later); the core menu has a *CRT 480i* page (Deflicker, Height, H/V position).
+
+**Controls** (core menu): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* for the
+left/right buttons (Ramp, Pot + spring, Pot (free)) and *Ramp speed*; analog accelerator and brake.
+The cabinet's motorised wheel is emulated for the boot calibration, so there is no *DEVICE ERROR* and
+every course can be chosen.
+
+Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -311,8 +335,8 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`wecleman` and `overdriv` are the exceptions**: only their `.rbf` and `.mra` are published, so
-> `cores/wecleman/` and `cores/overdriv/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot be
+> ⚠️ **`wecleman`, `overdriv` and `gticlub` are the exceptions**: only their `.rbf` and `.mra` are published, so
+> `cores/wecleman/`, `cores/overdriv/` and `cores/gticlub/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot be
 > built from this repo. Everything above applies to `asterix`, `blswhstl`, `moomesa`, `ssriders`,
 > `mtlchamp`, `mystwarr`, `xexex`, `hotchase`, `konamigt` and `chequeredflag`.
 
@@ -647,6 +671,31 @@ botones izquierda/derecha (Ramp, Pot + spring, Pot (free) y Optical (GT) — el 
 del propio mueble; no hace falta Reset) y *Ramp speed*, además de *Spinner as wheel* para un spinner o
 ratón de MiSTer. El acelerador tiene 4 niveles y el freno 2, como los pedales originales.
 
+### GTI Club (Konami, 1996)
+Juego de rally 3D de cabina (hardware PowerPC de Konami de la época "Hornet"). Hardware: CPU principal
+**PowerPC 403GA** a 32 MHz + DSP **ADSP-21062 SHARC** a 36 MHz (geometría 3D) + **K001005/K001006**
+(rasterizador 3D con z-buffer, texturas y paleta) + **K001604** (dos capas de tiles 2D con rotación/zoom)
++ CPU de sonido **68EC000** + **RF5C400** (PCM de 32 canales). Vídeo 512×384 a 24 kHz.
+
+A diferencia del resto de cores de este repo, **no** está hecho sobre JTFRAME: el PowerPC, la SHARC, el
+3D, el K001604 y el RF5C400 son nuevos, escritos para este core; la CPU de sonido es **fx68k** (Jorge
+Cwik).
+
+**Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa.** Pasa el POST, el attract y
+carreras completas con 3D y texturas, también en Very Hard. Dos versiones:
+
+- **`GTI Club (FF, Konami, 1996)`** (`ffgticlub`): HDMI, la de siempre.
+- **`GTI Club CRT 480i (FF, Konami, 1996)`** (`ffgticlubsd`): para CRT. **Sin salida HDMI**: la imagen
+  de 24 kHz sale por la salida analógica a 480i con el módulo **crt480i** de Chris Watson
+  (GPL-2.0-or-later); el menú del core tiene una página *CRT 480i* (Deflicker, Height, posición H/V).
+
+**Controles** (menú del core): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* para los
+botones izquierda/derecha (Ramp, Pot + spring, Pot (free)) y *Ramp speed*; acelerador y freno
+analógicos. El volante con motor del mueble se emula en la calibración del arranque, así que no sale
+*DEVICE ERROR* y se pueden elegir todos los recorridos.
+
+De este core solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
 ## Construir
 
 Este repo contiene **solo el código del core** (`cores/<core>/`, p.ej. `cores/asterix/`,
@@ -667,8 +716,8 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`wecleman` y `overdriv` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
-> así que `cores/wecleman/` y `cores/overdriv/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y no
+> ⚠️ **`wecleman`, `overdriv` y `gticlub` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
+> así que `cores/wecleman/`, `cores/overdriv/` y `cores/gticlub/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y no
 > se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`, `blswhstl`, `moomesa`,
 > `ssriders`, `mtlchamp`, `mystwarr`, `xexex`, `hotchase`, `konamigt` y `chequeredflag`.
 
