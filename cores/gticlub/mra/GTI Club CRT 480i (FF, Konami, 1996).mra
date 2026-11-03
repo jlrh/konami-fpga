@@ -1,0 +1,53 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>GTI Club CRT 480i (FF, Konami, 1996)</name>
+    <setname>gticlub</setname>
+    <year>1996</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffgticlubsd</rbf>
+    <region>Europe</region>
+    <rom index="3" zip="gticlub.zip" md5="None">
+        <part name="93c56.24g" crc="9564a685"/>
+    </rom>
+    <rom index="5" zip="gticlub.zip" md5="None">
+        <interleave output="16">
+            <part name="688a09.9s" crc="fb582963" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="688a10.7s" crc="b3ddc5f1" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="688a11.5s" crc="fc706183" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="688a12.2s" crc="510c70e3" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="4" zip="gticlub.zip" md5="None">
+        <interleave output="16">
+            <part name="688a07.13k" crc="f0805f06" map="12"/>
+        </interleave>
+        <part repeat="0x40000">00</part>
+    </rom>
+    <rom index="6" zip="gticlub.zip" md5="None">
+        <interleave output="64">
+            <part name="688a13.18d" crc="c8f04f91" map="00000021"/>
+            <part name="688a14.13d" crc="b9932735" map="00002100"/>
+            <part name="688a15.9d" crc="8aadee51" map="00210000"/>
+            <part name="688a16.4d" crc="7f4e1893" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="0" zip="gticlub.zip" md5="None">
+        <interleave output="32">
+            <part name="688eaa01.21u" crc="824944ad" map="0001"/>
+            <part name="688eaa02.19u" crc="88e7bfb9" map="0010"/>
+            <part name="688eaa03.21r" crc="ea1c696b" map="0100"/>
+            <part name="688eaa04.19r" crc="94fa2334" map="1000"/>
+        </interleave>
+        <interleave output="32">
+            <part name="688a05.14u" crc="7caa3f80" map="0012"/>
+            <part name="688a06.12u" crc="83e7ce0a" map="1200"/>
+        </interleave>
+    </rom>
+</misterromdescription>
