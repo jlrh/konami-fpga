@@ -7,7 +7,6 @@
     <players>1</players>
     <rbf>ffgticlub</rbf>
     <region>Europe</region>
-    <!-- juego para el core: 0 = gticlub (1 = slrasslt) -->
     <rom index="1">
         <part>00</part>
     </rom>

@@ -312,12 +312,20 @@ left/right buttons (Ramp, Pot + spring, Pot (free)) and *Ramp speed*; analog acc
 The cabinet's motorised wheel is emulated for the boot calibration, so there is no *DEVICE ERROR* and
 every course can be chosen.
 
-**Solar Assault (Konami, 1997)** runs on the same board, so it uses the same `ffgticlub` core with its
-own `.mra`, **`Solar Assault (FF, Konami, 1997)`** (HDMI only for now). Passes the POST and plays on
-hardware. Controls: stick (or analog stick) for the ship, *Trigger*, *Missile* and *Power Up*; the
-wheel options are hidden in the core menu for this game.
-
 Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
+
+### Solar Assault (Konami, 1997)
+Into-the-screen 3D space shooter on the **same board as GTI Club** (PowerPC 403GA + SHARC + K001005/K001006
++ K001604 + 68EC000 + RF5C400). It uses the **same `ffgticlub` core**: the `.mra`
+**`Solar Assault (FF, Konami, 1997)`** tells the core which game to run (HDMI only for now).
+
+**Status: work in progress — boots and plays on MiSTer, tested on hardware.** Passes the POST and the
+attract with textured 3D.
+
+**Controls**: stick (or analog stick) for the ship, *Trigger*, *Missile* and *Power Up*. The wheel
+options are hidden in the core menu for this game.
+
+Only the `.rbf` and `.mra` are published (see [Build](#build)).
 
 ## Build
 
@@ -340,8 +348,8 @@ cores/<core>/
 └── mra/   .mra definition (how to assemble the ROMs)
 ```
 
-> ⚠️ **`wecleman`, `overdriv` and `gticlub` are the exceptions**: only their `.rbf` and `.mra` are published, so
-> `cores/wecleman/`, `cores/overdriv/` and `cores/gticlub/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot be
+> ⚠️ **`wecleman`, `overdriv` and `gticlub` (with `slrasslt`) are the exceptions**: only their `.rbf` and `.mra` are published, so
+> `cores/wecleman/`, `cores/overdriv/`, `cores/gticlub/` and `cores/slrasslt/` hold `mra/` alone — no `hdl/`, no `cfg/` — and they cannot be
 > built from this repo. Everything above applies to `asterix`, `blswhstl`, `moomesa`, `ssriders`,
 > `mtlchamp`, `mystwarr`, `xexex`, `hotchase`, `konamigt` and `chequeredflag`.
 
@@ -699,12 +707,20 @@ botones izquierda/derecha (Ramp, Pot + spring, Pot (free)) y *Ramp speed*; acele
 analógicos. El volante con motor del mueble se emula en la calibración del arranque, así que no sale
 *DEVICE ERROR* y se pueden elegir todos los recorridos.
 
-**Solar Assault (Konami, 1997)** va en la misma placa, así que usa el mismo core `ffgticlub` con su
-propio `.mra`, **`Solar Assault (FF, Konami, 1997)`** (de momento solo HDMI). Pasa el POST y se juega
-en placa. Controles: palanca (o stick analógico) para la nave, *Trigger*, *Missile* y *Power Up*; en
-este juego el menú del core oculta las opciones de volante.
-
 De este core solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
+### Solar Assault (Konami, 1997)
+Matamarcianos 3D hacia el fondo de la pantalla en la **misma placa que GTI Club** (PowerPC 403GA + SHARC +
+K001005/K001006 + K001604 + 68EC000 + RF5C400). Usa el **mismo core `ffgticlub`**: el `.mra`
+**`Solar Assault (FF, Konami, 1997)`** le dice al core qué juego arrancar (de momento solo HDMI).
+
+**Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa.** Pasa el POST y el attract
+con 3D y texturas.
+
+**Controles**: palanca (o stick analógico) para la nave, *Trigger*, *Missile* y *Power Up*. En este
+juego el menú del core oculta las opciones de volante.
+
+Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 
 ## Construir
 
@@ -726,8 +742,8 @@ cores/<core>/
 └── mra/   definición .mra (cómo ensamblar las ROMs)
 ```
 
-> ⚠️ **`wecleman`, `overdriv` y `gticlub` son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
-> así que `cores/wecleman/`, `cores/overdriv/` y `cores/gticlub/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y no
+> ⚠️ **`wecleman`, `overdriv` y `gticlub` (con `slrasslt`) son las excepciones**: de ellos solo se publican el `.rbf` y el `.mra`,
+> así que `cores/wecleman/`, `cores/overdriv/`, `cores/gticlub/` y `cores/slrasslt/` contienen únicamente `mra/` — sin `hdl/` ni `cfg/` — y no
 > se pueden compilar desde este repo. Todo lo de arriba vale para `asterix`, `blswhstl`, `moomesa`,
 > `ssriders`, `mtlchamp`, `mystwarr`, `xexex`, `hotchase`, `konamigt` y `chequeredflag`.
 

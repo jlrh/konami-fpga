@@ -8,12 +8,9 @@
     <rbf>ffgticlub</rbf>
     <region>USA</region>
     <buttons names="Start,Coin,Test,Service,Trigger,Missile,Power Up" default="Start,Select,-,-,A,B,X" count="3"/>
-    <!-- juego para el core: 0 = gticlub, 1 = slrasslt (entradas, ADC1038 sin el apano de gticlub, sin motor de volante) -->
     <rom index="1">
         <part>01</part>
     </rom>
-    <!-- EEPROM 93C56 ya inicializada por el juego (MAME, TEST mantenido desde el arranque): la del romset (eeprom-slrasslt.bin)
-         da "24G BAD: EEPROM PARAMETER IS ILLIGAL" tambien en MAME -->
     <rom index="3">
         <part>
             E3 4A 1C B5 92 97 41 55 00 40 00 00 03 B0 42 1A 0A 14 00 00 82 01 01 01 35 05 7E 72 36 05 14 44
