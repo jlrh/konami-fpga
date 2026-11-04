@@ -1,0 +1,68 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Solar Assault (FF, Konami, 1997)</name>
+    <setname>slrasslt</setname>
+    <year>1997</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffgticlub</rbf>
+    <region>USA</region>
+    <buttons names="Start,Coin,Test,Service,Trigger,Missile,Power Up" default="Start,Select,-,-,A,B,X" count="3"/>
+    <!-- juego para el core: 0 = gticlub, 1 = slrasslt (entradas, ADC1038 sin el apano de gticlub, sin motor de volante) -->
+    <rom index="1">
+        <part>01</part>
+    </rom>
+    <!-- EEPROM 93C56 ya inicializada por el juego (MAME, TEST mantenido desde el arranque): la del romset (eeprom-slrasslt.bin)
+         da "24G BAD: EEPROM PARAMETER IS ILLIGAL" tambien en MAME -->
+    <rom index="3">
+        <part>
+            E3 4A 1C B5 92 97 41 55 00 40 00 00 03 B0 42 1A 0A 14 00 00 82 01 01 01 35 05 7E 72 36 05 14 44
+            29 05 80 02 2A 05 45 AD 00 00 28 40 00 00 53 67 00 00 CA 09 00 00 FE E8 00 00 2F 18 00 00 84 CE
+            CA FA 81 8D C9 FA EB BB D6 FA 7F FD D5 FA BA 52 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            C3 3C C2 3D C1 3E C0 3F BF 40 BE 41 BD 42 BC 43 BB 44 BA 45 B9 46 B8 47 B7 48 B6 49 B5 4A B4 4B
+            B3 4C B2 4D B1 4E B0 4F AF 50 AE 51 AD 52 AC 53 AB 54 AA 55 A9 56 A8 57 A7 58 A6 59 A5 5A A4 5B
+            A3 5C A2 5D A1 5E A0 5F 9F 60 9E 61 9D 62 9C 63 9B 64 9A 65 99 66 98 67 97 68 96 69 95 6A 94 6B
+            93 6C 92 6D 91 6E 90 6F 8F 70 8E 71 8D 72 8C 73 8B 74 8A 75 89 76 88 77 87 78 86 79 85 7A 84 7B
+        </part>
+    </rom>
+    <rom index="5" zip="slrasslt.zip" md5="None">
+        <interleave output="16">
+            <part name="792a09.9s" crc="7d7ea427" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="792a10.7s" crc="e585e5d9" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="792a11.5s" crc="c9c3a04c" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="792a12.2s" crc="da8fcdd5" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="4" zip="slrasslt.zip" md5="None">
+        <interleave output="16">
+            <part name="792a07.10k" crc="89a65ad1" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="6" zip="slrasslt.zip" md5="None">
+        <interleave output="64">
+            <part name="792a13.18d" crc="16d6a134" map="00000021"/>
+            <part name="792a14.13d" crc="cf57e830" map="00002100"/>
+            <part name="792a15.9d" crc="1c5531cb" map="00210000"/>
+            <part name="792a16.4d" crc="df89e392" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="0" zip="slrasslt.zip" md5="None">
+        <interleave output="32">
+            <part name="792uaa01.21u" crc="c73bf7fb" map="0001"/>
+            <part name="792uaa02.19u" crc="a940bb9b" map="0010"/>
+            <part name="792uaa03.21r" crc="363e8411" map="0100"/>
+            <part name="792uaa04.19r" crc="7910d99c" map="1000"/>
+        </interleave>
+        <interleave output="32">
+            <part name="792a05.14u" crc="9a27edfc" map="0012"/>
+            <part name="792a06.12u" crc="c272f171" map="1200"/>
+        </interleave>
+    </rom>
+</misterromdescription>

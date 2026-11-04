@@ -312,6 +312,11 @@ left/right buttons (Ramp, Pot + spring, Pot (free)) and *Ramp speed*; analog acc
 The cabinet's motorised wheel is emulated for the boot calibration, so there is no *DEVICE ERROR* and
 every course can be chosen.
 
+**Solar Assault (Konami, 1997)** runs on the same board, so it uses the same `ffgticlub` core with its
+own `.mra`, **`Solar Assault (FF, Konami, 1997)`** (HDMI only for now). Passes the POST and plays on
+hardware. Controls: stick (or analog stick) for the ship, *Trigger*, *Missile* and *Power Up*; the
+wheel options are hidden in the core menu for this game.
+
 Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
 
 ## Build
@@ -693,6 +698,11 @@ carreras completas con 3D y texturas, también en Very Hard. Dos versiones:
 botones izquierda/derecha (Ramp, Pot + spring, Pot (free)) y *Ramp speed*; acelerador y freno
 analógicos. El volante con motor del mueble se emula en la calibración del arranque, así que no sale
 *DEVICE ERROR* y se pueden elegir todos los recorridos.
+
+**Solar Assault (Konami, 1997)** va en la misma placa, así que usa el mismo core `ffgticlub` con su
+propio `.mra`, **`Solar Assault (FF, Konami, 1997)`** (de momento solo HDMI). Pasa el POST y se juega
+en placa. Controles: palanca (o stick analógico) para la nave, *Trigger*, *Missile* y *Power Up*; en
+este juego el menú del core oculta las opciones de volante.
 
 De este core solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 
