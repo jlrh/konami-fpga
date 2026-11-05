@@ -1,0 +1,65 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Operation Thunder Hurricane (FF, Konami, 1997)</name>
+    <setname>thunderh</setname>
+    <year>1997</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffgticlub</rbf>
+    <region>Europe</region>
+    <buttons names="Start,Coin,Test,Service,Trigger,Bomb,Button 3" default="Start,Select,-,-,A,B,X" count="3"/>
+    <rom index="1">
+        <part>02</part>
+    </rom>
+    <rom index="3">
+        <part>
+            FD FE 03 01 80 96 41 45 00 03 00 00 01 01 02 03 17 14 00 00 03 03 00 00 00 00 00 00 00 00 00 00
+            00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+            FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+        </part>
+    </rom>
+    <rom index="5" zip="thunderh.zip" md5="None">
+        <interleave output="16">
+            <part name="680a09.9s" crc="71c2b049" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="680a10.7s" crc="19882bf3" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="680a11.5s" crc="0c74fe3f" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="680a12.2s" crc="b052919d" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="4" zip="thunderh.zip" md5="None">
+        <interleave output="16">
+            <part name="680a07.13k" crc="12247a3e" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="6" zip="thunderh.zip" md5="None">
+        <interleave output="64">
+            <part name="680a13.18d" crc="233f9074" map="00000021"/>
+            <part name="680a14.13d" crc="9ae15033" map="00002100"/>
+            <part name="680a15.9d" crc="dc47c86f" map="00210000"/>
+            <part name="680a16.4d" crc="ea388143" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="0" zip="thunderh.zip" md5="None">
+        <interleave output="32">
+            <part name="680eaa01.21u" crc="796e2678" map="0001"/>
+            <part name="680eaa02.19u" crc="767e6db0" map="0010"/>
+            <part name="680eaa03.21r" crc="5a5b59b5" map="0100"/>
+            <part name="680eaa04.19r" crc="4a973a5c" map="1000"/>
+        </interleave>
+        <interleave output="32">
+            <part name="680a05.14u" crc="0c9f334d" map="0012"/>
+            <part name="680a06.12u" crc="83074217" map="1200"/>
+        </interleave>
+    </rom>
+</misterromdescription>

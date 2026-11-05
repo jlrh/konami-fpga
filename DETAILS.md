@@ -305,7 +305,8 @@ and full races with 3D and textures, including Very Hard. Two builds:
 - **`GTI Club (FF, Konami, 1996)`** (`ffgticlub`): HDMI, as usual.
 - **`GTI Club CRT 480i (FF, Konami, 1996)`** (`ffgticlubsd`): for CRTs. **No HDMI output**: the 24 kHz
   picture goes out of the analog port as 480i, through the **crt480i** module by Chris Watson
-  (GPL-2.0-or-later); the core menu has a *CRT 480i* page (Deflicker, Height, H/V position).
+  (GPL-2.0-or-later); the core menu has a *CRT 480i* page (Deflicker, Height, H/V position). Solar
+  Assault and Operation Thunder Hurricane have their own CRT `.mra` too.
 
 **Controls** (core menu): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* for the
 left/right buttons (Ramp, Pot + spring, Pot (free)) and *Ramp speed*; analog accelerator and brake.
@@ -317,13 +318,30 @@ Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
 ### Solar Assault (Konami, 1997)
 Into-the-screen 3D space shooter on the **same board as GTI Club** (PowerPC 403GA + SHARC + K001005/K001006
 + K001604 + 68EC000 + RF5C400). It uses the **same `ffgticlub` core**: the `.mra`
-**`Solar Assault (FF, Konami, 1997)`** tells the core which game to run (HDMI only for now).
+**`Solar Assault (FF, Konami, 1997)`** tells the core which game to run. CRT build:
+**`Solar Assault CRT 480i (FF, Konami, 1997)`** (`ffgticlubsd`, see GTI Club).
 
 **Status: work in progress — boots and plays on MiSTer, tested on hardware.** Passes the POST and the
 attract with textured 3D.
 
 **Controls**: stick (or analog stick) for the ship, *Trigger*, *Missile* and *Power Up*. The wheel
 options are hidden in the core menu for this game.
+
+Only the `.rbf` and `.mra` are published (see [Build](#build)).
+
+### Operation Thunder Hurricane (Konami, 1997)
+Two-player 3D light-gun shooter on the **same board as GTI Club**, plus the GN680 gun board. It uses the
+**same `ffgticlub` core**: the `.mra` **`Operation Thunder Hurricane (FF, Konami, 1997)`** tells the core
+which game to run. CRT build: **`Operation Thunder Hurricane CRT 480i (FF, Konami, 1997)`** (`ffgticlubsd`,
+see GTI Club). The gun board is not emulated as a CPU: the core sends the main board the same gun data the
+GN680 would.
+
+**Status: work in progress — boots and plays on MiSTer, tested on hardware** (light gun, up to stage 3).
+
+**Controls**: MiSTer light guns (Sinden, Gun4IR...) for both players; with a gamepad, the analog stick or
+the D-pad moves the aim, and player 1 can also use a mouse. *Trigger* and *Bomb*. As on the cabinet, the
+game draws no crosshair: you aim with the gun. It needs 3 credits to start. The wheel options are hidden
+in the core menu for this game.
 
 Only the `.rbf` and `.mra` are published (see [Build](#build)).
 
@@ -701,6 +719,7 @@ carreras completas con 3D y texturas, también en Very Hard. Dos versiones:
 - **`GTI Club CRT 480i (FF, Konami, 1996)`** (`ffgticlubsd`): para CRT. **Sin salida HDMI**: la imagen
   de 24 kHz sale por la salida analógica a 480i con el módulo **crt480i** de Chris Watson
   (GPL-2.0-or-later); el menú del core tiene una página *CRT 480i* (Deflicker, Height, posición H/V).
+  Solar Assault y Operation Thunder Hurricane también tienen su `.mra` CRT.
 
 **Controles** (menú del core): *Control Type* (1 Stick, 2 Sticks, Triggers, Wheel), *Steering* para los
 botones izquierda/derecha (Ramp, Pot + spring, Pot (free)) y *Ramp speed*; acelerador y freno
@@ -712,13 +731,30 @@ De este core solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)
 ### Solar Assault (Konami, 1997)
 Matamarcianos 3D hacia el fondo de la pantalla en la **misma placa que GTI Club** (PowerPC 403GA + SHARC +
 K001005/K001006 + K001604 + 68EC000 + RF5C400). Usa el **mismo core `ffgticlub`**: el `.mra`
-**`Solar Assault (FF, Konami, 1997)`** le dice al core qué juego arrancar (de momento solo HDMI).
+**`Solar Assault (FF, Konami, 1997)`** le dice al core qué juego arrancar. Versión CRT:
+**`Solar Assault CRT 480i (FF, Konami, 1997)`** (`ffgticlubsd`, ver GTI Club).
 
 **Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa.** Pasa el POST y el attract
 con 3D y texturas.
 
 **Controles**: palanca (o stick analógico) para la nave, *Trigger*, *Missile* y *Power Up*. En este
 juego el menú del core oculta las opciones de volante.
+
+Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
+### Operation Thunder Hurricane (Konami, 1997)
+Juego de pistola 3D para dos jugadores en la **misma placa que GTI Club**, más la placa de pistolas GN680.
+Usa el **mismo core `ffgticlub`**: el `.mra` **`Operation Thunder Hurricane (FF, Konami, 1997)`** le dice
+al core qué juego arrancar. Versión CRT: **`Operation Thunder Hurricane CRT 480i (FF, Konami, 1997)`**
+(`ffgticlubsd`, ver GTI Club). La placa de pistolas no se emula como CPU: el core le manda a la placa
+principal los mismos datos de pistola que mandaría la GN680.
+
+**Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa** (con pistola, hasta la fase 3).
+
+**Controles**: pistolas de luz de MiSTer (Sinden, Gun4IR...) para los dos jugadores; con mando, el stick
+analógico o la cruceta mueven el punto de mira, y el jugador 1 también puede usar un ratón. *Trigger* y
+*Bomb*. Como en el mueble, el juego no pinta punto de mira: se apunta con la pistola. Hacen falta 3
+créditos para empezar. En este juego el menú del core oculta las opciones de volante.
 
 Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 
