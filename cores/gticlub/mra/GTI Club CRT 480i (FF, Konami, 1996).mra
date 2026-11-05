@@ -7,6 +7,9 @@
     <players>1</players>
     <rbf>ffgticlubsd</rbf>
     <region>Europe</region>
+    <rom index="1">
+        <part>00</part>
+    </rom>
     <rom index="3" zip="gticlub.zip" md5="None">
         <part name="93c56.24g" crc="9564a685"/>
     </rom>
