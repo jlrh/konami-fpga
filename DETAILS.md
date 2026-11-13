@@ -345,6 +345,19 @@ in the core menu for this game.
 
 Only the `.rbf` and `.mra` are published (see [Build](#build)).
 
+### Jet Wave (Konami, 1996)
+3D jet-ski racing game on Konami's **ZR107** CPU board with the same video board as GTI Club: **PowerPC
+403GA** + **ADSP-21062 SHARC** + **K001005/K001006** (3D) + **K001604** (2D layers), with its own sound
+board (**68000** + two **K054539**). Its own core, **`ffjetwave`**, built from the GTI Club one.
+
+**Status: work in progress — boots and plays on MiSTer, tested on hardware.** Passes the POST, attract
+and races.
+
+**Controls**: handlebar (analog stick or left/right buttons), *Accelerator*, *Angle*, *Tilt Left* and
+*Tilt Right*. The `Wave Shark` (USA) and `Jet Wave` (Japan) versions are in `_alternatives/_Jet Wave`.
+
+Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -755,6 +768,20 @@ principal los mismos datos de pistola que mandaría la GN680.
 analógico o la cruceta mueven el punto de mira, y el jugador 1 también puede usar un ratón. *Trigger* y
 *Bomb*. Como en el mueble, el juego no pinta punto de mira: se apunta con la pistola. Hacen falta 3
 créditos para empezar. En este juego el menú del core oculta las opciones de volante.
+
+Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
+### Jet Wave (Konami, 1996)
+Carreras de motos de agua en 3D sobre la placa de CPU **ZR107** de Konami, con la misma placa de vídeo que
+GTI Club: **PowerPC 403GA** + **ADSP-21062 SHARC** + **K001005/K001006** (3D) + **K001604** (capas 2D),
+y su propia placa de sonido (**68000** + dos **K054539**). Core propio, **`ffjetwave`**, hecho a partir
+del de GTI Club.
+
+**Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa.** Pasa el POST, el attract y
+las carreras.
+
+**Controles**: manillar (stick analógico o botones izquierda/derecha), *Accelerator*, *Angle*, *Tilt Left*
+y *Tilt Right*. Las versiones `Wave Shark` (EE. UU.) y `Jet Wave` (Japón) están en `_alternatives/_Jet Wave`.
 
 Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 

@@ -14,7 +14,7 @@ Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer*
 </tr>
 <tr>
 <td align="center" width="33%"><a href="DETAILS.md#hot-chase-konami-1988"><img src="docs/screens/hotchase.png" alt="Hot Chase"></a><br><b>Hot Chase</b> · 1988</td>
-<td align="center" width="33%"><a href="DETAILS.md"><b>Jet Wave</b></a> · 1996</td>
+<td align="center" width="33%"><a href="DETAILS.md#jet-wave-konami-1996"><img src="docs/screens/jetwave.png" alt="Jet Wave"></a><br><b>Jet Wave</b> · 1996</td>
 <td align="center" width="33%"><a href="DETAILS.md#konami-gt-konami-1985"><img src="docs/screens/konamigt.png" alt="Konami GT"></a><br><b>Konami GT</b> · 1985</td>
 </tr>
 <tr>
