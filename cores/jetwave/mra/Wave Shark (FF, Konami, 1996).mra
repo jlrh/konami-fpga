@@ -1,0 +1,44 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Wave Shark (FF, Konami, 1996)</name>
+    <setname>waveshrk</setname>
+    <year>1996</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffjetwave</rbf>
+    <region>USA</region>
+    <rom index="3">
+        <part repeat="0x80">FF</part>
+    </rom>
+    <rom index="5" zip="waveshrk.zip|jetwave.zip" md5="None">
+        <part name="678a08.5r" crc="4aeb61ad"/>
+        <part name="678a09.3r" crc="39baef23"/>
+        <part name="678a10.5n" crc="0508280e"/>
+    </rom>
+    <rom index="4" zip="waveshrk.zip|jetwave.zip" md5="None">
+        <interleave output="16">
+            <part name="678a07.19l" crc="bb3f5875" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="6" zip="waveshrk.zip|jetwave.zip" md5="None">
+        <interleave output="64">
+            <part name="678a13.18d" crc="ccf75722" map="00000021"/>
+            <part name="678a14.13d" crc="333a1ab4" map="00002100"/>
+            <part name="678a15.9d" crc="58b670f8" map="00210000"/>
+            <part name="678a16.4d" crc="137b9bff" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="0" zip="waveshrk.zip|jetwave.zip" md5="None">
+        <interleave output="32">
+            <part name="678uab01.20u" crc="a9b9ceed" map="0001"/>
+            <part name="678uab02.17u" crc="5ed24ac8" map="0010"/>
+            <part name="678uab03.15u" crc="f4a595e7" map="0100"/>
+            <part name="678uab04.13u" crc="fd3320a7" map="1000"/>
+        </interleave>
+        <interleave output="32">
+            <part name="685a05.10u" crc="00e59741" map="0012"/>
+            <part name="685a06.8u" crc="fc98c6a5" map="1200"/>
+        </interleave>
+    </rom>
+    <buttons names="Start/View,Coin,Test,Service,Accelerator,Angle,Tilt Left,Tilt Right" default="Start,Select,-,-,A,B,L,R"/>
+</misterromdescription>

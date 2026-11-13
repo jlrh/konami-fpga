@@ -14,17 +14,20 @@ Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer*
 </tr>
 <tr>
 <td align="center" width="33%"><a href="DETAILS.md#hot-chase-konami-1988"><img src="docs/screens/hotchase.png" alt="Hot Chase"></a><br><b>Hot Chase</b> · 1988</td>
+<td align="center" width="33%"><a href="DETAILS.md"><b>Jet Wave</b></a> · 1996</td>
 <td align="center" width="33%"><a href="DETAILS.md#konami-gt-konami-1985"><img src="docs/screens/konamigt.png" alt="Konami GT"></a><br><b>Konami GT</b> · 1985</td>
-<td align="center" width="33%"><a href="DETAILS.md#martial-champion-konami-1993"><img src="docs/screens/mtlchamp.png" alt="Martial Champion"></a><br><b>Martial Champion</b> · 1993</td>
 </tr>
 <tr>
+<td align="center" width="33%"><a href="DETAILS.md#martial-champion-konami-1993"><img src="docs/screens/mtlchamp.png" alt="Martial Champion"></a><br><b>Martial Champion</b> · 1993</td>
 <td align="center" width="33%"><a href="DETAILS.md#mystic-warriors-wrath-of-the-ninjas-konami-1993"><img src="docs/screens/mystwarr.png" alt="Mystic Warriors"></a><br><b>Mystic Warriors</b> · 1993</td>
 <td align="center" width="33%"><a href="DETAILS.md#operation-thunder-hurricane-konami-1997"><img src="docs/screens/thunderh.png" alt="Operation Thunder Hurricane"></a><br><b>Operation Thunder Hurricane</b> · 1997</td>
-<td align="center" width="33%"><a href="DETAILS.md#solar-assault-konami-1997"><img src="docs/screens/slrasslt.png" alt="Solar Assault"></a><br><b>Solar Assault</b> · 1997</td>
 </tr>
 <tr>
+<td align="center" width="33%"><a href="DETAILS.md#solar-assault-konami-1997"><img src="docs/screens/slrasslt.png" alt="Solar Assault"></a><br><b>Solar Assault</b> · 1997</td>
 <td align="center" width="33%"><a href="DETAILS.md#sunset-riders-konami-1991"><img src="docs/screens/ssriders.png" alt="Sunset Riders"></a><br><b>Sunset Riders</b> · 1991</td>
 <td align="center" width="33%"><a href="DETAILS.md#wec-le-mans-24-konami-1986"><img src="docs/screens/wecleman.png" alt="WEC Le Mans 24"></a><br><b>WEC Le Mans 24</b> · 1986</td>
+</tr>
+<tr>
 <td align="center" width="33%"><a href="DETAILS.md#xexex-konami-1991"><img src="docs/screens/xexex.png" alt="Xexex"></a><br><b>Xexex</b> · 1991</td>
 </tr>
 </table>
