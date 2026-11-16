@@ -19,7 +19,7 @@ Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer*
 </tr>
 <tr>
 <td align="center" width="33%"><a href="DETAILS.md#martial-champion-konami-1993"><img src="docs/screens/mtlchamp.png" alt="Martial Champion"></a><br><b>Martial Champion</b> · 1993</td>
-<td align="center" width="33%"><a href="DETAILS.md"><img src="docs/screens/midnrun.png" alt="Midnight Run - Road Fighter 2"></a><br><b>Midnight Run - Road Fighter 2</b> · 1995</td>
+<td align="center" width="33%"><a href="DETAILS.md#midnight-run---road-fighter-2-konami-1995"><img src="docs/screens/midnrun.png" alt="Midnight Run - Road Fighter 2"></a><br><b>Midnight Run - Road Fighter 2</b> · 1995</td>
 <td align="center" width="33%"><a href="DETAILS.md#mystic-warriors-wrath-of-the-ninjas-konami-1993"><img src="docs/screens/mystwarr.png" alt="Mystic Warriors"></a><br><b>Mystic Warriors</b> · 1993</td>
 </tr>
 <tr>
@@ -29,7 +29,7 @@ Konami arcade cores for **MiSTer**. · Cores arcade de **Konami** para **MiSTer*
 </tr>
 <tr>
 <td align="center" width="33%"><a href="DETAILS.md#wec-le-mans-24-konami-1986"><img src="docs/screens/wecleman.png" alt="WEC Le Mans 24"></a><br><b>WEC Le Mans 24</b> · 1986</td>
-<td align="center" width="33%"><a href="DETAILS.md"><img src="docs/screens/windheat.png" alt="Winding Heat"></a><br><b>Winding Heat</b> · 1996</td>
+<td align="center" width="33%"><a href="DETAILS.md#winding-heat-konami-1996"><img src="docs/screens/windheat.png" alt="Winding Heat"></a><br><b>Winding Heat</b> · 1996</td>
 <td align="center" width="33%"><a href="DETAILS.md#xexex-konami-1991"><img src="docs/screens/xexex.png" alt="Xexex"></a><br><b>Xexex</b> · 1991</td>
 </tr>
 </table>

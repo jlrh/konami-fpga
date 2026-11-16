@@ -358,6 +358,33 @@ and races.
 
 Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
 
+### Midnight Run - Road Fighter 2 (Konami, 1995)
+3D street-racing game on Konami's **ZR107** hardware: **PowerPC 403GA** + **ADSP-21062 SHARC** +
+**K056832** (2D layers) + the same 3D chips as GTI Club, with a **68000** + **K058141** (two K054539) for
+sound. Its own core, **`ffmidnrun`**, built from the GTI Club one; Winding Heat uses the same core.
+CRT build: **`Midnight Run - Road Fighter 2 CRT 480i (FF, Konami, 1995)`** (`ffmidnrunsd`).
+
+**Status: work in progress — boots and plays on MiSTer, tested on hardware**, including two-player
+**network play** between two MiSTer (cabinet link, K056230 LANC): turn *Network* on in the core menu and
+give each MiSTer a different *Network ID*.
+
+**Controls**: wheel (analog stick or left/right buttons), *Accelerator*, *Brake*, *Shift Up*, *Shift Down*
+and *AT/MT*; *Start/View* changes the view.
+
+Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
+
+### Winding Heat (Konami, 1996)
+3D mountain-road racing game on the **same ZR107 hardware as Midnight Run**. It uses the **same
+`ffmidnrun` core**: the `.mra` **`Winding Heat (FF, Konami, 1996)`** tells the core which game to run.
+CRT build: **`Winding Heat CRT 480i (FF, Konami, 1996)`** (`ffmidnrunsd`).
+
+**Status: work in progress — boots and plays on MiSTer, tested on hardware**, including two-player
+network play (see Midnight Run).
+
+**Controls**: same as Midnight Run.
+
+Only the `.rbf` and `.mra` are published (see [Build](#build)).
+
 ## Build
 
 This repo contains **only the core code** (`cores/<core>/`, e.g. `cores/asterix/`, `cores/moomesa/`,
@@ -782,6 +809,33 @@ las carreras.
 
 **Controles**: manillar (stick analógico o botones izquierda/derecha), *Accelerator*, *Angle*, *Tilt Left*
 y *Tilt Right*. Las versiones `Wave Shark` (EE. UU.) y `Jet Wave` (Japón) están en `_alternatives/_Jet Wave`.
+
+Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
+### Midnight Run - Road Fighter 2 (Konami, 1995)
+Carreras callejeras en 3D sobre el hardware **ZR107** de Konami: **PowerPC 403GA** + **ADSP-21062 SHARC** +
+**K056832** (capas 2D) + los mismos chips 3D que GTI Club, con un **68000** + **K058141** (dos K054539)
+para el sonido. Core propio, **`ffmidnrun`**, hecho a partir del de GTI Club; Winding Heat usa el mismo
+core. Versión CRT: **`Midnight Run - Road Fighter 2 CRT 480i (FF, Konami, 1995)`** (`ffmidnrunsd`).
+
+**Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa**, también el **juego en red** a
+dos entre dos MiSTer (enlace de muebles, K056230 LANC): activa *Network* en el menú del core y pon un
+*Network ID* distinto en cada MiSTer.
+
+**Controles**: volante (stick analógico o botones izquierda/derecha), *Accelerator*, *Brake*, *Shift Up*,
+*Shift Down* y *AT/MT*; *Start/View* cambia la cámara.
+
+Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
+
+### Winding Heat (Konami, 1996)
+Carreras de montaña en 3D sobre el **mismo hardware ZR107 que Midnight Run**. Usa el **mismo core
+`ffmidnrun`**: el `.mra` **`Winding Heat (FF, Konami, 1996)`** le dice al core qué juego arrancar. Versión
+CRT: **`Winding Heat CRT 480i (FF, Konami, 1996)`** (`ffmidnrunsd`).
+
+**Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa**, también el juego en red a dos
+(ver Midnight Run).
+
+**Controles**: los mismos que Midnight Run.
 
 Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 
