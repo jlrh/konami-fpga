@@ -369,7 +369,8 @@ CRT build: **`Midnight Run - Road Fighter 2 CRT 480i (FF, Konami, 1995)`** (`ffm
 give each MiSTer a different *Network ID*.
 
 **Controls**: wheel (analog stick or left/right buttons), *Accelerator*, *Brake*, *Shift Up*, *Shift Down*
-and *AT/MT*; *Start/View* changes the view.
+and *AT/MT*; *Start/View* changes the view. The Asia, Asia (newer sound) and Japan versions are in
+`_alternatives/_Midnight Run - Road Fighter 2`.
 
 Only the `.rbf` and `.mra` are published for this core (see [Build](#build)).
 
@@ -381,7 +382,7 @@ CRT build: **`Winding Heat CRT 480i (FF, Konami, 1996)`** (`ffmidnrunsd`).
 **Status: work in progress — boots and plays on MiSTer, tested on hardware**, including two-player
 network play (see Midnight Run).
 
-**Controls**: same as Midnight Run.
+**Controls**: same as Midnight Run. The Asia, Japan and USA versions are in `_alternatives/_Winding Heat`.
 
 Only the `.rbf` and `.mra` are published (see [Build](#build)).
 
@@ -823,7 +824,8 @@ dos entre dos MiSTer (enlace de muebles, K056230 LANC): activa *Network* en el m
 *Network ID* distinto en cada MiSTer.
 
 **Controles**: volante (stick analógico o botones izquierda/derecha), *Accelerator*, *Brake*, *Shift Up*,
-*Shift Down* y *AT/MT*; *Start/View* cambia la cámara.
+*Shift Down* y *AT/MT*; *Start/View* cambia la cámara. Las versiones de Asia, Asia (sonido nuevo) y Japón están en
+`_alternatives/_Midnight Run - Road Fighter 2`.
 
 Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 
@@ -835,7 +837,7 @@ CRT: **`Winding Heat CRT 480i (FF, Konami, 1996)`** (`ffmidnrunsd`).
 **Estado: en desarrollo — arranca y se juega en MiSTer, probado en placa**, también el juego en red a dos
 (ver Midnight Run).
 
-**Controles**: los mismos que Midnight Run.
+**Controles**: los mismos que Midnight Run. Las versiones de Asia, Japón y EE. UU. están en `_alternatives/_Winding Heat`.
 
 Solo se publican el `.rbf` y el `.mra` (ver [Construir](#construir)).
 
