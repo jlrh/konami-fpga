@@ -1,0 +1,46 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Midnight Run - Road Fighter 2 CRT 480i (FF, Konami, 1995)</name>
+    <setname>midnrun</setname>
+    <year>1995</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffmidnrunsd</rbf>
+    <region>Europe</region>
+    <rom index="3">
+        <part repeat="0x80">FF</part>
+    </rom>
+    <rom index="5" zip="midnrun.zip" md5="None">
+        <part name="477a08.5r" crc="d320dbde"/>
+        <part name="477a09.3r" crc="f431e29f"/>
+        <part name="477a10.5n" crc="8db31bd4"/>
+    </rom>
+    <rom index="4" zip="midnrun.zip" md5="None">
+        <interleave output="16">
+            <part name="477a07.19l" crc="a82c0ba1" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="6" zip="midnrun.zip" md5="None">
+        <interleave output="64">
+            <part name="477a13.9h" crc="b1ee901d" map="00000021"/>
+            <part name="477a14.7h" crc="9ffa8cc5" map="00002100"/>
+            <part name="477a15.5h" crc="e337fce7" map="00210000"/>
+            <part name="477a16.2h" crc="2c03ee63" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="0" zip="midnrun.zip" md5="None">
+        <interleave output="32">
+            <part name="476ea1a01.20u" crc="ea70edf2" map="0001"/>
+            <part name="476ea1a02.17u" crc="1462994f" map="0010"/>
+            <part name="476ea1a03.15u" crc="b770ae46" map="0100"/>
+            <part name="476ea1a04.13u" crc="9644b277" map="1000"/>
+        </interleave>
+    </rom>
+    <rom index="7" zip="midnrun.zip" md5="None">
+        <interleave output="16">
+            <part name="477a11.35b" crc="85eef04b" map="01"/>
+            <part name="477a12.35a" crc="451d7777" map="10"/>
+        </interleave>
+    </rom>
+    <buttons names="Start/View,Coin,Test,Service,Accelerator,Brake,Shift Up,Shift Down,AT/MT" default="Start,Select,-,-,A,B,R,L,X"/>
+</misterromdescription>
