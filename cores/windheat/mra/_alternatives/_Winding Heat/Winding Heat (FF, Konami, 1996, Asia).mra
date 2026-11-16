@@ -1,0 +1,46 @@
+<misterromdescription>
+    <rotation>horizontal</rotation>
+    <name>Winding Heat (FF, Konami, 1996, Asia)</name>
+    <setname>windheata</setname>
+    <year>1996</year>
+    <manufacturer>Konami</manufacturer>
+    <players>1</players>
+    <rbf>ffmidnrun</rbf>
+    <region>Asia</region>
+    <rom index="3">
+        <part repeat="0x80">FF</part>
+    </rom>
+    <rom index="5" zip="windheat.zip" md5="None">
+        <part name="677a08.5r" crc="bde38850"/>
+        <part name="677a09.3r" crc="4dfc1ea9"/>
+        <part name="677a10.5n" crc="d8f77a68"/>
+    </rom>
+    <rom index="4" zip="windheat.zip" md5="None">
+        <interleave output="16">
+            <part name="677a07.19l" crc="05b14f2d" map="12"/>
+        </interleave>
+    </rom>
+    <rom index="6" zip="windheat.zip" md5="None">
+        <interleave output="64">
+            <part name="677a13.9h" crc="7937d226" map="00000021"/>
+            <part name="677a14.7h" crc="2568cf41" map="00002100"/>
+            <part name="677a15.5h" crc="62e2c3dd" map="00210000"/>
+            <part name="677a16.2h" crc="7cc75539" map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="0" zip="windheata.zip|windheat.zip" md5="None">
+        <interleave output="32">
+            <part name="677aaa01.20u" crc="0d88d0e2" map="0001"/>
+            <part name="677aaa02.17u" crc="f71044a3" map="0010"/>
+            <part name="677aaa03.15u" crc="3c897588" map="0100"/>
+            <part name="677aaa04.13u" crc="aee84b7d" map="1000"/>
+        </interleave>
+    </rom>
+    <rom index="7" zip="windheat.zip" md5="None">
+        <interleave output="16">
+            <part name="677a11.35b" crc="bf34f00f" map="01"/>
+            <part name="677a12.35a" crc="458f0b1d" map="10"/>
+        </interleave>
+    </rom>
+    <buttons names="Start/View,Moneda,Test,Servicio,Acelerador,Freno,Marcha +,Marcha -,AT/MT" default="Start,Select,-,-,A,B,R,L,X"/>
+</misterromdescription>
